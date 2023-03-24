@@ -51,40 +51,5 @@
 ## 📁 폴더 구조
 
 ```
-├── 📁 assets
-│  └── 📁 img
-│  └── 📁 js
-│	 │   ├── common.js
-│	 │   ├── addMember.js
-│	 │   ├── index.js
-│	 │   ├── memberRepository.js
-│	 │   ├── requestApi.js
-│	 │   ├── tourList.js
-│	 │   └── travelplan.js
-│  └── 📁 css
-│	 │   ├── common.css
-│	 │   ├── common.member.css
-│	 │   ├── login.css
-│	 │   ├── notification.css
-│	 │   ├── notion.css
-│	 │   └── travelplan.css
-│  └── 📁 account
-│	 │   ├── findPassword.html
-│	 │   ├── login.html
-│	 │   └── logout.html
-│  └── 📁 article
-│	 │   ├── addNotion.html
-│	 │   ├── notification.html
-│	 │   └── notion.html
-│  └── 📁 member
-│	 │   ├── addMember.html
-│	 │   ├── editMember.html
-│	 │   └── removeMember.html
-│  └── 📁 search
-│	 │   ├── memberList.html
-│	 │   └── tourList.html
-│  └── 📁 travlepaln
-│	 │   └── travelplan.html
-├── index.html
-└── README.md
+
 ```
