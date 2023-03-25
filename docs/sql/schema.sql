@@ -19,6 +19,18 @@ create table if not exists `MEMBER`
     `last_modified_date` timestamp   not null default current_timestamp
 );
 
+drop table if exists `admin`;
+
+create table if not exists `ADMIN`
+(
+    `admin_id`          bigint      not null primary key auto_increment,
+    `login_id`           varchar(20) not null,
+    `login_pw`           varchar(20) not null,
+    `username`           varchar(20) not null,
+    `created_date`       timestamp   not null default current_timestamp,
+    `last_modified_date` timestamp   not null default current_timestamp
+    );
+
 drop table if exists content_type;
 
 create table if not exists `CONTENT_TYPE`
