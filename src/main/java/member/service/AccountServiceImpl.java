@@ -1,11 +1,14 @@
 package member.service;
 
+import common.exception.LoginException;
 import member.Member;
 import member.dto.LoginMember;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
 
 import java.util.Optional;
+
+import static common.exception.ExceptionMessage.*;
 
 public class AccountServiceImpl implements AccountService {
 
@@ -24,12 +27,12 @@ public class AccountServiceImpl implements AccountService {
     public LoginMember login(String loginId, String password) {
         Optional<Member> findMember = memberRepository.findByLoginId(loginId);
         if (!findMember.isPresent()) {
-            throw new IllegalArgumentException();
+            throw new LoginException(LOGIN_EXCEPTION);
         }
 
         Member member = findMember.get();
         if (!member.getLoginPw().equals(password)) {
-            throw new IllegalArgumentException();
+            throw new LoginException(LOGIN_EXCEPTION);
         }
 
         return LoginMember.builder()
