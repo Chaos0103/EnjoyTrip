@@ -1,4 +1,4 @@
-package common.validation.validator.singup;
+package common.validation.validator.signup;
 
 import common.validation.dto.InvalidResponse;
 import member.dto.MemberAddDto;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class LoginIdValidatorTest {
+class LoginPwValidatorTest {
 
     private final LoginPwValidator validator = new LoginPwValidator();
 

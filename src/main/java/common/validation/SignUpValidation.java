@@ -2,7 +2,7 @@ package common.validation;
 
 import common.validation.dto.InvalidResponse;
 import common.validation.validator.*;
-import common.validation.validator.singup.*;
+import common.validation.validator.signup.*;
 import member.dto.MemberAddDto;
 
 import java.util.ArrayList;

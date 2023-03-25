@@ -1,4 +1,4 @@
-package common.validation.validator.singup;
+package common.validation.validator.signup;
 
 import common.validation.ValidationMessage;
 import common.validation.dto.InvalidResponse;

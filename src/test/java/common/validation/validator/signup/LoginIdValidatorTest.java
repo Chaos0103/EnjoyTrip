@@ -1,7 +1,7 @@
 package common.validation.validator.signup;
 
 import common.validation.dto.InvalidResponse;
-import common.validation.validator.singup.LoginIdValidator;
+import common.validation.validator.signup.LoginIdValidator;
 import member.dto.MemberAddDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
