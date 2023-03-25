@@ -1,5 +1,6 @@
 package member.service;
 
+import common.exception.AccountException;
 import common.exception.LoginException;
 import member.Member;
 import member.dto.LoginMember;
@@ -8,7 +9,8 @@ import member.repository.MemberRepository;
 
 import java.util.Optional;
 
-import static common.exception.ExceptionMessage.*;
+import static common.exception.ExceptionMessage.ACCOUNT_EXCEPTION;
+import static common.exception.ExceptionMessage.LOGIN_EXCEPTION;
 
 public class AccountServiceImpl implements AccountService {
 
@@ -39,5 +41,20 @@ public class AccountServiceImpl implements AccountService {
                 .loginId(member.getLoginId())
                 .loginPw(member.getLoginPw())
                 .build();
+    }
+
+    @Override
+    public String findLoginId(String email, String phone) {
+        Optional<Member> findMember = memberRepository.findByEmail(email);
+        if (!findMember.isPresent()) {
+            throw new AccountException(ACCOUNT_EXCEPTION);
+        }
+
+        Member member = findMember.get();
+        if (member.getPhone().equals(phone)) {
+            throw new AccountException(ACCOUNT_EXCEPTION);
+        }
+
+        return member.getLoginId();
     }
 }
