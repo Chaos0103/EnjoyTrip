@@ -6,7 +6,7 @@ public interface MemberService {
 
     void signUp(MemberAddDto memberAddDto);
 
-    void changePassword(Long memberId, String password);
+    void changePassword(Long memberId, String loginPw);
 
     void changeEmail(Long memberId, String email);
 
