@@ -1,12 +1,12 @@
 package common.validation.validator;
 
 import common.validation.dto.InvalidResponse;
-import member.dto.MemberAddDto;
+import common.validation.dto.MemberRequest;
 
 import java.util.List;
 
 public interface MemberValidator {
 
-    List<InvalidResponse> validate(MemberAddDto request);
+    List<InvalidResponse> validate(MemberRequest request);
 
 }

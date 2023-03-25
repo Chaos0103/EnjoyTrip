@@ -2,8 +2,8 @@ package common.validation.validator.member;
 
 import common.validation.ValidationMessage;
 import common.validation.dto.InvalidResponse;
+import common.validation.dto.MemberRequest;
 import common.validation.validator.MemberValidator;
-import member.dto.MemberAddDto;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +14,7 @@ public class EmailValidator implements MemberValidator {
     private static final int MAX_LENGTH = 50;
 
     @Override
-    public List<InvalidResponse> validate(MemberAddDto request) {
+    public List<InvalidResponse> validate(MemberRequest request) {
         String email = request.getEmail();
 
         if (email == null || isBlank(email)) {

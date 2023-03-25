@@ -2,8 +2,8 @@ package common.validation.validator.member;
 
 import common.validation.ValidationMessage;
 import common.validation.dto.InvalidResponse;
+import common.validation.dto.MemberRequest;
 import common.validation.validator.MemberValidator;
-import member.dto.MemberAddDto;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +15,7 @@ public class LoginIdValidator implements MemberValidator {
     private static final int MIN_LENGTH = 5;
 
     @Override
-    public List<InvalidResponse> validate(MemberAddDto request) {
+    public List<InvalidResponse> validate(MemberRequest request) {
         String loginId = request.getLoginId();
 
         if (loginId == null || isBlank(loginId)) {

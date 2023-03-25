@@ -3,7 +3,10 @@ package common.validation;
 import common.validation.dto.InvalidResponse;
 import common.validation.dto.MemberRequest;
 import common.validation.validator.MemberValidator;
-import common.validation.validator.member.*;
+import common.validation.validator.member.EmailValidator;
+import common.validation.validator.member.LoginPwValidator;
+import common.validation.validator.member.NicknameValidator;
+import common.validation.validator.member.PhoneValidator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,19 +14,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SignUpValidation {
+public class MemberUpdateValidation {
+
     private final List<MemberValidator> validators;
 
-    public SignUpValidation() {
+    public MemberUpdateValidation() {
         validators = new ArrayList<>();
-        validators.add(new LoginIdValidator());
         validators.add(new LoginPwValidator());
-        validators.add(new UsernameValidator());
         validators.add(new EmailValidator());
         validators.add(new PhoneValidator());
         validators.add(new NicknameValidator());
-        validators.add(new BirthValidator());
-        validators.add(new GenderValidator());
     }
 
     public List<InvalidResponse> validate(MemberRequest request) {

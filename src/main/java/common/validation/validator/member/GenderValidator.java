@@ -2,8 +2,8 @@ package common.validation.validator.member;
 
 import common.validation.ValidationMessage;
 import common.validation.dto.InvalidResponse;
+import common.validation.dto.MemberRequest;
 import common.validation.validator.MemberValidator;
-import member.dto.MemberAddDto;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,7 +16,7 @@ public class GenderValidator implements MemberValidator {
     private static final List<String> GENDERS = Arrays.asList("1", "2", "3", "4");
 
     @Override
-    public List<InvalidResponse> validate(MemberAddDto request) {
+    public List<InvalidResponse> validate(MemberRequest request) {
         String gender = request.getGender();
 
         if (gender == null || isBlank(gender)) {
