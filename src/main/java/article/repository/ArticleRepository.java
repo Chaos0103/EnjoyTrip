@@ -6,4 +6,5 @@ public interface ArticleRepository {
 
     int save(ArticleDto articleDto);
 
+    void clear();
 }

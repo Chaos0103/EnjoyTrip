@@ -40,4 +40,22 @@ public class ArticleJdbcRepository implements ArticleRepository {
         }
         return count;
     }
+
+    @Override
+    public void clear() {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "delete from article;";
+
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(pstmt, conn);
+        }
+    }
 }
