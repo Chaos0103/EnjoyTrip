@@ -6,6 +6,8 @@ import util.DBConnectionUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class ArticleJdbcRepository implements ArticleRepository {
 
@@ -38,6 +40,31 @@ public class ArticleJdbcRepository implements ArticleRepository {
         } finally {
             dbConnectionUtil.close(pstmt, conn);
         }
+        return count;
+    }
+
+    @Override
+    public int update(Long articleId, ArticleDto articleDto) {
+        int count = 0;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "update article set title=?, content=?, last_modified_date=? where article_id=?;";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, articleDto.getTitle());
+            pstmt.setString(2, articleDto.getContent());
+            pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            pstmt.setLong(4, articleId);
+
+            count = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(pstmt, conn);
+        }
+
         return count;
     }
 
