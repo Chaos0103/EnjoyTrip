@@ -1,7 +1,7 @@
 package common.validation.validator.member;
 
 import common.validation.dto.InvalidResponse;
-import member.dto.MemberAddDto;
+import common.validation.dto.MemberRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,12 +19,12 @@ class LoginIdValidatorTest {
     @DisplayName("로그인 아이디 검증")
     void loginIdValidator() {
         //given
-        MemberAddDto memberAddDto = MemberAddDto.builder()
+        MemberRequest request = MemberRequest.builder()
                 .loginId("ssafy")
                 .build();
 
         //when
-        List<InvalidResponse> validate = validator.validate(memberAddDto);
+        List<InvalidResponse> validate = validator.validate(request);
 
         //then
         assertThat(validate).isEmpty();
@@ -35,12 +35,12 @@ class LoginIdValidatorTest {
     @CsvSource({"0123", "012345678901234567890", "null", "1234 "})
     void exception_length(String loginId) {
         //given
-        MemberAddDto memberAddDto = MemberAddDto.builder()
+        MemberRequest request = MemberRequest.builder()
                 .loginId(loginId)
                 .build();
 
         //when
-        List<InvalidResponse> validate = validator.validate(memberAddDto);
+        List<InvalidResponse> validate = validator.validate(request);
 
         //then
         assertThat(validate).isNotEmpty();
@@ -51,12 +51,12 @@ class LoginIdValidatorTest {
     @CsvSource({"ssafy!", "ssafy 9", "싸피", "SSAFY"})
     void exception_type(String loginId) {
         //given
-        MemberAddDto memberAddDto = MemberAddDto.builder()
+        MemberRequest request = MemberRequest.builder()
                 .loginId(loginId)
                 .build();
 
         //when
-        List<InvalidResponse> validate = validator.validate(memberAddDto);
+        List<InvalidResponse> validate = validator.validate(request);
 
         //then
         assertThat(validate).isNotEmpty();

@@ -1,7 +1,7 @@
 package common.validation.validator.member;
 
 import common.validation.dto.InvalidResponse;
-import member.dto.MemberAddDto;
+import common.validation.dto.MemberRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,12 +19,12 @@ class BirthValidatorTest {
     @DisplayName("생년월일 검증")
     void birthValidator() {
         //given
-        MemberAddDto memberAddDto = MemberAddDto.builder()
+        MemberRequest request = MemberRequest.builder()
                 .birth("010101")
                 .build();
 
         //when
-        List<InvalidResponse> validate = validator.validate(memberAddDto);
+        List<InvalidResponse> validate = validator.validate(request);
 
         //then
         assertThat(validate).isEmpty();
@@ -35,12 +35,12 @@ class BirthValidatorTest {
     @CsvSource({"9911", "20010101"})
     void exception_length(String birth) {
         //given
-        MemberAddDto memberAddDto = MemberAddDto.builder()
+        MemberRequest request = MemberRequest.builder()
                 .birth(birth)
                 .build();
 
         //when
-        List<InvalidResponse> validate = validator.validate(memberAddDto);
+        List<InvalidResponse> validate = validator.validate(request);
 
         //then
         assertThat(validate).isNotEmpty();
@@ -51,12 +51,12 @@ class BirthValidatorTest {
     @CsvSource({"99.1.1", "O1O1O1"})
     void exception_type(String birth) {
         //given
-        MemberAddDto memberAddDto = MemberAddDto.builder()
+        MemberRequest request = MemberRequest.builder()
                 .birth(birth)
                 .build();
 
         //when
-        List<InvalidResponse> validate = validator.validate(memberAddDto);
+        List<InvalidResponse> validate = validator.validate(request);
 
         //then
         assertThat(validate).isNotEmpty();

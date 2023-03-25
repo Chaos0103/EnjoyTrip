@@ -1,7 +1,7 @@
 package common.validation.validator.member;
 
 import common.validation.dto.InvalidResponse;
-import member.dto.MemberAddDto;
+import common.validation.dto.MemberRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,12 +18,12 @@ class UsernameValidatorTest {
     @DisplayName("이름 검증")
     void usernameValidator() {
         //given
-        MemberAddDto memberAddDto = MemberAddDto.builder()
+        MemberRequest request = MemberRequest.builder()
                 .username("김싸피")
                 .build();
 
         //when
-        List<InvalidResponse> validate = validator.validate(memberAddDto);
+        List<InvalidResponse> validate = validator.validate(request);
 
         //then
         assertThat(validate).isEmpty();
@@ -34,12 +34,12 @@ class UsernameValidatorTest {
     @CsvSource({"김수한무거북이와두루미삼천갑자동방삭치치카포사리사리센타워리워리세브리깡"})
     void exception_length(String username) {
         //given
-        MemberAddDto memberAddDto = MemberAddDto.builder()
+        MemberRequest request = MemberRequest.builder()
                 .username(username)
                 .build();
 
         //when
-        List<InvalidResponse> validate = validator.validate(memberAddDto);
+        List<InvalidResponse> validate = validator.validate(request);
 
         //then
         assertThat(validate).isNotEmpty();
@@ -50,12 +50,12 @@ class UsernameValidatorTest {
     @CsvSource({"mark", "김싸피1", "김 싸 피", "김싸피!"})
     void exception_type(String username) {
         //given
-        MemberAddDto memberAddDto = MemberAddDto.builder()
+        MemberRequest request = MemberRequest.builder()
                 .username(username)
                 .build();
 
         //when
-        List<InvalidResponse> validate = validator.validate(memberAddDto);
+        List<InvalidResponse> validate = validator.validate(request);
 
         //then
         assertThat(validate).isNotEmpty();

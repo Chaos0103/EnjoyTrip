@@ -1,7 +1,7 @@
 package common.validation.validator.member;
 
 import common.validation.dto.InvalidResponse;
-import member.dto.MemberAddDto;
+import common.validation.dto.MemberRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -19,12 +19,10 @@ class GenderValidatorTest {
     @CsvSource({"1", "2", "3", "4"})
     void genderValidator(String gender) {
         //given
-        MemberAddDto memberAddDto = MemberAddDto.builder()
-                .gender(gender)
-                .build();
+        MemberRequest request = MemberRequest.builder().gender(gender).build();
 
         //when
-        List<InvalidResponse> validate = validator.validate(memberAddDto);
+        List<InvalidResponse> validate = validator.validate(request);
 
         //then
         assertThat(validate).isEmpty();
@@ -35,12 +33,10 @@ class GenderValidatorTest {
     @CsvSource({"01", "22"})
     void exception_length(String gender) {
         //given
-        MemberAddDto memberAddDto = MemberAddDto.builder()
-                .gender(gender)
-                .build();
+        MemberRequest request = MemberRequest.builder().gender(gender).build();
 
         //when
-        List<InvalidResponse> validate = validator.validate(memberAddDto);
+        List<InvalidResponse> validate = validator.validate(request);
 
         //then
         assertThat(validate).isNotEmpty();
@@ -51,12 +47,10 @@ class GenderValidatorTest {
     @CsvSource({"M", "!"})
     void exception_type(String gender) {
         //given
-        MemberAddDto memberAddDto = MemberAddDto.builder()
-                .gender(gender)
-                .build();
+        MemberRequest request = MemberRequest.builder().gender(gender).build();
 
         //when
-        List<InvalidResponse> validate = validator.validate(memberAddDto);
+        List<InvalidResponse> validate = validator.validate(request);
 
         //then
         assertThat(validate).isNotEmpty();
@@ -67,12 +61,10 @@ class GenderValidatorTest {
     @CsvSource({"5", "0"})
     void exception_check(String gender) {
         //given
-        MemberAddDto memberAddDto = MemberAddDto.builder()
-                .gender(gender)
-                .build();
+        MemberRequest request = MemberRequest.builder().gender(gender).build();
 
         //when
-        List<InvalidResponse> validate = validator.validate(memberAddDto);
+        List<InvalidResponse> validate = validator.validate(request);
 
         //then
         assertThat(validate).isNotEmpty();

@@ -1,7 +1,7 @@
 package common.validation.validator.member;
 
 import common.validation.dto.InvalidResponse;
-import member.dto.MemberAddDto;
+import common.validation.dto.MemberRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,12 +19,12 @@ class NicknameValidatorTest {
     @DisplayName("닉네임 검증")
     void nicknameValidator() {
         //given
-        MemberAddDto memberAddDto = MemberAddDto.builder()
+        MemberRequest request = MemberRequest.builder()
                 .nickname("광주5반")
                 .build();
 
         //when
-        List<InvalidResponse> validate = validator.validate(memberAddDto);
+        List<InvalidResponse> validate = validator.validate(request);
 
         //then
         assertThat(validate).isEmpty();
@@ -35,12 +35,12 @@ class NicknameValidatorTest {
     @CsvSource({"01234567890"})
     void exception_length(String nickname) {
         //given
-        MemberAddDto memberAddDto = MemberAddDto.builder()
+        MemberRequest request = MemberRequest.builder()
                 .nickname(nickname)
                 .build();
 
         //when
-        List<InvalidResponse> validate = validator.validate(memberAddDto);
+        List<InvalidResponse> validate = validator.validate(request);
 
         //then
         assertThat(validate).isNotEmpty();

@@ -1,7 +1,7 @@
 package common.validation.validator.member;
 
 import common.validation.dto.InvalidResponse;
-import member.dto.MemberAddDto;
+import common.validation.dto.MemberRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,12 +19,12 @@ class EmailValidatorTest {
     @DisplayName("이메일 검증")
     void usernameValidator() {
         //given
-        MemberAddDto memberAddDto = MemberAddDto.builder()
+        MemberRequest request = MemberRequest.builder()
                 .email("ssafy@ssafy.com")
                 .build();
 
         //when
-        List<InvalidResponse> validate = validator.validate(memberAddDto);
+        List<InvalidResponse> validate = validator.validate(request);
 
         //then
         assertThat(validate).isEmpty();
@@ -35,12 +35,12 @@ class EmailValidatorTest {
     @CsvSource({"ssafy0123456789012345678901234567890123456789@ssafy.com"})
     void exception_length(String email) {
         //given
-        MemberAddDto memberAddDto = MemberAddDto.builder()
+        MemberRequest request = MemberRequest.builder()
                 .email(email)
                 .build();
 
         //when
-        List<InvalidResponse> validate = validator.validate(memberAddDto);
+        List<InvalidResponse> validate = validator.validate(request);
 
         //then
         assertThat(validate).isNotEmpty();
@@ -52,12 +52,12 @@ class EmailValidatorTest {
             "ssafy@ssafy.", "ssafyssafycom", "싸피@싸피.컴", "ssafy!@ssafy.com", "ssafy@ ssafy.com"})
     void exception_type(String email) {
         //given
-        MemberAddDto memberAddDto = MemberAddDto.builder()
+        MemberRequest request = MemberRequest.builder()
                 .email(email)
                 .build();
 
         //when
-        List<InvalidResponse> validate = validator.validate(memberAddDto);
+        List<InvalidResponse> validate = validator.validate(request);
 
         //then
         assertThat(validate).isNotEmpty();
