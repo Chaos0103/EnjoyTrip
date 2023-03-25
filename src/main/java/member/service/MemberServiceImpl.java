@@ -1,8 +1,11 @@
 package member.service;
 
+import common.exception.InformationChangeException;
+import common.validation.MemberUpdateValidation;
 import common.validation.SignUpValidation;
 import common.validation.dto.InvalidResponse;
 import common.exception.SignUpException;
+import common.validation.dto.MemberRequest;
 import member.Member;
 import member.dto.MemberAddDto;
 import member.repository.MemberJdbcRepository;
@@ -28,7 +31,19 @@ public class MemberServiceImpl implements MemberService {
     public void signUp(MemberAddDto memberAddDto) {
         SignUpValidation validation = new SignUpValidation();
 
-        List<InvalidResponse> responses = validation.validate(memberAddDto);
+        MemberRequest request = MemberRequest.builder()
+                .loginId(memberAddDto.getLoginId())
+                .loginPw(memberAddDto.getLoginPw())
+                .username(memberAddDto.getUsername())
+                .email(memberAddDto.getEmail())
+                .phone(memberAddDto.getPhone())
+                .nickname(memberAddDto.getNickname())
+                .birth(memberAddDto.getBirth())
+                .gender(memberAddDto.getGender())
+                .build();
+
+        List<InvalidResponse> responses = validation.validate(request);
+
 
         if (!responses.isEmpty()) {
             throw new SignUpException();
@@ -55,5 +70,96 @@ public class MemberServiceImpl implements MemberService {
         }
 
         memberRepository.save(memberAddDto);
+    }
+
+    @Override
+    public void changePassword(Long memberId, String loginPw) {
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        if (!findMember.isPresent()) {
+            throw new InformationChangeException();
+        }
+
+        Member member = findMember.get();
+        member.changeLoginPw(loginPw);
+
+        updateValidation(member);
+
+        memberRepository.update(memberId, member);
+    }
+
+    @Override
+    public void changeEmail(Long memberId, String email) {
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        if (!findMember.isPresent()) {
+            throw new InformationChangeException();
+        }
+
+        Optional<Member> emailCheck = memberRepository.findByEmail(email);
+        if (emailCheck.isPresent()) {
+            throw new InformationChangeException();
+        }
+
+        Member member = findMember.get();
+        member.changeEmail(email);
+
+        updateValidation(member);
+
+        memberRepository.update(memberId, member);
+    }
+
+    @Override
+    public void changePhone(Long memberId, String phone) {
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        if (!findMember.isPresent()) {
+            throw new InformationChangeException();
+        }
+
+        Optional<Member> phoneCheck = memberRepository.findByPhone(phone);
+        if (phoneCheck.isPresent()) {
+            throw new InformationChangeException();
+        }
+
+        Member member = findMember.get();
+        member.changePhone(phone);
+
+        updateValidation(member);
+
+        memberRepository.update(memberId, member);
+    }
+
+    @Override
+    public void changeNickname(Long memberId, String nickname) {
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        if (!findMember.isPresent()) {
+            throw new InformationChangeException();
+        }
+
+        Optional<Member> nicknameCheck = memberRepository.findByNickname(nickname);
+        if (nicknameCheck.isPresent()) {
+            throw new InformationChangeException();
+        }
+
+        Member member = findMember.get();
+        member.changeNickname(nickname);
+
+        updateValidation(member);
+
+        memberRepository.update(memberId, member);
+    }
+
+    private void updateValidation(Member member) {
+        MemberUpdateValidation validation = new MemberUpdateValidation();
+
+        MemberRequest request = MemberRequest.builder()
+                .loginPw(member.getLoginPw())
+                .email(member.getEmail())
+                .phone(member.getPhone())
+                .nickname(member.getNickname())
+                .build();
+
+        List<InvalidResponse> responses = validation.validate(request);
+        if (!responses.isEmpty()) {
+            throw new InformationChangeException();
+        }
     }
 }

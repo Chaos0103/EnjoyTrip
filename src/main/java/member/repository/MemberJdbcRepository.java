@@ -4,10 +4,8 @@ import member.Member;
 import member.dto.MemberAddDto;
 import util.DBConnectionUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class MemberJdbcRepository implements MemberRepository {
@@ -177,6 +175,32 @@ public class MemberJdbcRepository implements MemberRepository {
             dbConnectionUtil.close(rs, pstmt, conn);
         }
         return Optional.ofNullable(member);
+    }
+
+    @Override
+    public void update(Long memberId, Member member) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "update member" +
+                    " set login_pw=?, email=?, phone=?, nickname=?, last_modified_date=?" +
+                    " where member_id=?;";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, member.getLoginPw());
+            pstmt.setString(2, member.getEmail());
+            pstmt.setString(3, member.getPhone());
+            pstmt.setString(4, member.getNickname());
+            pstmt.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+            pstmt.setLong(6, memberId);
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(pstmt, conn);
+        }
     }
 
     @Override

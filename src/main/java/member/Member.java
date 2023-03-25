@@ -25,5 +25,20 @@ public class Member {
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
 
+    //== 비즈니스 로직 ==//
+    public void changeLoginPw(String loginPw) {
+        this.loginPw = loginPw;
+    }
 
+    public void changeEmail(String email) {
+        this.email = email;
+    }
+
+    public void changePhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }

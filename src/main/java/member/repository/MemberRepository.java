@@ -19,5 +19,7 @@ public interface MemberRepository {
 
     Optional<Member> findByNickname(String nickname);
 
+    void update(Long memberId, Member member);
+
     void clear();
 }
