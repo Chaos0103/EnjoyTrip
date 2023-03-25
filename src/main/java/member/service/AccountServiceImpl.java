@@ -51,7 +51,7 @@ public class AccountServiceImpl implements AccountService {
         }
 
         Member member = findMember.get();
-        if (member.getPhone().equals(phone)) {
+        if (!member.getPhone().equals(phone)) {
             throw new AccountException(ACCOUNT_EXCEPTION);
         }
 
