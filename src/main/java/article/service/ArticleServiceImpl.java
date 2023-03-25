@@ -82,4 +82,19 @@ public class ArticleServiceImpl implements ArticleService {
 
         return articleRepository.update(articleId, articleDto);
     }
+
+    @Override
+    public int removeArticle(Long articleId, Long memberId) {
+        Optional<Article> findArticle = articleRepository.findById(articleId);
+        if (!findArticle.isPresent()) {
+            throw new ArticleException(NOT_FOUND_ARTICLE);
+        }
+
+        Article article = findArticle.get();
+        if (!article.getMemberId().equals(memberId)) {
+            throw new ArticleException(ARTICLE_MEMBER_DISCREPANCY);
+        }
+
+        return articleRepository.remove(articleId);
+    }
 }

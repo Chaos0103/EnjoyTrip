@@ -7,4 +7,6 @@ public interface ArticleService {
     int addArticle(Long memberId, ArticleDto articleDto);
 
     int editArticle(Long articleId, Long memberId, ArticleDto articleDto);
+
+    int removeArticle(Long articleId, Long memberId);
 }
