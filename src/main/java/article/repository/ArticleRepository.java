@@ -4,6 +4,6 @@ import article.dto.ArticleDto;
 
 public interface ArticleRepository {
 
-    void save(ArticleDto articleDto);
+    int save(ArticleDto articleDto);
 
 }
