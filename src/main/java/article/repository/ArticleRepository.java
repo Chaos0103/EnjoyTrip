@@ -16,5 +16,7 @@ public interface ArticleRepository {
 
     int update(Long articleId, ArticleDto articleDto);
 
+    int remove(Long articleId);
+
     void clear();
 }

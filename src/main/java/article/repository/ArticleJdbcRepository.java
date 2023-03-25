@@ -121,6 +121,27 @@ public class ArticleJdbcRepository implements ArticleRepository {
     }
 
     @Override
+    public int remove(Long articleId) {
+        int count = 0;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "delete from article where article_id = ?;";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, articleId);
+
+            count = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(pstmt, conn);
+        }
+        return count;
+    }
+
+    @Override
     public void clear() {
         Connection conn = null;
         PreparedStatement pstmt = null;
