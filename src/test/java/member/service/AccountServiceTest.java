@@ -1,5 +1,6 @@
 package member.service;
 
+import common.exception.AccountException;
 import common.exception.LoginException;
 import member.dto.LoginMember;
 import member.dto.MemberAddDto;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static common.exception.ExceptionMessage.ACCOUNT_EXCEPTION;
 import static common.exception.ExceptionMessage.LOGIN_EXCEPTION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -71,5 +73,47 @@ class AccountServiceTest {
         assertThatThrownBy(() -> accountService.login(loginId, loginPw))
                 .isInstanceOf(LoginException.class)
                 .hasMessageContaining(LOGIN_EXCEPTION);
+    }
+
+    @Test
+    @DisplayName("아이디 찾기")
+    void findLoginId() {
+        //given
+        String email = "ssafy@ssafy.com";
+        String phone = "01012345678";
+
+        //when
+        String loginId = accountService.findLoginId(email, phone);
+
+        //then
+        assertThat(loginId).isEqualTo("ssafy");
+    }
+
+    @Test
+    @DisplayName("아이디 찾기#이메일 오류")
+    void findLoginId_exception_email() {
+        //given
+        String email = "ssafy1@ssafy.com";
+        String phone = "01012345678";
+
+        //when
+        //then
+        assertThatThrownBy(() -> accountService.findLoginId(email, phone))
+                .isInstanceOf(AccountException.class)
+                .hasMessageContaining(ACCOUNT_EXCEPTION);
+    }
+
+    @Test
+    @DisplayName("아이디 찾기#연락처 오류")
+    void findLoginId_exception_phone() {
+        //given
+        String email = "ssafy@ssafy.com";
+        String phone = "010987654321";
+
+        //when
+        //then
+        assertThatThrownBy(() -> accountService.findLoginId(email, phone))
+                .isInstanceOf(AccountException.class)
+                .hasMessageContaining(ACCOUNT_EXCEPTION);
     }
 }
