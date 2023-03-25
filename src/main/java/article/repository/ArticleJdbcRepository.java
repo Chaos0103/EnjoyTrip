@@ -21,7 +21,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
     }
 
     @Override
-    public int save(ArticleDto articleDto) {
+    public int save(Long memberId, ArticleDto articleDto) {
         int count = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -29,7 +29,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
             conn = dbConnectionUtil.getConnection();
             String sql = "insert into article(member_id, title, content) values (?, ?, ?);";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setLong(1, articleDto.getMemberId());
+            pstmt.setLong(1, memberId);
             pstmt.setString(2, articleDto.getTitle());
             pstmt.setString(3, articleDto.getContent());
             count = pstmt.executeUpdate();

@@ -4,7 +4,7 @@ import article.dto.ArticleDto;
 
 public interface ArticleRepository {
 
-    int save(ArticleDto articleDto);
+    int save(Long memberId, ArticleDto articleDto);
 
     void clear();
 }
