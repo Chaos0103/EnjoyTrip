@@ -62,4 +62,20 @@ class ArticleRepositoryTest {
         //then
         assertThat(count).isEqualTo(1);
     }
+
+    @Test
+    @DisplayName("게시글 삭제")
+    void remove() {
+        //given
+        Member member = memberRepository.findByLoginId("ssafy").get();
+        articleRepository.save(member.getMemberId(), new ArticleDto("title", "content"));
+        List<Article> articles = articleRepository.findByMemberId(member.getMemberId());
+        Article article = articles.get(0);
+
+        //when
+        int count = articleRepository.remove(article.getArticleId());
+
+        //then
+        assertThat(count).isEqualTo(1);
+    }
 }
