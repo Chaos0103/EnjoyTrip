@@ -1,4 +1,4 @@
-package common.validation.validator.signup;
+package common.validation.validator.member;
 
 import common.validation.dto.InvalidResponse;
 import member.dto.MemberAddDto;

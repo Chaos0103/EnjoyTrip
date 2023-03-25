@@ -1,7 +1,6 @@
-package common.validation.validator.signup;
+package common.validation.validator.member;
 
 import common.validation.dto.InvalidResponse;
-import common.validation.validator.signup.LoginIdValidator;
 import member.dto.MemberAddDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,16 +11,15 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class LoginIdValidatorTest {
-
-    private final LoginIdValidator validator = new LoginIdValidator();
+class UsernameValidatorTest {
+    private final UsernameValidator validator = new UsernameValidator();
 
     @Test
-    @DisplayName("로그인 아이디 검증")
-    void loginIdValidator() {
+    @DisplayName("이름 검증")
+    void usernameValidator() {
         //given
         MemberAddDto memberAddDto = MemberAddDto.builder()
-                .loginId("ssafy")
+                .username("김싸피")
                 .build();
 
         //when
@@ -32,12 +30,12 @@ class LoginIdValidatorTest {
     }
 
     @ParameterizedTest
-    @DisplayName("로그인 아이디 길이 예외")
-    @CsvSource({"0123", "012345678901234567890", "null", "1234 "})
-    void exception_length(String loginId) {
+    @DisplayName("이름 길이 예외")
+    @CsvSource({"김수한무거북이와두루미삼천갑자동방삭치치카포사리사리센타워리워리세브리깡"})
+    void exception_length(String username) {
         //given
         MemberAddDto memberAddDto = MemberAddDto.builder()
-                .loginId(loginId)
+                .username(username)
                 .build();
 
         //when
@@ -48,12 +46,12 @@ class LoginIdValidatorTest {
     }
 
     @ParameterizedTest
-    @DisplayName("로그인 아이디 타입 예외")
-    @CsvSource({"ssafy!", "ssafy 9", "싸피", "SSAFY"})
-    void exception_type(String loginId) {
+    @DisplayName("이름 타입 예외")
+    @CsvSource({"mark", "김싸피1", "김 싸 피", "김싸피!"})
+    void exception_type(String username) {
         //given
         MemberAddDto memberAddDto = MemberAddDto.builder()
-                .loginId(loginId)
+                .username(username)
                 .build();
 
         //when

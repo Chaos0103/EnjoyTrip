@@ -1,4 +1,4 @@
-package common.validation.validator.signup;
+package common.validation.validator.member;
 
 import common.validation.dto.InvalidResponse;
 import member.dto.MemberAddDto;
@@ -11,15 +11,16 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class UsernameValidatorTest {
-    private final UsernameValidator validator = new UsernameValidator();
+class LoginIdValidatorTest {
+
+    private final LoginIdValidator validator = new LoginIdValidator();
 
     @Test
-    @DisplayName("이름 검증")
-    void usernameValidator() {
+    @DisplayName("로그인 아이디 검증")
+    void loginIdValidator() {
         //given
         MemberAddDto memberAddDto = MemberAddDto.builder()
-                .username("김싸피")
+                .loginId("ssafy")
                 .build();
 
         //when
@@ -30,12 +31,12 @@ class UsernameValidatorTest {
     }
 
     @ParameterizedTest
-    @DisplayName("이름 길이 예외")
-    @CsvSource({"김수한무거북이와두루미삼천갑자동방삭치치카포사리사리센타워리워리세브리깡"})
-    void exception_length(String username) {
+    @DisplayName("로그인 아이디 길이 예외")
+    @CsvSource({"0123", "012345678901234567890", "null", "1234 "})
+    void exception_length(String loginId) {
         //given
         MemberAddDto memberAddDto = MemberAddDto.builder()
-                .username(username)
+                .loginId(loginId)
                 .build();
 
         //when
@@ -46,12 +47,12 @@ class UsernameValidatorTest {
     }
 
     @ParameterizedTest
-    @DisplayName("이름 타입 예외")
-    @CsvSource({"mark", "김싸피1", "김 싸 피", "김싸피!"})
-    void exception_type(String username) {
+    @DisplayName("로그인 아이디 타입 예외")
+    @CsvSource({"ssafy!", "ssafy 9", "싸피", "SSAFY"})
+    void exception_type(String loginId) {
         //given
         MemberAddDto memberAddDto = MemberAddDto.builder()
-                .username(username)
+                .loginId(loginId)
                 .build();
 
         //when

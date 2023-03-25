@@ -1,14 +1,14 @@
-package common.validation.validator.signup;
+package common.validation.validator.member;
 
 import common.validation.ValidationMessage;
 import common.validation.dto.InvalidResponse;
-import common.validation.validator.SignUpValidator;
+import common.validation.validator.MemberValidator;
 import member.dto.MemberAddDto;
 
 import java.util.Collections;
 import java.util.List;
 
-public class PhoneValidator implements SignUpValidator {
+public class PhoneValidator implements MemberValidator {
 
     private static final InvalidResponse INVALID_RESPONSE = new InvalidResponse("phone", ValidationMessage.PHONE);
     private static final int LENGTH = 11;

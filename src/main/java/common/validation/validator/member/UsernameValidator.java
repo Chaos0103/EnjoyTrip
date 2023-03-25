@@ -1,14 +1,14 @@
-package common.validation.validator.signup;
+package common.validation.validator.member;
 
 import common.validation.ValidationMessage;
 import common.validation.dto.InvalidResponse;
-import common.validation.validator.SignUpValidator;
+import common.validation.validator.MemberValidator;
 import member.dto.MemberAddDto;
 
 import java.util.Collections;
 import java.util.List;
 
-public class UsernameValidator implements SignUpValidator {
+public class UsernameValidator implements MemberValidator {
 
     private static final InvalidResponse INVALID_RESPONSE = new InvalidResponse("username", ValidationMessage.USERNAME);
     private static final int MAX_LENGTH = 20;

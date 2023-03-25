@@ -2,7 +2,7 @@ package common.validation;
 
 import common.validation.dto.InvalidResponse;
 import common.validation.validator.*;
-import common.validation.validator.signup.*;
+import common.validation.validator.member.*;
 import member.dto.MemberAddDto;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SignUpValidation {
-    private final List<SignUpValidator> validators;
+    private final List<MemberValidator> validators;
 
     public SignUpValidation() {
         validators = new ArrayList<>();

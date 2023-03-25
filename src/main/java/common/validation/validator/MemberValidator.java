@@ -5,7 +5,7 @@ import member.dto.MemberAddDto;
 
 import java.util.List;
 
-public interface SignUpValidator {
+public interface MemberValidator {
 
     List<InvalidResponse> validate(MemberAddDto request);
 
