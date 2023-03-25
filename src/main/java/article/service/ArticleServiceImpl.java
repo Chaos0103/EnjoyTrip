@@ -33,7 +33,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void addArticle(Long memberId, ArticleDto articleDto) {
+    public int addArticle(Long memberId, ArticleDto articleDto) {
         Optional<Member> findMember = memberRepository.findById(memberId);
         if (!findMember.isPresent()) {
             throw new ArticleException(ARTICLE_EXCEPTION);
@@ -52,6 +52,6 @@ public class ArticleServiceImpl implements ArticleService {
             throw new ArticleException(ARTICLE_EXCEPTION);
         }
 
-        articleRepository.save(memberId, articleDto);
+        return articleRepository.save(memberId, articleDto);
     }
 }
