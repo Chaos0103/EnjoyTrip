@@ -8,6 +8,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ArticleJdbcRepository implements ArticleRepository {
 
@@ -41,6 +42,31 @@ public class ArticleJdbcRepository implements ArticleRepository {
             dbConnectionUtil.close(pstmt, conn);
         }
         return count;
+    }
+
+    @Override
+    public Optional<Article> findById(Long articleId) {
+        Article article = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from article where article_id = ?;";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, articleId);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                article = createArticle(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return Optional.ofNullable(article);
     }
 
     @Override
