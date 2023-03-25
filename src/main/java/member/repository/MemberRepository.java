@@ -21,5 +21,7 @@ public interface MemberRepository {
 
     void update(Long memberId, Member member);
 
+    void remove(Long memberId);
+
     void clear();
 }

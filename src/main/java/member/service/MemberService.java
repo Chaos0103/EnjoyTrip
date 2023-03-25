@@ -13,4 +13,6 @@ public interface MemberService {
     void changePhone(Long memberId, String phone);
 
     void changeNickname(Long memberId, String nickname);
+
+    void withdrawal(Long memberId, String loginPw);
 }

@@ -1,6 +1,7 @@
 package member.service;
 
 import common.exception.InformationChangeException;
+import common.exception.WithdrawalException;
 import common.validation.MemberUpdateValidation;
 import common.validation.SignUpValidation;
 import common.validation.dto.InvalidResponse;
@@ -161,5 +162,20 @@ public class MemberServiceImpl implements MemberService {
         if (!responses.isEmpty()) {
             throw new InformationChangeException();
         }
+    }
+
+    @Override
+    public void withdrawal(Long memberId, String loginPw) {
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        if (!findMember.isPresent()) {
+            throw new WithdrawalException();
+        }
+
+        Member member = findMember.get();
+        if (!member.getLoginPw().equals(loginPw)) {
+            throw new WithdrawalException();
+        }
+
+        memberRepository.remove(memberId);
     }
 }

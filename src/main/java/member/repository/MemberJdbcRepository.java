@@ -204,6 +204,25 @@ public class MemberJdbcRepository implements MemberRepository {
     }
 
     @Override
+    public void remove(Long memberId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "delete from member where member_id=?;";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, memberId);
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(pstmt, conn);
+        }
+    }
+
+    @Override
     public void clear() {
         Connection conn = null;
         PreparedStatement pstmt = null;
