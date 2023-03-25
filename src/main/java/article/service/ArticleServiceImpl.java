@@ -1,6 +1,7 @@
 package article.service;
 
 
+import article.Article;
 import article.dto.ArticleDto;
 import article.repository.ArticleJdbcRepository;
 import article.repository.ArticleRepository;
@@ -15,7 +16,7 @@ import member.repository.MemberRepository;
 import java.util.List;
 import java.util.Optional;
 
-import static common.exception.ExceptionMessage.ARTICLE_EXCEPTION;
+import static common.exception.ExceptionMessage.*;
 
 public class ArticleServiceImpl implements ArticleService {
 
@@ -53,5 +54,32 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         return articleRepository.save(memberId, articleDto);
+    }
+
+    @Override
+    public int editArticle(Long articleId, Long memberId, ArticleDto articleDto) {
+        Optional<Article> findArticle = articleRepository.findById(articleId);
+        if (!findArticle.isPresent()) {
+            throw new ArticleException(NOT_FOUND_ARTICLE);
+        }
+
+        Article article = findArticle.get();
+        if (!article.getMemberId().equals(memberId)) {
+            throw new ArticleException(ARTICLE_MEMBER_DISCREPANCY);
+        }
+
+        ArticleValidation articleValidation = new ArticleValidation();
+
+        ArticleRequest request = ArticleRequest.builder()
+                .title(articleDto.getTitle())
+                .content(articleDto.getContent())
+                .build();
+
+        List<InvalidResponse> validate = articleValidation.validate(request);
+        if (!validate.isEmpty()) {
+            throw new ArticleException(ARTICLE_EXCEPTION);
+        }
+
+        return articleRepository.update(articleId, articleDto);
     }
 }
