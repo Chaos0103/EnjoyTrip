@@ -34,10 +34,10 @@ class ArticleRepositoryTest {
     void save() {
         //given
         Member member = memberRepository.findByLoginId("ssafy").get();
-        ArticleDto articleDto = new ArticleDto(member.getMemberId(), "title", "content");
+        ArticleDto articleDto = new ArticleDto("title", "content");
 
         //when
-        int count = articleRepository.save(articleDto);
+        int count = articleRepository.save(member.getMemberId(), articleDto);
 
         //then
         assertThat(count).isEqualTo(1);
