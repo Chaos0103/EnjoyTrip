@@ -11,4 +11,7 @@ public abstract class ValidationMessage {
     public static final String BIRTH = "유효하지 않은 생년월일";
     public static final String GENDER = "유효하지 않은 성별";
 
+    public static final String TITLE = "유효하지 않은 제목";
+    public static final String CONTENT = "유효하지 않은 내용";
+
 }
