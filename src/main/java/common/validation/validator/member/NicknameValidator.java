@@ -11,7 +11,7 @@ import java.util.List;
 public class NicknameValidator implements MemberValidator {
 
     private static final InvalidResponse INVALID_RESPONSE = new InvalidResponse("nickname", ValidationMessage.NICKNAME);
-    private static final int LENGTH = 10;
+    private static final int MAX_LENGTH = 10;
 
     @Override
     public List<InvalidResponse> validate(MemberRequest request) {
@@ -33,6 +33,6 @@ public class NicknameValidator implements MemberValidator {
     }
 
     private boolean isLength(String nickname) {
-        return LENGTH < nickname.length();
+        return MAX_LENGTH < nickname.length();
     }
 }
