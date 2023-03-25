@@ -57,4 +57,19 @@ public class AccountServiceImpl implements AccountService {
 
         return member.getLoginId();
     }
+
+    @Override
+    public String findLoginPw(String loginId, String email, String phone) {
+        Optional<Member> findMember = memberRepository.findByLoginId(loginId);
+        if (!findMember.isPresent()) {
+            throw new AccountException(ACCOUNT_EXCEPTION);
+        }
+
+        Member member = findMember.get();
+        if (!member.getEmail().equals(email) || !member.getPhone().equals(phone)) {
+            throw new AccountException(ACCOUNT_EXCEPTION);
+        }
+
+        return member.getLoginPw();
+    }
 }
