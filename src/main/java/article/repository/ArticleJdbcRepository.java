@@ -51,7 +51,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from artcle where member_id = ?;";
+            String sql = "select * from article where member_id = ?;";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, memberId);
