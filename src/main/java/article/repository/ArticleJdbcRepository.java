@@ -1,13 +1,13 @@
 package article.repository;
 
+import article.Article;
 import article.dto.ArticleDto;
 import util.DBConnectionUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ArticleJdbcRepository implements ArticleRepository {
 
@@ -41,6 +41,32 @@ public class ArticleJdbcRepository implements ArticleRepository {
             dbConnectionUtil.close(pstmt, conn);
         }
         return count;
+    }
+
+    @Override
+    public List<Article> findByMemberId(Long memberId) {
+        List<Article> articles = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from article where member_id = ?;";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, memberId);
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Article article = createArticle(rs);
+                articles.add(article);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return articles;
     }
 
     @Override
@@ -84,5 +110,16 @@ public class ArticleJdbcRepository implements ArticleRepository {
         } finally {
             dbConnectionUtil.close(pstmt, conn);
         }
+    }
+
+    private Article createArticle(ResultSet rs) throws SQLException {
+        long articleId = rs.getLong("article_id");
+        long memberId = rs.getLong("member_id");
+        String title = rs.getString("title");
+        String content = rs.getString("content");
+        int hit = rs.getInt("hit");
+        LocalDateTime createdDate = rs.getTimestamp("created_date").toLocalDateTime();
+        LocalDateTime lastModifiedDate = rs.getTimestamp("last_modified_date").toLocalDateTime();
+        return new Article(articleId, memberId, title, content, hit, createdDate, lastModifiedDate);
     }
 }
