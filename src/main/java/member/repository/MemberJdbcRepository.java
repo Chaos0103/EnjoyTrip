@@ -102,6 +102,84 @@ public class MemberJdbcRepository implements MemberRepository {
     }
 
     @Override
+    public Optional<Member> findByEmail(String email) {
+        Member member = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from member where email = ?;";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, email);
+
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                member = createMember(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return Optional.ofNullable(member);
+    }
+
+    @Override
+    public Optional<Member> findByPhone(String phone) {
+        Member member = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from member where phone = ?;";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, phone);
+
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                member = createMember(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return Optional.ofNullable(member);
+    }
+
+    @Override
+    public Optional<Member> findByNickname(String nickname) {
+        Member member = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from member where nickname = ?;";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, nickname);
+
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                member = createMember(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return Optional.ofNullable(member);
+    }
+
+    @Override
     public void clear() {
         Connection conn = null;
         PreparedStatement pstmt = null;
