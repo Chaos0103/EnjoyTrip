@@ -18,3 +18,11 @@ create table if not exists `MEMBER`
     `created_date`       timestamp   not null default current_timestamp,
     `last_modified_date` timestamp   not null default current_timestamp
 );
+
+drop table if exists content_type;
+
+create table if not exists `CONTENT_TYPE`
+(
+    `content_type_id`   int         not null primary key,
+    `content_type_name` varchar(10) not null
+);
