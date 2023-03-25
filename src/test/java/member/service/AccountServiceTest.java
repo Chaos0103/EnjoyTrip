@@ -116,4 +116,64 @@ class AccountServiceTest {
                 .isInstanceOf(AccountException.class)
                 .hasMessageContaining(ACCOUNT_EXCEPTION);
     }
+
+    @Test
+    @DisplayName("비밀번호 찾기")
+    void findLoginPw() {
+        //given
+        String loginId = "ssafy";
+        String email = "ssafy@ssafy.com";
+        String phone = "01012345678";
+
+        //when
+        String loginPw = accountService.findLoginPw(loginId, email, phone);
+
+        //then
+        assertThat(loginPw).isEqualTo("12345678");
+    }
+
+    @Test
+    @DisplayName("비밀번호 찾기#아이디 오류")
+    void findLoginPw_exception_loginId() {
+        //given
+        String loginId = "ssafy1";
+        String email = "ssafy@ssafy.com";
+        String phone = "01012345678";
+
+        //when
+        //then
+        assertThatThrownBy(() -> accountService.findLoginPw(loginId, email, phone))
+                .isInstanceOf(AccountException.class)
+                .hasMessageContaining(ACCOUNT_EXCEPTION);
+    }
+
+    @Test
+    @DisplayName("비밀번호 찾기#이메일 오류")
+    void findLoginPw_exception_email() {
+        //given
+        String loginId = "ssafy";
+        String email = "ssafy1@ssafy.com";
+        String phone = "01012345678";
+
+        //when
+        //then
+        assertThatThrownBy(() -> accountService.findLoginPw(loginId, email, phone))
+                .isInstanceOf(AccountException.class)
+                .hasMessageContaining(ACCOUNT_EXCEPTION);
+    }
+
+    @Test
+    @DisplayName("비밀번호 찾기#연락처 오류")
+    void findLoginPw_exception_phone() {
+        //given
+        String loginId = "ssafy";
+        String email = "ssafy@ssafy.com";
+        String phone = "01087654321";
+
+        //when
+        //then
+        assertThatThrownBy(() -> accountService.findLoginPw(loginId, email, phone))
+                .isInstanceOf(AccountException.class)
+                .hasMessageContaining(ACCOUNT_EXCEPTION);
+    }
 }
