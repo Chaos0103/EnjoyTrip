@@ -254,7 +254,7 @@ public class MemberJdbcRepository implements MemberRepository {
 
     private Member createMember(ResultSet rs) throws SQLException {
         return Member.builder()
-                .memberId(rs.getLong("member_id"))
+                .id(rs.getLong("member_id"))
                 .loginId(rs.getString("login_id"))
                 .loginPw(rs.getString("login_pw"))
                 .username(rs.getString("username"))

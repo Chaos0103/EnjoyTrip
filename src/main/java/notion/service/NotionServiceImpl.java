@@ -79,7 +79,7 @@ public class NotionServiceImpl implements NotionService {
         }
 
         Notion notion = findNotion.get();
-        notion.edit(notionDto.getTitle(), notionDto.getContent(), memberId);
+        notion.edit(notionDto.getTitle(), notionDto.getContent(), member);
 
         return notionRepository.update(notionId, notion);
     }

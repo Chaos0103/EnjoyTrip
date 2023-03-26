@@ -1,11 +1,11 @@
 package notion.repository;
 
+import member.Member;
 import notion.Notion;
 import notion.dto.NotionDto;
 import util.DBConnectionUtil;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -109,7 +109,7 @@ public class NotionJdbcRepository implements NotionRepository {
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, notion.getTitle());
             pstmt.setString(2, notion.getContent());
-            pstmt.setLong(3, notion.getLastModifiedBy());
+            pstmt.setLong(3, notion.getLastModifiedBy().getId());
             pstmt.setTimestamp(4, Timestamp.valueOf(notion.getLastModifiedDate()));
             pstmt.setLong(5, notionId);
 
@@ -168,8 +168,8 @@ public class NotionJdbcRepository implements NotionRepository {
                 .content(rs.getString("content"))
                 .hit(rs.getInt("hit"))
                 .top(rs.getBoolean("top"))
-                .createdBy(rs.getLong("created_by"))
-                .lastModifiedBy(rs.getLong("last_modified_by"))
+                .createdBy(new Member(rs.getLong("created_by")))
+                .lastModifiedBy(new Member(rs.getLong("last_modified_by")))
                 .createdDate(rs.getTimestamp("created_date").toLocalDateTime())
                 .lastModifiedDate(rs.getTimestamp("last_modified_date").toLocalDateTime())
                 .build();

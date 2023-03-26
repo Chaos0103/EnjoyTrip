@@ -1,5 +1,6 @@
 package notion.repository;
 
+import member.Member;
 import member.dto.MemberAddDto;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
@@ -18,13 +19,13 @@ class NotionRepositoryTest {
     private final NotionRepository notionRepository = NotionJdbcRepository.getNotionRepository();
     private final MemberRepository memberRepository = MemberJdbcRepository.getMemberRepository();
 
-    private Long memberId;
+    private Member member;
 
     @BeforeEach
     void beforeEach() {
         MemberAddDto memberAddDto = new MemberAddDto("admin", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "010101", "1", "광주5반", ADMIN);
         memberRepository.save(memberAddDto);
-        memberId = memberRepository.findByLoginId("admin").get().getId();
+        member = memberRepository.findByLoginId("admin").get();
     }
 
     @AfterEach
@@ -43,7 +44,7 @@ class NotionRepositoryTest {
                 .build();
 
         //when
-        int count = notionRepository.save(memberId, notionDto);
+        int count = notionRepository.save(member.getId(), notionDto);
 
         //then
         assertThat(count).isEqualTo(1);
@@ -53,9 +54,9 @@ class NotionRepositoryTest {
     @DisplayName("공지사항 수정")
     void update() {
         //given
-        notionRepository.save(memberId, new NotionDto("notion title", "notion content", false));
+        notionRepository.save(member.getId(), new NotionDto("notion title", "notion content", false));
         Notion notion = notionRepository.findAll().get(0);
-        notion.edit("new notion title", "new notion content", memberId);
+        notion.edit("new notion title", "new notion content", member);
 
         //when
         int count = notionRepository.update(notion.getNotionId(), notion);
@@ -68,7 +69,7 @@ class NotionRepositoryTest {
     @DisplayName("공지사항 삭제")
     void remove() {
         //given
-        notionRepository.save(memberId, new NotionDto("notion title", "notion content", false));
+        notionRepository.save(member.getId(), new NotionDto("notion title", "notion content", false));
         Notion notion = notionRepository.findAll().get(0);
 
         //when
