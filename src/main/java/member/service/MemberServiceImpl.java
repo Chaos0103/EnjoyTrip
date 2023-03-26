@@ -142,7 +142,7 @@ public class MemberServiceImpl implements MemberService {
         }
 
         Member member = findMember.get();
-        if (LocalDateTime.now().minusDays(30).isAfter(member.getNicknameLastModifiedDate())) {
+        if (member.getNicknameLastModifiedDate().isAfter(LocalDateTime.now().minusDays(30))) {
             throw new InformationChangeException();
         }
 

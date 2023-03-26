@@ -5,6 +5,7 @@ import member.dto.MemberAddDto;
 import util.DBConnectionUtil;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static member.Authority.ADMIN;
@@ -30,8 +31,8 @@ public class MemberJdbcRepository implements MemberRepository {
         PreparedStatement pstmt = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "insert into member(login_id, login_pw, username, email, phone, birth, gender, nickname, authority)" +
-                    " values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            String sql = "insert into member(login_id, login_pw, username, email, phone, birth, gender, nickname, nickname_last_modified_date, authority)" +
+                    " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, memberAddDto.getLoginId());
@@ -42,7 +43,8 @@ public class MemberJdbcRepository implements MemberRepository {
             pstmt.setString(6, memberAddDto.getBirth());
             pstmt.setString(7, memberAddDto.getGender());
             pstmt.setString(8, memberAddDto.getNickname());
-            pstmt.setString(9, memberAddDto.getAuthority().toString());
+            pstmt.setTimestamp(9, Timestamp.valueOf(LocalDateTime.now().minusDays(60)));
+            pstmt.setString(10, memberAddDto.getAuthority().toString());
 
             count = pstmt.executeUpdate();
         } catch (SQLException e) {
