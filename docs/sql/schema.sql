@@ -43,13 +43,15 @@ create table if not exists `ARTICLE`
 
 create table if not exists `NOTION`
 (
-    `notion_id` bigint        not null primary key auto_increment,
-    `member_id` bigint        not null,
-    `title`     varchar(100)  not null,
-    `content`   varchar(1000) not null,
-    `hit`       int           not null default 0,
-    `top`       boolean       not null default false,
+    `notion_id`          bigint        not null primary key auto_increment,
+    `title`              varchar(100)  not null,
+    `content`            varchar(1000) not null,
+    `hit`                int           not null default 0,
+    `top`                boolean       not null default false,
+    `created_by`          bigint        not null,
+    `last_modified_by`   bigint        not null,
     `created_date`       timestamp     not null default current_timestamp,
     `last_modified_date` timestamp     not null default current_timestamp,
-    foreign key (`member_id`) references MEMBER (`member_id`)
+    foreign key (`created_by`) references MEMBER (`member_id`),
+    foreign key (`last_modified_by`) references MEMBER (`member_id`)
 );
