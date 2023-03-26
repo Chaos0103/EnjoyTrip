@@ -1,16 +1,11 @@
 package member;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-/**
- * Entity
- * PK: memberId
- */
 @Getter
-@AllArgsConstructor
 public class Member {
 
     private Long memberId;
@@ -19,11 +14,30 @@ public class Member {
     private String username;
     private String email;
     private String phone;
-    private String nickname;
     private String birth;
     private String gender;
+    private String nickname;
+    private LocalDateTime nicknameLastModifiedDate;
+    private Authority authority;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
+
+    @Builder
+    public Member(Long memberId, String loginId, String loginPw, String username, String email, String phone, String birth, String gender, String nickname, LocalDateTime nicknameLastModifiedDate, Authority authority, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+        this.memberId = memberId;
+        this.loginId = loginId;
+        this.loginPw = loginPw;
+        this.username = username;
+        this.email = email;
+        this.phone = phone;
+        this.birth = birth;
+        this.gender = gender;
+        this.nickname = nickname;
+        this.nicknameLastModifiedDate = nicknameLastModifiedDate;
+        this.authority = authority;
+        this.createdDate = createdDate;
+        this.lastModifiedDate = lastModifiedDate;
+    }
 
     //== 비즈니스 로직 ==//
     public void changeLoginPw(String loginPw) {
