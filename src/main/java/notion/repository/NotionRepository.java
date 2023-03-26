@@ -5,4 +5,6 @@ import notion.dto.NotionDto;
 public interface NotionRepository {
 
     int save(Long memberId, NotionDto notionDto);
+
+    void clear();
 }
