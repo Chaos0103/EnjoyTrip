@@ -104,10 +104,10 @@ class MemberServiceTest {
         Member member = memberRepository.findByLoginId("ssafy").get();
 
         //when
-        memberService.changePassword(member.getMemberId(), "pw123456");
+        memberService.changePassword(member.getId(), "pw123456");
 
         //then
-        Member findMember = memberRepository.findById(member.getMemberId()).get();
+        Member findMember = memberRepository.findById(member.getId()).get();
         assertThat(findMember.getLoginPw()).isEqualTo("pw123456");
     }
 
@@ -128,10 +128,10 @@ class MemberServiceTest {
         Member member = memberRepository.findByLoginId("ssafy").get();
 
         //when
-        memberService.changeEmail(member.getMemberId(), "ssafy9@ssafy.com");
+        memberService.changeEmail(member.getId(), "ssafy9@ssafy.com");
 
         //then
-        Member findMember = memberRepository.findById(member.getMemberId()).get();
+        Member findMember = memberRepository.findById(member.getId()).get();
         assertThat(findMember.getEmail()).isEqualTo("ssafy9@ssafy.com");
     }
 
@@ -153,7 +153,7 @@ class MemberServiceTest {
 
         //when
         //then
-        assertThatThrownBy(() -> memberService.changeEmail(member.getMemberId(), "ssafy@ssafy.com"))
+        assertThatThrownBy(() -> memberService.changeEmail(member.getId(), "ssafy@ssafy.com"))
                 .isInstanceOf(InformationChangeException.class);
     }
 
@@ -164,10 +164,10 @@ class MemberServiceTest {
         Member member = memberRepository.findByLoginId("ssafy").get();
 
         //when
-        memberService.changePhone(member.getMemberId(), "01011111111");
+        memberService.changePhone(member.getId(), "01011111111");
 
         //then
-        Member findMember = memberRepository.findById(member.getMemberId()).get();
+        Member findMember = memberRepository.findById(member.getId()).get();
         assertThat(findMember.getPhone()).isEqualTo("01011111111");
     }
 
@@ -189,7 +189,7 @@ class MemberServiceTest {
 
         //when
         //then
-        assertThatThrownBy(() -> memberService.changePhone(member.getMemberId(), "01012345678"))
+        assertThatThrownBy(() -> memberService.changePhone(member.getId(), "01012345678"))
                 .isInstanceOf(InformationChangeException.class);
     }
 
@@ -200,10 +200,10 @@ class MemberServiceTest {
         Member member = memberRepository.findByLoginId("ssafy").get();
 
         //when
-        memberService.changeNickname(member.getMemberId(), "싸피9기광주5반");
+        memberService.changeNickname(member.getId(), "싸피9기광주5반");
 
         //then
-        Member findMember = memberRepository.findById(member.getMemberId()).get();
+        Member findMember = memberRepository.findById(member.getId()).get();
         assertThat(findMember.getNickname()).isEqualTo("싸피9기광주5반");
     }
 
@@ -225,7 +225,7 @@ class MemberServiceTest {
 
         //when
         //then
-        assertThatThrownBy(() -> memberService.changeNickname(member.getMemberId(), "광주5반"))
+        assertThatThrownBy(() -> memberService.changeNickname(member.getId(), "광주5반"))
                 .isInstanceOf(InformationChangeException.class);
     }
 
@@ -236,9 +236,9 @@ class MemberServiceTest {
         Member member = memberRepository.findByLoginId("ssafy").get();
 
         //when
-        memberService.changeNickname(member.getMemberId(), "싸피9기광주5반");
+        memberService.changeNickname(member.getId(), "싸피9기광주5반");
         //then
-        assertThatThrownBy(() -> memberService.changeNickname(member.getMemberId(), "싸피9기광주5반1"))
+        assertThatThrownBy(() -> memberService.changeNickname(member.getId(), "싸피9기광주5반1"))
                 .isInstanceOf(InformationChangeException.class);
     }
 }

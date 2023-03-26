@@ -114,7 +114,7 @@ public class MemberController extends HttpServlet {
 
         String loginPw = request.getParameter("loginPw");
 
-        memberService.withdrawal(loginMember.getMemberId(), loginPw);
+        memberService.withdrawal(loginMember.getId(), loginPw);
 
         response.sendRedirect("/");
     }

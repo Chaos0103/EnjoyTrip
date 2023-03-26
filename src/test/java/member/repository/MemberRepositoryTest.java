@@ -47,7 +47,7 @@ class MemberRepositoryTest {
         Member member = memberRepository.findByLoginId("ssafy").get();
 
         //when
-        Optional<Member> findMember = memberRepository.findById(member.getMemberId());
+        Optional<Member> findMember = memberRepository.findById(member.getId());
 
         //then
         assertThat(findMember).isPresent();
@@ -112,7 +112,7 @@ class MemberRepositoryTest {
         Member member = memberRepository.findByLoginId("ssafy").get();
         member.changeNickname("SSAFY9기");
         //when
-        int count = memberRepository.update(member.getMemberId(), member);
+        int count = memberRepository.update(member.getId(), member);
 
         //then
         assertThat(count).isEqualTo(1);
@@ -125,7 +125,7 @@ class MemberRepositoryTest {
         Member member = memberRepository.findByLoginId("ssafy").get();
 
         //when
-        int count = memberRepository.remove(member.getMemberId());
+        int count = memberRepository.remove(member.getId());
 
         //then
         assertThat(count).isEqualTo(1);

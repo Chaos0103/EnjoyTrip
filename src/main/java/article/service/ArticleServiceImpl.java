@@ -65,7 +65,7 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         Article article = findArticle.get();
-        if (!article.getMember().getMemberId().equals(memberId)) {
+        if (!article.getMember().getId().equals(memberId)) {
             throw new ArticleException(ARTICLE_MEMBER_DISCREPANCY);
         }
 
@@ -98,7 +98,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         Article article = findArticle.get();
         Member member = findMember.get();
-        if (!article.getMember().getMemberId().equals(memberId) && member.getAuthority() == Authority.CLIENT) {
+        if (!article.getMember().getId().equals(memberId) && member.getAuthority() == Authority.CLIENT) {
             throw new ArticleException(ARTICLE_MEMBER_DISCREPANCY);
         }
 
