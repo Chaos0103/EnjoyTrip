@@ -2,6 +2,7 @@ package notion;
 
 import lombok.Builder;
 import lombok.Getter;
+import member.Member;
 
 import java.time.LocalDateTime;
 
@@ -13,13 +14,13 @@ public class Notion {
     private String content;
     private int hit;
     private boolean top;
-    private Long createdBy;
-    private Long lastModifiedBy;
+    private Member createdBy;
+    private Member lastModifiedBy;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
 
     @Builder
-    public Notion(Long notionId, String title, String content, int hit, boolean top, Long createdBy, Long lastModifiedBy, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+    public Notion(Long notionId, String title, String content, int hit, boolean top, Member createdBy, Member lastModifiedBy, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
         this.notionId = notionId;
         this.title = title;
         this.content = content;
@@ -31,11 +32,12 @@ public class Notion {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+
     //== 비즈니스 로직 ==//
-    public void edit(String title, String content, Long lastModifiedBy) {
+    public void edit(String title, String content, Member member) {
         this.title = title;
         this.content = content;
-        this.lastModifiedBy = lastModifiedBy;
+        this.lastModifiedBy = member;
         this.lastModifiedDate = LocalDateTime.now();
     }
 }
