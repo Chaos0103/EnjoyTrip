@@ -7,7 +7,6 @@ import member.repository.MemberRepository;
 import notion.dto.NotionDto;
 import notion.repository.NotionJdbcRepository;
 import notion.repository.NotionRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,8 +14,8 @@ import org.junit.jupiter.api.Test;
 
 import static member.Authority.ADMIN;
 import static member.Authority.CLIENT;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class NotionServiceTest {
 
