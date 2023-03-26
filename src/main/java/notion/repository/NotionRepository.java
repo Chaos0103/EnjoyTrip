@@ -16,5 +16,7 @@ public interface NotionRepository {
 
     int update(Long notionId, Notion notion);
 
+    int remove(Long notionId);
+
     void clear();
 }

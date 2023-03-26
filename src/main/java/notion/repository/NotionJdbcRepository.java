@@ -123,6 +123,27 @@ public class NotionJdbcRepository implements NotionRepository {
     }
 
     @Override
+    public int remove(Long notionId) {
+        int count = 0;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "delete from notion where notion_id=?;";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, notionId);
+
+            count = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(pstmt, conn);
+        }
+        return count;
+    }
+
+    @Override
     public void clear() {
         Connection conn = null;
         PreparedStatement pstmt = null;
