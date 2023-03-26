@@ -2,6 +2,7 @@ package article.repository;
 
 import article.Article;
 import article.dto.ArticleDto;
+import member.Member;
 import util.DBConnectionUtil;
 
 import java.sql.*;
@@ -167,6 +168,6 @@ public class ArticleJdbcRepository implements ArticleRepository {
         int hit = rs.getInt("hit");
         LocalDateTime createdDate = rs.getTimestamp("created_date").toLocalDateTime();
         LocalDateTime lastModifiedDate = rs.getTimestamp("last_modified_date").toLocalDateTime();
-        return new Article(articleId, memberId, title, content, hit, createdDate, lastModifiedDate);
+        return new Article(articleId, title, content, hit, createdDate, lastModifiedDate, new Member(memberId));
     }
 }

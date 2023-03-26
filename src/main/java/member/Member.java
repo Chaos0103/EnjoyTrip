@@ -22,6 +22,10 @@ public class Member {
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
 
+    public Member(Long memberId) {
+        this.memberId = memberId;
+    }
+
     @Builder
     public Member(Long memberId, String loginId, String loginPw, String username, String email, String phone, String birth, String gender, String nickname, LocalDateTime nicknameLastModifiedDate, Authority authority, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
         this.memberId = memberId;
