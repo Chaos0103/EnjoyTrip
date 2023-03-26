@@ -18,7 +18,7 @@
             href="/"
             class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
     >
-      <img src="/assets/img/logo.png" alt="" width="40" />
+      <img src="${root}/assets/img/logo.png" alt="" width="40" />
     </a>
 
     <ul class="nav col-md-4 justify-content-end">
@@ -37,4 +37,11 @@
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"
 ></script>
-<script src="./assets/js/common.js"></script>
+<%--header 컨트롤--%>
+<script>
+  document.querySelector("#btn-mv-join").addEventListener("click",function (){
+    console.log("회원가입 클릭")
+    location.href = "${root}/member?action=mvregister";
+  });
+</script>
+<%--<script src="./assets/js/common.js"></script>--%>

@@ -1,5 +1,6 @@
 package member.controller;
 
+import member.Authority;
 import member.Member;
 import member.dto.MemberAddDto;
 import member.service.MemberService;
@@ -27,14 +28,18 @@ public class MemberController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         switch (action) {
-            case "register":
+            case "register"://가입
                 doRegister(request, response);
                 break;
-            case "view":
+            case "mvregister"://가입
+                System.out.println("MemberController.doGet");
+                response.sendRedirect(request.getContextPath()+"/member/addMember.jsp");
                 break;
-            case "modify":
+            case "view"://정보조회
                 break;
-            case "withdrawal":
+            case "modify"://정보수정
+                break;
+            case "withdrawal"://탈퇴
                 doWithdrawal(request, response);
                 break;
         }
@@ -47,20 +52,24 @@ public class MemberController extends HttpServlet {
     }
 
     private void doRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String loginId = request.getParameter("loginId");
-        String loginPw = request.getParameter("loginPw");
-        String username = request.getParameter("username");
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
-        String nickname = request.getParameter("nickname");
-        String birth = request.getParameter("birth");
-        String gender = request.getParameter("gender");
+        String loginId = request.getParameter("memberId");
+        String loginPw = request.getParameter("memberPassword");
+        String username = request.getParameter("memberName");
+        String email = request.getParameter("memberEmail");
+        String phone = request.getParameter("memberPhone");
+        String nickname = request.getParameter("memberNickname");
+        String birth = request.getParameter("memberBirth");
+        String gender = request.getParameter("memberGender").substring(0,1);
 
-        MemberAddDto memberAddDto = new MemberAddDto(loginId, loginPw, username, email, phone, nickname, birth, gender);
+        System.out.println("MemberController.doRegister");
+        System.out.println("loginId = " + loginId);
+
+
+        MemberAddDto memberAddDto = new MemberAddDto(loginId, loginPw, username, email, phone, birth, gender, nickname, Authority.CLIENT);
         memberService.signUp(memberAddDto);
 
         // TODO: 2023/03/25 reload url
-//        response.sendRedirect();
+        response.sendRedirect(request.getContextPath()+"/account/login.jsp");
     }
 
     private void doModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
