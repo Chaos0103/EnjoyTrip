@@ -1,11 +1,10 @@
 package member.service;
 
 import common.exception.InformationChangeException;
+import common.exception.SignUpException;
 import common.exception.WithdrawalException;
 import common.validation.MemberUpdateValidation;
-import common.validation.SignUpValidation;
 import common.validation.dto.InvalidResponse;
-import common.exception.SignUpException;
 import common.validation.dto.MemberRequest;
 import member.Member;
 import member.dto.MemberAddDto;
@@ -32,26 +31,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public int signUp(MemberAddDto memberAddDto) {
-        SignUpValidation validation = new SignUpValidation();
-
-        MemberRequest request = MemberRequest.builder()
-                .loginId(memberAddDto.getLoginId())
-                .loginPw(memberAddDto.getLoginPw())
-                .username(memberAddDto.getUsername())
-                .email(memberAddDto.getEmail())
-                .phone(memberAddDto.getPhone())
-                .nickname(memberAddDto.getNickname())
-                .birth(memberAddDto.getBirth())
-                .gender(memberAddDto.getGender())
-                .build();
-
-        List<InvalidResponse> responses = validation.validate(request);
-
-
-        if (!responses.isEmpty()) {
-            throw new SignUpException();
-        }
-
         Optional<Member> loginIdCheck = memberRepository.findByLoginId(memberAddDto.getLoginId());
         if (loginIdCheck.isPresent()) {
             throw new SignUpException();

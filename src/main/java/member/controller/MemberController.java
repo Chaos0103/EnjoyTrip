@@ -1,6 +1,9 @@
 package member.controller;
 
-import member.Authority;
+import common.exception.SignUpException;
+import common.validation.SignUpValidation;
+import common.validation.dto.InvalidResponse;
+import common.validation.dto.MemberRequest;
 import member.Member;
 import member.dto.MemberAddDto;
 import member.service.MemberService;
@@ -13,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/member")
 public class MemberController extends HttpServlet {
@@ -59,17 +63,38 @@ public class MemberController extends HttpServlet {
         String phone = request.getParameter("memberPhone");
         String nickname = request.getParameter("memberNickname");
         String birth = request.getParameter("memberBirth");
-        String gender = request.getParameter("memberGender").substring(0,1);
+        String gender = request.getParameter("memberGender").substring(0, 1);
 
-        System.out.println("MemberController.doRegister");
-        System.out.println("loginId = " + loginId);
+        SignUpValidation validation = new SignUpValidation();
+        MemberRequest memberRequest = MemberRequest.builder()
+                .loginId(loginId)
+                .loginPw(loginPw)
+                .username(username)
+                .email(email)
+                .phone(phone)
+                .nickname(nickname)
+                .birth(birth)
+                .gender(gender)
+                .build();
+        List<InvalidResponse> responses = validation.validate(memberRequest);
 
+        if (!responses.isEmpty()) {
+            throw new SignUpException();
+        }
 
-        MemberAddDto memberAddDto = new MemberAddDto(loginId, loginPw, username, email, phone, birth, gender, nickname, Authority.CLIENT);
+        MemberAddDto memberAddDto = MemberAddDto.builder()
+                .loginId(loginId)
+                .loginPw(loginPw)
+                .username(username)
+                .email(email)
+                .phone(phone)
+                .nickname(nickname)
+                .birth(birth)
+                .gender(gender)
+                .build();
         memberService.signUp(memberAddDto);
 
-        // TODO: 2023/03/25 reload url
-        response.sendRedirect(request.getContextPath()+"/account/login.jsp");
+        response.sendRedirect(request.getContextPath() + "/account/login.jsp");
     }
 
     private void doModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
