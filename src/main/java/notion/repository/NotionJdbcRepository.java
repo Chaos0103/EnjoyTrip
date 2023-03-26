@@ -1,11 +1,12 @@
 package notion.repository;
 
+import notion.Notion;
 import notion.dto.NotionDto;
 import util.DBConnectionUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class NotionJdbcRepository implements NotionRepository {
 
@@ -46,6 +47,55 @@ public class NotionJdbcRepository implements NotionRepository {
     }
 
     @Override
+    public Optional<Notion> findById(Long notionId) {
+        Notion notion = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from notion where notion_id=?;";
+
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                notion = createNotion(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return Optional.ofNullable(notion);
+    }
+
+    @Override
+    public int update(Long notionId, Notion notion) {
+        int count = 0;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "update notion set title=?, content=?, last_modified_by=?, last_modified_date=? where notion_id=?;";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, notion.getTitle());
+            pstmt.setString(2, notion.getContent());
+            pstmt.setLong(3, notion.getLastModifiedBy());
+            pstmt.setTimestamp(4, Timestamp.valueOf(notion.getLastModifiedDate()));
+            pstmt.setLong(5, notionId);
+
+            count = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(pstmt, conn);
+        }
+        return count;
+    }
+
+    @Override
     public void clear() {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -61,5 +111,19 @@ public class NotionJdbcRepository implements NotionRepository {
         } finally {
             dbConnectionUtil.close(pstmt, conn);
         }
+    }
+
+    private Notion createNotion(ResultSet rs) throws SQLException {
+        return Notion.builder()
+                .notionId(rs.getLong("notion_id"))
+                .title(rs.getString("title"))
+                .content(rs.getString("content"))
+                .hit(rs.getInt("hit"))
+                .top(rs.getBoolean("top"))
+                .createdBy(rs.getLong("created_by"))
+                .lastModifiedBy(rs.getLong("last_modified_by"))
+                .createdDate(rs.getTimestamp("created_date").toLocalDateTime())
+                .lastModifiedDate(rs.getTimestamp("last_modified_date").toLocalDateTime())
+                .build();
     }
 }
