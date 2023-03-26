@@ -14,8 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import static member.Authority.ADMIN;
 import static member.Authority.CLIENT;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class NotionServiceTest {
 
@@ -152,6 +151,47 @@ class NotionServiceTest {
         //when
         //then
         assertThatThrownBy(() -> notionService.editNotion(0L, adminId, notionDto))
+                .isInstanceOf(NotionException.class);
+    }
+
+    @Test
+    @DisplayName("공지사항 삭제")
+    void removeNotion() {
+        //given
+        //when
+        int count = notionService.removeNotion(notionId, adminId);
+
+        //then
+        assertThat(count).isEqualTo(1);
+    }
+    
+    @Test
+    @DisplayName("공지사항 삭제#미등록 회원")
+    void removeNotion_exception_member() {
+        //given
+        //when
+        //then
+        assertThatThrownBy(() -> notionService.removeNotion(notionId, 0L))
+                .isInstanceOf(NotionException.class);
+    }
+    
+    @Test
+    @DisplayName("공지사항 삭제#관리자 권한")
+    void removeNotion_exception_admin() {
+        //given
+        //when
+        //then
+        assertThatThrownBy(() -> notionService.removeNotion(notionId, clientId))
+                .isInstanceOf(NotionException.class);
+    }
+
+    @Test
+    @DisplayName("공지사항 삭제#미등록 공지사항")
+    void removeNotion_exception_notion() {
+        //given
+        //when
+        //then
+        assertThatThrownBy(() -> notionService.removeNotion(0L, clientId))
                 .isInstanceOf(NotionException.class);
     }
 }
