@@ -85,7 +85,7 @@ public class NotionServiceImpl implements NotionService {
     }
 
     @Override
-    public int remove(Long notionId, Long memberId) {
+    public int removeNotion(Long notionId, Long memberId) {
         Optional<Member> findMember = memberRepository.findById(memberId);
         if (!findMember.isPresent()) {
             throw new NotionException();

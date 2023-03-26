@@ -8,5 +8,5 @@ public interface NotionService {
 
     int editNotion(Long notionId, Long memberId, NotionDto notionDto);
 
-    int remove(Long notionId, Long memberId);
+    int removeNotion(Long notionId, Long memberId);
 }
