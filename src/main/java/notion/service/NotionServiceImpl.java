@@ -83,4 +83,24 @@ public class NotionServiceImpl implements NotionService {
 
         return notionRepository.update(notionId, notion);
     }
+
+    @Override
+    public int remove(Long notionId, Long memberId) {
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        if (!findMember.isPresent()) {
+            throw new NotionException();
+        }
+
+        Member member = findMember.get();
+        if (member.getAuthority() != Authority.ADMIN) {
+            throw new NotionException();
+        }
+
+        Optional<Notion> findNotion = notionRepository.findById(notionId);
+        if (!findNotion.isPresent()) {
+            throw new NotionException();
+        }
+
+        return notionRepository.remove(notionId);
+    }
 }
