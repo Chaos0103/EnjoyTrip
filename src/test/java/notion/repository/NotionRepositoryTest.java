@@ -4,6 +4,7 @@ import member.dto.MemberAddDto;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
 import notion.dto.NotionDto;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,12 @@ class NotionRepositoryTest {
         MemberAddDto memberAddDto = new MemberAddDto("admin", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "010101", "1", "광주5반", ADMIN);
         memberRepository.save(memberAddDto);
         memberId = memberRepository.findByLoginId("admin").get().getMemberId();
+    }
+
+    @AfterEach
+    void afterEach() {
+        notionRepository.clear();
+        memberRepository.clear();
     }
 
     @Test
