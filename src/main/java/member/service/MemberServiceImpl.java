@@ -12,6 +12,7 @@ import member.dto.MemberAddDto;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -141,6 +142,10 @@ public class MemberServiceImpl implements MemberService {
         }
 
         Member member = findMember.get();
+        if (LocalDateTime.now().minusDays(30).isAfter(member.getNicknameLastModifiedDate())) {
+            throw new InformationChangeException();
+        }
+
         member.changeNickname(nickname);
 
         updateValidation(member);
