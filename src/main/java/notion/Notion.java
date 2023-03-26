@@ -30,4 +30,12 @@ public class Notion {
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;
     }
+
+    //== 비즈니스 로직 ==//
+    public void edit(String title, String content, Long lastModifiedBy) {
+        this.title = title;
+        this.content = content;
+        this.lastModifiedBy = lastModifiedBy;
+        this.lastModifiedDate = LocalDateTime.now();
+    }
 }
