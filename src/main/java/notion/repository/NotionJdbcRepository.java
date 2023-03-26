@@ -59,6 +59,7 @@ public class NotionJdbcRepository implements NotionRepository {
             String sql = "select * from notion where notion_id=?;";
 
             pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, notionId);
 
             rs = pstmt.executeQuery();
             if (rs.next()) {
