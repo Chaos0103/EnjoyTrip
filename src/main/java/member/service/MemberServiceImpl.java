@@ -30,7 +30,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void signUpClient(MemberAddDto memberAddDto) {
+    public int signUp(MemberAddDto memberAddDto) {
         SignUpValidation validation = new SignUpValidation();
 
         MemberRequest request = MemberRequest.builder()
@@ -71,7 +71,7 @@ public class MemberServiceImpl implements MemberService {
             throw new SignUpException();
         }
 
-        memberRepository.save(memberAddDto);
+        return memberRepository.save(memberAddDto);
     }
 
     @Override
