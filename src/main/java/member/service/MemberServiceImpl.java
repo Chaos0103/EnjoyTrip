@@ -9,6 +9,7 @@ import common.exception.SignUpException;
 import common.validation.dto.MemberRequest;
 import member.Member;
 import member.dto.MemberAddDto;
+import member.dto.MemberDto;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
 
@@ -72,6 +73,29 @@ public class MemberServiceImpl implements MemberService {
         }
 
         return memberRepository.save(memberAddDto);
+    }
+
+    @Override
+    public Optional<MemberDto> myPage(Long memberId) {
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        if (!findMember.isPresent()) {
+            return Optional.empty();
+        }
+
+        Member member = findMember.get();
+        MemberDto memberDto = MemberDto.builder()
+                .loginId(member.getLoginId())
+                .loginPw(member.getLoginPw())
+                .username(member.getUsername())
+                .email(member.getEmail())
+                .phone(member.getPhone())
+                .birth(member.getBirth())
+                .gender(member.getGender())
+                .nickname(member.getNickname())
+                .authority(member.getAuthority())
+                .build();
+
+        return Optional.of(memberDto);
     }
 
     @Override

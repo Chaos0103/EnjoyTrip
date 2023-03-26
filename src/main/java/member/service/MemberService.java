@@ -1,10 +1,15 @@
 package member.service;
 
 import member.dto.MemberAddDto;
+import member.dto.MemberDto;
+
+import java.util.Optional;
 
 public interface MemberService {
 
     int signUp(MemberAddDto memberAddDto);
+
+    Optional<MemberDto> myPage(Long memberId);
 
     void changePassword(Long memberId, String loginPw);
 
