@@ -63,4 +63,18 @@ class NotionRepositoryTest {
         //then
         assertThat(count).isEqualTo(1);
     }
+
+    @Test
+    @DisplayName("공지사항 삭제")
+    void remove() {
+        //given
+        notionRepository.save(memberId, new NotionDto("notion title", "notion content", false));
+        Notion notion = notionRepository.findAll().get(0);
+
+        //when
+        int count = notionRepository.remove(notion.getNotionId());
+
+        //then
+        assertThat(count).isEqualTo(1);
+    }
 }
