@@ -5,6 +5,7 @@ import member.dto.MemberAddDto;
 import util.DBConnectionUtil;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static member.Authority.ADMIN;
@@ -24,13 +25,14 @@ public class MemberJdbcRepository implements MemberRepository {
     }
 
     @Override
-    public void save(MemberAddDto memberAddDto) {
+    public int save(MemberAddDto memberAddDto) {
+        int count = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "insert into member(login_id, login_pw, username, email, phone, birth, gender, nickname, authority)" +
-                    " values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            String sql = "insert into member(login_id, login_pw, username, email, phone, birth, gender, nickname, nickname_last_modified_date, authority)" +
+                    " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, memberAddDto.getLoginId());
@@ -41,14 +43,16 @@ public class MemberJdbcRepository implements MemberRepository {
             pstmt.setString(6, memberAddDto.getBirth());
             pstmt.setString(7, memberAddDto.getGender());
             pstmt.setString(8, memberAddDto.getNickname());
-            pstmt.setString(9, memberAddDto.getAuthority().toString());
+            pstmt.setTimestamp(9, Timestamp.valueOf(LocalDateTime.now().minusDays(60)));
+            pstmt.setString(10, memberAddDto.getAuthority().toString());
 
-            pstmt.executeUpdate();
+            count = pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             dbConnectionUtil.close(pstmt, conn);
         }
+        return count;
     }
 
     @Override
@@ -181,7 +185,8 @@ public class MemberJdbcRepository implements MemberRepository {
     }
 
     @Override
-    public void update(Long memberId, Member member) {
+    public int update(Long memberId, Member member) {
+        int count = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
@@ -199,16 +204,18 @@ public class MemberJdbcRepository implements MemberRepository {
             pstmt.setTimestamp(6, Timestamp.valueOf(member.getLastModifiedDate()));
             pstmt.setLong(7, memberId);
 
-            pstmt.executeUpdate();
+            count = pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             dbConnectionUtil.close(pstmt, conn);
         }
+        return count;
     }
 
     @Override
-    public void remove(Long memberId) {
+    public int remove(Long memberId) {
+        int count = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
@@ -218,12 +225,13 @@ public class MemberJdbcRepository implements MemberRepository {
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, memberId);
 
-            pstmt.executeUpdate();
+            count = pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             dbConnectionUtil.close(pstmt, conn);
         }
+        return count;
     }
 
     @Override

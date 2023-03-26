@@ -9,6 +9,7 @@ import common.exception.ArticleException;
 import common.validation.ArticleValidation;
 import common.validation.dto.ArticleRequest;
 import common.validation.dto.InvalidResponse;
+import member.Authority;
 import member.Member;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
@@ -90,8 +91,14 @@ public class ArticleServiceImpl implements ArticleService {
             throw new ArticleException(NOT_FOUND_ARTICLE);
         }
 
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        if (!findMember.isPresent()) {
+            throw new ArticleException(ARTICLE_MEMBER_DISCREPANCY);
+        }
+
         Article article = findArticle.get();
-        if (!article.getMemberId().equals(memberId)) {
+        Member member = findMember.get();
+        if (!article.getMemberId().equals(memberId) && member.getAuthority() == Authority.CLIENT) {
             throw new ArticleException(ARTICLE_MEMBER_DISCREPANCY);
         }
 

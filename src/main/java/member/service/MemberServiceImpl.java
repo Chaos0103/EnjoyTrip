@@ -12,6 +12,7 @@ import member.dto.MemberAddDto;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +30,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void signUp(MemberAddDto memberAddDto) {
+    public int signUp(MemberAddDto memberAddDto) {
         SignUpValidation validation = new SignUpValidation();
 
         MemberRequest request = MemberRequest.builder()
@@ -70,7 +71,7 @@ public class MemberServiceImpl implements MemberService {
             throw new SignUpException();
         }
 
-        memberRepository.save(memberAddDto);
+        return memberRepository.save(memberAddDto);
     }
 
     @Override
@@ -141,6 +142,10 @@ public class MemberServiceImpl implements MemberService {
         }
 
         Member member = findMember.get();
+        if (member.getNicknameLastModifiedDate().isAfter(LocalDateTime.now().minusDays(30))) {
+            throw new InformationChangeException();
+        }
+
         member.changeNickname(nickname);
 
         updateValidation(member);

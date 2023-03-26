@@ -40,3 +40,16 @@ create table if not exists `ARTICLE`
     `last_modified_date` timestamp     not null default current_timestamp,
     foreign key (`member_id`) references MEMBER (`member_id`)
 );
+
+create table if not exists `NOTION`
+(
+    `notion_id` bigint        not null primary key auto_increment,
+    `member_id` bigint        not null,
+    `title`     varchar(100)  not null,
+    `content`   varchar(1000) not null,
+    `hit`       int           not null default 0,
+    `top`       boolean       not null default false,
+    `created_date`       timestamp     not null default current_timestamp,
+    `last_modified_date` timestamp     not null default current_timestamp,
+    foreign key (`member_id`) references MEMBER (`member_id`)
+);

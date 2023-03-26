@@ -42,17 +42,22 @@ public class Member {
     //== 비즈니스 로직 ==//
     public void changeLoginPw(String loginPw) {
         this.loginPw = loginPw;
+        this.lastModifiedDate = LocalDateTime.now();
     }
 
     public void changeEmail(String email) {
         this.email = email;
+        this.lastModifiedDate = LocalDateTime.now();
     }
 
     public void changePhone(String phone) {
         this.phone = phone;
+        this.lastModifiedDate = LocalDateTime.now();
     }
 
     public void changeNickname(String nickname) {
         this.nickname = nickname;
+        this.nicknameLastModifiedDate = LocalDateTime.now();
+        this.lastModifiedDate = LocalDateTime.now();
     }
 }
