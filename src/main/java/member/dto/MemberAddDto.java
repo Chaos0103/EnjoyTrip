@@ -2,6 +2,7 @@ package member.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import member.Authority;
 
 @Data
 public class MemberAddDto {
@@ -11,19 +12,21 @@ public class MemberAddDto {
     private String username;
     private String email;
     private String phone;
-    private String nickname;
     private String birth;
     private String gender;
+    private String nickname;
+    private Authority authority;
 
     @Builder
-    public MemberAddDto(String loginId, String loginPw, String username, String email, String phone, String nickname, String birth, String gender) {
+    public MemberAddDto(String loginId, String loginPw, String username, String email, String phone, String birth, String gender, String nickname, Authority authority) {
         this.loginId = loginId;
         this.loginPw = loginPw;
         this.username = username;
         this.email = email;
         this.phone = phone;
-        this.nickname = nickname;
         this.birth = birth;
         this.gender = gender;
+        this.nickname = nickname;
+        this.authority = authority;
     }
 }

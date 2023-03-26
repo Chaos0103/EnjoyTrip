@@ -5,8 +5,10 @@ import member.dto.MemberAddDto;
 import util.DBConnectionUtil;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.Optional;
+
+import static member.Authority.ADMIN;
+import static member.Authority.CLIENT;
 
 public class MemberJdbcRepository implements MemberRepository {
 
@@ -27,8 +29,8 @@ public class MemberJdbcRepository implements MemberRepository {
         PreparedStatement pstmt = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "insert into member(login_id, login_pw, username, email, phone, nickname, birth, gender)" +
-                    " values (?, ?, ?, ?, ?, ?, ?, ?);";
+            String sql = "insert into member(login_id, login_pw, username, email, phone, birth, gender, nickname, authority)" +
+                    " values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, memberAddDto.getLoginId());
@@ -36,9 +38,10 @@ public class MemberJdbcRepository implements MemberRepository {
             pstmt.setString(3, memberAddDto.getUsername());
             pstmt.setString(4, memberAddDto.getEmail());
             pstmt.setString(5, memberAddDto.getPhone());
-            pstmt.setString(6, memberAddDto.getNickname());
-            pstmt.setString(7, memberAddDto.getBirth());
-            pstmt.setString(8, memberAddDto.getGender());
+            pstmt.setString(6, memberAddDto.getBirth());
+            pstmt.setString(7, memberAddDto.getGender());
+            pstmt.setString(8, memberAddDto.getNickname());
+            pstmt.setString(9, memberAddDto.getAuthority().toString());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -184,7 +187,7 @@ public class MemberJdbcRepository implements MemberRepository {
         try {
             conn = dbConnectionUtil.getConnection();
             String sql = "update member" +
-                    " set login_pw=?, email=?, phone=?, nickname=?, last_modified_date=?" +
+                    " set login_pw=?, email=?, phone=?, nickname=?, nickname_last_modified_date=?, last_modified_date=?" +
                     " where member_id=?;";
 
             pstmt = conn.prepareStatement(sql);
@@ -192,8 +195,9 @@ public class MemberJdbcRepository implements MemberRepository {
             pstmt.setString(2, member.getEmail());
             pstmt.setString(3, member.getPhone());
             pstmt.setString(4, member.getNickname());
-            pstmt.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
-            pstmt.setLong(6, memberId);
+            pstmt.setTimestamp(5, Timestamp.valueOf(member.getNicknameLastModifiedDate()));
+            pstmt.setTimestamp(6, Timestamp.valueOf(member.getLastModifiedDate()));
+            pstmt.setLong(7, memberId);
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -241,18 +245,24 @@ public class MemberJdbcRepository implements MemberRepository {
     }
 
     private Member createMember(ResultSet rs) throws SQLException {
-        return new Member(
-                rs.getLong("member_id"),
-                rs.getString("login_id"),
-                rs.getString("login_pw"),
-                rs.getString("username"),
-                rs.getString("email"),
-                rs.getString("phone"),
-                rs.getString("nickname"),
-                rs.getString("birth"),
-                rs.getString("gender"),
-                rs.getTimestamp("created_date").toLocalDateTime(),
-                rs.getTimestamp("last_modified_date").toLocalDateTime()
-        );
+        return Member.builder()
+                .memberId(rs.getLong("member_id"))
+                .loginId(rs.getString("login_id"))
+                .loginPw(rs.getString("login_pw"))
+                .username(rs.getString("username"))
+                .email(rs.getString("email"))
+                .phone(rs.getString("phone"))
+                .birth(rs.getString("birth"))
+                .gender(rs.getString("gender"))
+                .nickname(rs.getString("nickname"))
+                .nicknameLastModifiedDate(
+                        rs.getTimestamp("nickname_last_modified_date").toLocalDateTime()
+                )
+                .authority(
+                        rs.getString("authority").equals("CLIENT") ? CLIENT : ADMIN
+                )
+                .createdDate(rs.getTimestamp("created_date").toLocalDateTime())
+                .lastModifiedDate(rs.getTimestamp("last_modified_date").toLocalDateTime())
+                .build();
     }
 }
