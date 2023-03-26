@@ -24,7 +24,8 @@ public class MemberJdbcRepository implements MemberRepository {
     }
 
     @Override
-    public void save(MemberAddDto memberAddDto) {
+    public int save(MemberAddDto memberAddDto) {
+        int count = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
@@ -43,12 +44,13 @@ public class MemberJdbcRepository implements MemberRepository {
             pstmt.setString(8, memberAddDto.getNickname());
             pstmt.setString(9, memberAddDto.getAuthority().toString());
 
-            pstmt.executeUpdate();
+            count = pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             dbConnectionUtil.close(pstmt, conn);
         }
+        return count;
     }
 
     @Override
@@ -181,7 +183,8 @@ public class MemberJdbcRepository implements MemberRepository {
     }
 
     @Override
-    public void update(Long memberId, Member member) {
+    public int update(Long memberId, Member member) {
+        int count = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
@@ -199,16 +202,18 @@ public class MemberJdbcRepository implements MemberRepository {
             pstmt.setTimestamp(6, Timestamp.valueOf(member.getLastModifiedDate()));
             pstmt.setLong(7, memberId);
 
-            pstmt.executeUpdate();
+            count = pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             dbConnectionUtil.close(pstmt, conn);
         }
+        return count;
     }
 
     @Override
-    public void remove(Long memberId) {
+    public int remove(Long memberId) {
+        int count = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
@@ -218,12 +223,13 @@ public class MemberJdbcRepository implements MemberRepository {
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, memberId);
 
-            pstmt.executeUpdate();
+            count = pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             dbConnectionUtil.close(pstmt, conn);
         }
+        return count;
     }
 
     @Override
