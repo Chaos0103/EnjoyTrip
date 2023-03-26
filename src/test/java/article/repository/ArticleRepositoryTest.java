@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static member.Authority.CLIENT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ArticleRepositoryTest {
@@ -22,7 +23,7 @@ class ArticleRepositoryTest {
 
     @BeforeEach
     void beforeEach() {
-        MemberAddDto memberAddDto = new MemberAddDto("ssafy", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "광주5반", "010101", "1");
+        MemberAddDto memberAddDto = new MemberAddDto("ssafy", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "010101", "1", "광주5반", CLIENT);
         memberRepository.save(memberAddDto);
     }
 

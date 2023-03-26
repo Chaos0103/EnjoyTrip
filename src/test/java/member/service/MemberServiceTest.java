@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
+import static member.Authority.CLIENT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -34,7 +35,7 @@ class MemberServiceTest {
     @DisplayName("회원가입")
     void signUp() {
         //given
-        MemberAddDto memberAddDto = new MemberAddDto("ssafy", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "광주5반", "010101", "1");
+        MemberAddDto memberAddDto = new MemberAddDto("ssafy", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678",  "010101", "1", "광주5반", CLIENT);
 
         //when
         memberService.signUp(memberAddDto);
@@ -48,8 +49,8 @@ class MemberServiceTest {
     @DisplayName("아이디 중복 예외")
     void exception_loginId() {
         //given
-        memberRepository.save(new MemberAddDto("ssafy", "12345678", "김싸피", "ssafy1@ssafy.com", "01012345678", "광주5반1", "010101", "1"));
-        MemberAddDto memberAddDto = new MemberAddDto("ssafy", "12345678", "김싸피", "ssafy2@ssafy.com", "01087654321", "광주5반2", "010101", "1");
+        memberRepository.save(new MemberAddDto("ssafy", "12345678", "김싸피", "ssafy1@ssafy.com", "01012345678", "010101", "1", "광주5반1", CLIENT));
+        MemberAddDto memberAddDto = new MemberAddDto("ssafy", "12345678", "김싸피", "ssafy2@ssafy.com", "01087654321", "010101", "1", "광주5반2", CLIENT);
 
         //when
         //then
@@ -61,8 +62,8 @@ class MemberServiceTest {
     @DisplayName("이메일 중복 예외")
     void exception_email() {
         //given
-        memberRepository.save(new MemberAddDto("ssafy1", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "광주5반1", "010101", "1"));
-        MemberAddDto memberAddDto = new MemberAddDto("ssafy2", "12345678", "김싸피", "ssafy@ssafy.com", "01087654321", "광주5반2", "010101", "1");
+        memberRepository.save(new MemberAddDto("ssafy1", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "010101", "1", "광주5반1", CLIENT));
+        MemberAddDto memberAddDto = new MemberAddDto("ssafy2", "12345678", "김싸피", "ssafy@ssafy.com", "01087654321", "010101", "1", "광주5반2", CLIENT);
 
         //when
         //then
@@ -74,8 +75,8 @@ class MemberServiceTest {
     @DisplayName("연락처 중복 예외")
     void exception_phone() {
         //given
-        memberRepository.save(new MemberAddDto("ssafy1", "12345678", "김싸피", "ssafy1@ssafy.com", "01012345678", "광주5반1", "010101", "1"));
-        MemberAddDto memberAddDto = new MemberAddDto("ssafy2", "12345678", "김싸피", "ssafy2@ssafy.com", "01012345678", "광주5반2", "010101", "1");
+        memberRepository.save(new MemberAddDto("ssafy1", "12345678", "김싸피", "ssafy1@ssafy.com", "01012345678", "010101", "1", "광주5반1", CLIENT));
+        MemberAddDto memberAddDto = new MemberAddDto("ssafy2", "12345678", "김싸피", "ssafy2@ssafy.com", "01012345678", "010101", "1", "광주5반2", CLIENT);
 
         //when
         //then
@@ -87,8 +88,8 @@ class MemberServiceTest {
     @DisplayName("닉네임 중복 예외")
     void exception_nickname() {
         //given
-        memberRepository.save(new MemberAddDto("ssafy1", "12345678", "김싸피", "ssafy1@ssafy.com", "01012345678", "광주5반", "010101", "1"));
-        MemberAddDto memberAddDto = new MemberAddDto("ssafy2", "12345678", "김싸피", "ssafy2@ssafy.com", "01087654321", "광주5반", "010101", "1");
+        memberRepository.save(new MemberAddDto("ssafy1", "12345678", "김싸피", "ssafy1@ssafy.com", "01012345678", "010101", "1", "광주5반", CLIENT));
+        MemberAddDto memberAddDto = new MemberAddDto("ssafy2", "12345678", "김싸피", "ssafy2@ssafy.com", "01087654321", "010101", "1", "광주5반", CLIENT);
 
         //when
         //then
