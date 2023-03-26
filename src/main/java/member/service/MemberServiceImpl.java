@@ -30,7 +30,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void signUp(MemberAddDto memberAddDto) {
+    public void signUpClient(MemberAddDto memberAddDto) {
         SignUpValidation validation = new SignUpValidation();
 
         MemberRequest request = MemberRequest.builder()

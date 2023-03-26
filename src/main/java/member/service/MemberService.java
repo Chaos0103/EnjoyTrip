@@ -4,7 +4,7 @@ import member.dto.MemberAddDto;
 
 public interface MemberService {
 
-    void signUp(MemberAddDto memberAddDto);
+    void signUpClient(MemberAddDto memberAddDto);
 
     void changePassword(Long memberId, String loginPw);
 

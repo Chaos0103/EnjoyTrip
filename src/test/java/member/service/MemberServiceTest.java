@@ -40,7 +40,7 @@ class MemberServiceTest {
         MemberAddDto memberAddDto = new MemberAddDto("ssafy9", "12345678", "김싸피", "ssafy9@ssafy.com", "01011111111",  "010101", "1", "싸피9기광주5반", CLIENT);
 
         //when
-        memberService.signUp(memberAddDto);
+        memberService.signUpClient(memberAddDto);
 
         //then
         Optional<Member> findMember = memberRepository.findByLoginId("ssafy");
@@ -55,7 +55,7 @@ class MemberServiceTest {
 
         //when
         //then
-        assertThatThrownBy(() -> memberService.signUp(memberAddDto))
+        assertThatThrownBy(() -> memberService.signUpClient(memberAddDto))
                 .isInstanceOf(SignUpException.class);
     }
 
@@ -68,7 +68,7 @@ class MemberServiceTest {
 
         //when
         //then
-        assertThatThrownBy(() -> memberService.signUp(memberAddDto))
+        assertThatThrownBy(() -> memberService.signUpClient(memberAddDto))
                 .isInstanceOf(SignUpException.class);
     }
 
@@ -80,7 +80,7 @@ class MemberServiceTest {
 
         //when
         //then
-        assertThatThrownBy(() -> memberService.signUp(memberAddDto))
+        assertThatThrownBy(() -> memberService.signUpClient(memberAddDto))
                 .isInstanceOf(SignUpException.class);
     }
 
@@ -92,7 +92,7 @@ class MemberServiceTest {
 
         //when
         //then
-        assertThatThrownBy(() -> memberService.signUp(memberAddDto))
+        assertThatThrownBy(() -> memberService.signUpClient(memberAddDto))
                 .isInstanceOf(SignUpException.class);
     }
 
