@@ -6,6 +6,8 @@ import util.DBConnectionUtil;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class NotionJdbcRepository implements NotionRepository {
@@ -68,6 +70,30 @@ public class NotionJdbcRepository implements NotionRepository {
             dbConnectionUtil.close(rs, pstmt, conn);
         }
         return Optional.ofNullable(notion);
+    }
+
+    @Override
+    public List<Notion> findAll() {
+        List<Notion> notions = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from notion";
+
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                notions.add(createNotion(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return notions;
     }
 
     @Override
