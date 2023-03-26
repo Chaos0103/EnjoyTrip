@@ -24,7 +24,7 @@ public class NotionServiceImpl implements NotionService {
         memberRepository = MemberJdbcRepository.getMemberRepository();
     }
 
-    public NotionService getNotionService() {
+    public static NotionService getNotionService() {
         return notionService;
     }
 
