@@ -27,13 +27,14 @@ public class NotionJdbcRepository implements NotionRepository {
         PreparedStatement pstmt = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "insert into notion(member_id, title, content, top) values (?, ?, ?, ?);";
+            String sql = "insert into notion(title, content, top, created_by, last_modified_by) values (?, ?, ?, ?, ?);";
 
             pstmt = conn.prepareStatement(sql);
-            pstmt.setLong(1, memberId);
-            pstmt.setString(2, notionDto.getTitle());
-            pstmt.setString(3, notionDto.getContent());
-            pstmt.setBoolean(4, notionDto.isTop());
+            pstmt.setString(1, notionDto.getTitle());
+            pstmt.setString(2, notionDto.getContent());
+            pstmt.setBoolean(3, notionDto.isTop());
+            pstmt.setLong(4, memberId);
+            pstmt.setLong(5, memberId);
 
             count = pstmt.executeUpdate();
         } catch (SQLException e) {
