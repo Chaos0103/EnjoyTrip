@@ -25,6 +25,7 @@ class NotionServiceTest {
 
     private Long adminId;
     private Long clientId;
+    private Long notionId;
 
     @BeforeEach
     void beforeEach() {
@@ -33,6 +34,9 @@ class NotionServiceTest {
 
         memberRepository.save(new MemberAddDto("client", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "010101", "1", "광주5반", CLIENT));
         clientId = memberRepository.findByLoginId("client").get().getMemberId();
+
+        notionRepository.save(adminId, new NotionDto("notion title", "notion content", false));
+        notionId = notionRepository.findAll().get(0).getNotionId();
     }
 
     @AfterEach
@@ -87,6 +91,67 @@ class NotionServiceTest {
         //when
         //then
         assertThatThrownBy(() -> notionService.addNotion(clientId, notionDto))
+                .isInstanceOf(NotionException.class);
+    }
+
+    @Test
+    @DisplayName("공지사항 수정")
+    void editNotion() {
+        //given
+        NotionDto notionDto = NotionDto.builder()
+                .title("new notion title")
+                .content("new notion content")
+                .build();
+
+        //when
+        int count = notionService.editNotion(notionId, adminId, notionDto);
+
+        //then
+        assertThat(count).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("공지사항 수정#미등록 회원")
+    void editNotion_exception_member() {
+        //given
+        NotionDto notionDto = NotionDto.builder()
+                .title("new notion title")
+                .content("new notion content")
+                .build();
+
+        //when
+        //then
+        assertThatThrownBy(() -> notionService.editNotion(notionId, 0L, notionDto))
+                .isInstanceOf(NotionException.class);
+    }
+
+    @Test
+    @DisplayName("공지사항 수정#관리자 권한")
+    void editNotion_exception_admin() {
+        //given
+        NotionDto notionDto = NotionDto.builder()
+                .title("new notion title")
+                .content("new notion content")
+                .build();
+
+        //when
+        //then
+        assertThatThrownBy(() -> notionService.editNotion(notionId, clientId, notionDto))
+                .isInstanceOf(NotionException.class);
+    }
+    
+    @Test
+    @DisplayName("공지사항 수정#미등록 공지사항")
+    void editNotion_exception_notion() {
+        //given
+        NotionDto notionDto = NotionDto.builder()
+                .title("new notion title")
+                .content("new notion content")
+                .build();
+
+        //when
+        //then
+        assertThatThrownBy(() -> notionService.editNotion(0L, adminId, notionDto))
                 .isInstanceOf(NotionException.class);
     }
 }
