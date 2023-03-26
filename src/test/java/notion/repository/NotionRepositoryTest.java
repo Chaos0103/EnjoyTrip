@@ -3,6 +3,7 @@ package notion.repository;
 import member.dto.MemberAddDto;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
+import notion.Notion;
 import notion.dto.NotionDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +44,21 @@ class NotionRepositoryTest {
 
         //when
         int count = notionRepository.save(memberId, notionDto);
+
+        //then
+        assertThat(count).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("공지사항 수정")
+    void update() {
+        //given
+        notionRepository.save(memberId, new NotionDto("notion title", "notion content", false));
+        Notion notion = notionRepository.findAll().get(0);
+        notion.edit("new notion title", "new notion content", memberId);
+
+        //when
+        int count = notionRepository.update(notion.getNotionId(), notion);
 
         //then
         assertThat(count).isEqualTo(1);
