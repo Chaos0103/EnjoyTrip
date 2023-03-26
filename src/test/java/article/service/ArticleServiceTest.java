@@ -14,6 +14,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static common.exception.ExceptionMessage.*;
 import static member.Authority.CLIENT;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -107,5 +109,39 @@ class ArticleServiceTest {
         assertThatThrownBy(() -> articleService.editArticle(0L, memberId, articleDto))
                 .isInstanceOf(ArticleException.class)
                 .hasMessageContaining(NOT_FOUND_ARTICLE);
+    }
+
+    @Test
+    @DisplayName("게시물 삭제")
+    void removeArticle() {
+        //given
+        //when
+        articleService.removeArticle(articleId, memberId);
+
+        //then
+        Optional<Article> findArticle = articleRepository.findById(articleId);
+        assertThat(findArticle).isEmpty();
+    }
+
+    @Test
+    @DisplayName("게시물 삭제#등록되지 않은 게시물")
+    void removeArticle_exception_article() {
+        //given
+        //when
+        //then
+        assertThatThrownBy(() -> articleService.removeArticle(0L, memberId))
+                .isInstanceOf(ArticleException.class)
+                .hasMessageContaining(NOT_FOUND_ARTICLE);
+    }
+
+    @Test
+    @DisplayName("게시물 삭제#미등록 회원")
+    void removeArticle_exception_member() {
+        //given
+        //when
+        //then
+        assertThatThrownBy(() -> articleService.removeArticle(articleId, 0L))
+                .isInstanceOf(ArticleException.class)
+                .hasMessageContaining(ARTICLE_MEMBER_DISCREPANCY);
     }
 }
