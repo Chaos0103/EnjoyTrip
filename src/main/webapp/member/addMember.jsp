@@ -72,10 +72,10 @@
         </div>
       </div>
       <div class="input-group mb-3">
-        <label for="memberBirth" class="">주민번호</label>
-        <input type="text" class="form-control" id="memberBirth" name="memberBirth" placeholder="앞자리" maxlength="6" />
+<%--        <label for="memberBirth" class="">주민번호</label>--%>
+        <input type="text" class="form-control" id="memberBirth" name="memberBirth" placeholder="주민번호 앞자리" maxlength="6" />
         <span class="input-group-text">-</span>
-        <input type="password" class="form-control" id="memberGender" name="memberGender" placeholder="뒷자리" maxlength="7" />
+        <input type="password" class="form-control" id="memberGender" name="memberGender" placeholder="주민번호 뒷자리" maxlength="7" />
       </div>
       <div class="input-group mb-3">
         <div class="form-floating me-1">

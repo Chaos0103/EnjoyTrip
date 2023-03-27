@@ -5,7 +5,9 @@ import common.validation.SignUpValidation;
 import common.validation.dto.InvalidResponse;
 import common.validation.dto.MemberRequest;
 import member.Member;
+import member.dto.LoginMember;
 import member.dto.MemberAddDto;
+import member.dto.MemberDto;
 import member.service.MemberService;
 import member.service.MemberServiceImpl;
 
@@ -40,13 +42,18 @@ public class MemberController extends HttpServlet {
             case "mvregister"://가입
                 forward(request, response, "/member/addMember.jsp");
                 break;
-            case "mvview"://마이페이지로 이동
-                path = "/member/mypage.jsp";
+//            case "mvview"://마이페이지로 이동
+//                path = "/member/mypage.jsp";
+//
+//                redirect(request, response, path);
+//                break;
+            case "view"://마이페이지조회
+                path = viewMypage(request, response);
                 redirect(request, response, path);
                 break;
-            case "view"://마이페이지조회
-                break;
-            case "modify"://정보수정
+            case "modifyPw"://pw수정
+                path = modifyPw(request, response);
+                redirect(request, response, path);
                 break;
             case "withdrawal"://탈퇴
                 doWithdrawal(request, response);
@@ -54,11 +61,41 @@ public class MemberController extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("utf-8");
-        doGet(request, response);
+    private String modifyPw(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+
+
+
+        memberService.changePassword(loginMember.getId(),loginMember.getLoginPw());
     }
+
+    private String viewMypage(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+
+        MemberDto dto = memberService.myPage(loginMember.getId()).get();
+        String birth1 = dto.getBirth().substring(0,2);
+        String birth2 = dto.getBirth().substring(2,4);
+        String birth3 = dto.getBirth().substring(4,6);
+        if(Integer.parseInt(dto.getGender())>2){
+            dto.setBirth("20"+birth1+"년 "+birth2+"월 "+birth3+"일");
+        }else {
+            dto.setBirth("19"+birth1+"년 "+birth2+"월 "+birth3+"일");
+        }
+
+        if(Integer.parseInt(dto.getGender())%2==0) {
+            dto.setGender("여성");
+        }else{
+            dto.setGender("남성");
+        }
+
+        session.setAttribute("currShow","myPage");
+        session.setAttribute("loginUserDto", dto);
+        return "/member/mypage.jsp";
+    }
+
+
 
     private void doRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String loginId = request.getParameter("memberId");
@@ -122,6 +159,12 @@ public class MemberController extends HttpServlet {
         memberService.withdrawal(loginMember.getId(), loginPw);
 
         response.sendRedirect("/");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        doGet(request, response);
     }
 
     private void forward(HttpServletRequest request, HttpServletResponse response, String path)
