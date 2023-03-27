@@ -14,6 +14,10 @@ public interface NotionRepository {
 
     List<Notion> findAll();
 
+    List<Notion> findByPaging(int pageNum, int amount);
+
+    int getTotalCount();
+
     int update(Long notionId, Notion notion);
 
     int remove(Long notionId);

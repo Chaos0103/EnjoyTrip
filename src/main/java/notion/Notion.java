@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 public class Notion {
 
-    private Long notionId;
+    private Long id;
     private String title;
     private String content;
     private int hit;
@@ -20,8 +20,8 @@ public class Notion {
     private LocalDateTime lastModifiedDate;
 
     @Builder
-    public Notion(Long notionId, String title, String content, int hit, boolean top, Member createdBy, Member lastModifiedBy, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
-        this.notionId = notionId;
+    public Notion(Long id, String title, String content, int hit, boolean top, Member createdBy, Member lastModifiedBy, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.hit = hit;

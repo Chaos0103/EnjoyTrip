@@ -12,7 +12,9 @@ import notion.dto.NotionDto;
 import notion.repository.NotionJdbcRepository;
 import notion.repository.NotionRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class NotionServiceImpl implements NotionService {
 
@@ -51,6 +53,25 @@ public class NotionServiceImpl implements NotionService {
         }
 
         return notionRepository.save(memberId, notionDto);
+    }
+
+    @Override
+    public List<NotionDto> searchNotions(int pageNum, int amount) {
+        List<Notion> notions = notionRepository.findByPaging(pageNum, amount);
+        return notions.stream()
+                .map(notion ->
+                        NotionDto.builder()
+                                .id(notion.getId())
+                                .title(notion.getTitle())
+                                .content(notion.getContent())
+                                .build()
+                )
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public int getTotalCount() {
+        return notionRepository.getTotalCount();
     }
 
     @Override

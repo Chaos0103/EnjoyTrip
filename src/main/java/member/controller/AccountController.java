@@ -48,38 +48,11 @@ public class AccountController extends HttpServlet {
     private String doLogin(HttpServletRequest request, HttpServletResponse response) {
         String userId = request.getParameter("userId");
         String userPwd = request.getParameter("userPassword");
-        System.out.println("AccountController.doLogin");
-        System.out.println("userId = " + userId);
-        System.out.println("userPwd = " + userPwd);
         try{
             LoginMember loginMember = accountService.login(userId, userPwd);
             if(loginMember != null) {
-//				session 설정
                 HttpSession session = request.getSession();
                 session.setAttribute("userinfo", loginMember);
-                System.out.println("loginMember = " + loginMember);
-
-//				cookie 설정
-//                String idsave = request.getParameter("saveid");
-//                if("ok".equals(idsave)) { //아이디 저장을 체크 했다면.
-//                    Cookie cookie = new Cookie("ssafy_id", userId);
-//                    cookie.setPath(request.getContextPath());
-////					크롬의 경우 400일이 최대
-////					https://developer.chrome.com/blog/cookie-max-age-expires/
-//                    cookie.setMaxAge(60 * 60 * 24 * 365 * 40); //40년간 저장.
-//                    response.addCookie(cookie);
-//                } else { //아이디 저장을 해제 했다면.
-//                    Cookie cookies[] = request.getCookies();
-//                    if(cookies != null) {
-//                        for(Cookie cookie : cookies) {
-//                            if("ssafy_id".equals(cookie.getName())) {
-//                                cookie.setMaxAge(0);
-//                                response.addCookie(cookie);
-//                                break;
-//                            }
-//                        }
-//                    }
-//                }
                 return "/index.jsp";
             } else {
                 request.setAttribute("msg", "아이디 또는 비밀번호 확인 후 다시 로그인하세요.");

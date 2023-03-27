@@ -54,12 +54,12 @@ class NotionRepositoryTest {
     @DisplayName("공지사항 수정")
     void update() {
         //given
-        notionRepository.save(member.getId(), new NotionDto("notion title", "notion content", false));
+        notionRepository.save(member.getId(), new NotionDto(0L,"notion title", "notion content", false));
         Notion notion = notionRepository.findAll().get(0);
         notion.edit("new notion title", "new notion content", member);
 
         //when
-        int count = notionRepository.update(notion.getNotionId(), notion);
+        int count = notionRepository.update(notion.getId(), notion);
 
         //then
         assertThat(count).isEqualTo(1);
@@ -69,11 +69,11 @@ class NotionRepositoryTest {
     @DisplayName("공지사항 삭제")
     void remove() {
         //given
-        notionRepository.save(member.getId(), new NotionDto("notion title", "notion content", false));
+        notionRepository.save(member.getId(), new NotionDto(0L,"notion title", "notion content", false));
         Notion notion = notionRepository.findAll().get(0);
 
         //when
-        int count = notionRepository.remove(notion.getNotionId());
+        int count = notionRepository.remove(notion.getId());
 
         //then
         assertThat(count).isEqualTo(1);
