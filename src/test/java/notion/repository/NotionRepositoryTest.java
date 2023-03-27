@@ -54,7 +54,7 @@ class NotionRepositoryTest {
     @DisplayName("공지사항 수정")
     void update() {
         //given
-        notionRepository.save(member.getId(), new NotionDto(0L,"notion title", "notion content", false));
+        notionRepository.save(member.getId(), new NotionDto(0L,"notion title", "notion content", false, null));
         Notion notion = notionRepository.findAll().get(0);
         notion.edit("new notion title", "new notion content", member);
 
@@ -69,7 +69,7 @@ class NotionRepositoryTest {
     @DisplayName("공지사항 삭제")
     void remove() {
         //given
-        notionRepository.save(member.getId(), new NotionDto(0L,"notion title", "notion content", false));
+        notionRepository.save(member.getId(), new NotionDto(0L,"notion title", "notion content", false, null));
         Notion notion = notionRepository.findAll().get(0);
 
         //when
