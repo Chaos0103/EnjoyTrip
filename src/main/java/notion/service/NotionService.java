@@ -10,6 +10,8 @@ public interface NotionService {
 
     List<NotionDto> searchNotions(int pageNum, int amount);
 
+    NotionDto searchNotion(Long notionId);
+
     int getTotalCount();
 
     int editNotion(Long notionId, Long memberId, NotionDto notionDto);

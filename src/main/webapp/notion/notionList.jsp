@@ -26,11 +26,11 @@
         </tr>
         </thead>
         <tbody class="table-group-divider">
-        <c:forEach items="${notions}" var="notion">
+        <c:forEach items="${notions}" var="notion" varStatus="status">
           <tr>
-            <th scope="row" class=' text-center'>3</th>
+            <th scope="row" class='text-center'>${status.count}</th>
             <td><a class='linkToNotion' href='${root}?action=view&notionId=${notion.id}'>${notion.title}</a></td>
-            <td class='text-center'>2023.01.02</td>
+            <td class='text-center'>${notion.createdDate}</td>
           </tr>
         </c:forEach>
         </tbody>

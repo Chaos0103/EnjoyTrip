@@ -64,9 +64,26 @@ public class NotionServiceImpl implements NotionService {
                                 .id(notion.getId())
                                 .title(notion.getTitle())
                                 .content(notion.getContent())
+                                .createdDate(notion.getCreatedDate())
                                 .build()
                 )
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public NotionDto searchNotion(Long notionId) {
+        Optional<Notion> findNotion = notionRepository.findById(notionId);
+        if (!findNotion.isPresent()) {
+            throw new NotionException();
+        }
+        Notion notion = findNotion.get();
+        NotionDto notionDto = NotionDto.builder()
+                .id(notion.getId())
+                .title(notion.getTitle())
+                .content(notion.getContent())
+                .createdDate(notion.getCreatedDate())
+                .build();
+        return notionDto;
     }
 
     @Override
