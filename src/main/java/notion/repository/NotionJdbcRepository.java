@@ -98,6 +98,55 @@ public class NotionJdbcRepository implements NotionRepository {
     }
 
     @Override
+    public List<Notion> findByPaging(int pageNum, int amount) {
+        List<Notion> notions = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from notion order by created_date desc limit ?, ?;";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, (pageNum - 1) * amount);
+            pstmt.setInt(2, amount);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                notions.add(createNotion(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return notions;
+    }
+
+    @Override
+    public int getTotalCount() {
+        int count = 0;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select count(*) as total from notion;";
+
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return count;
+    }
+
+    @Override
     public int update(Long notionId, Notion notion) {
         int count = 0;
         Connection conn = null;
@@ -163,7 +212,7 @@ public class NotionJdbcRepository implements NotionRepository {
 
     private Notion createNotion(ResultSet rs) throws SQLException {
         return Notion.builder()
-                .notionId(rs.getLong("notion_id"))
+                .id(rs.getLong("notion_id"))
                 .title(rs.getString("title"))
                 .content(rs.getString("content"))
                 .hit(rs.getInt("hit"))
