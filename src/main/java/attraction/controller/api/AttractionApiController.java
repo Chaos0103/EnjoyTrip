@@ -1,0 +1,96 @@
+package attraction.controller.api;
+
+import attraction.dto.AttractionDto;
+import attraction.dto.AttractionSearch;
+import attraction.dto.GugunDto;
+import attraction.service.AttractionService;
+import attraction.service.AttractionServiceImpl;
+import attraction.service.GugunService;
+import attraction.service.GugunServiceImpl;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
+@WebServlet("/api/attraction")
+public class AttractionApiController extends HttpServlet {
+
+    private AttractionService attractionService;
+    private GugunService gugunService;
+
+    @Override
+    public void init() {
+        attractionService = AttractionServiceImpl.getAttractionService();
+        gugunService = GugunServiceImpl.getGugunService();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String action = request.getParameter("action");
+        switch (action) {
+            case "gugun":
+                doGugun(request, response);
+                break;
+            case "search":
+                doSearch(request, response);
+                break;
+        }
+    }
+
+    private void doGugun(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int sidoCode = Integer.parseInt(request.getParameter("sidoCode"));
+
+        List<GugunDto> guguns = gugunService.searchGuguns(sidoCode);
+
+        JSONObject json = new JSONObject();
+        JSONArray array = new JSONArray();
+        for (GugunDto gugun : guguns) {
+            JSONObject temp = new JSONObject();
+            temp.put("code", gugun.getCode());
+            temp.put("name", gugun.getName());
+            array.add(temp);
+        }
+        json.put("data", array);
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().println(json);
+    }
+
+    private void doSearch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int sidoCode = Integer.parseInt(request.getParameter("sidoCode"));
+        int gugunCode = Integer.parseInt(request.getParameter("gugunCode"));
+        int contentTypeId = Integer.parseInt(request.getParameter("contentTypeId"));
+
+        AttractionSearch condition = AttractionSearch.builder()
+                .sidoCode(sidoCode)
+                .gugunCode(gugunCode)
+                .contentTypeId(contentTypeId)
+                .build();
+
+        List<AttractionDto> attractions = attractionService.searchAttraction(condition);
+
+        JSONObject json = new JSONObject();
+        JSONArray array = new JSONArray();
+        for (AttractionDto attraction : attractions) {
+            JSONObject temp = new JSONObject();
+            temp.put("title",attraction.getTitle());
+            temp.put("addr1",attraction.getAddr1());
+            temp.put("zipcode",attraction.getZipcode());
+            temp.put("firstImage",attraction.getFirstImage());
+            temp.put("latitude",attraction.getLatitude());
+            temp.put("longitude",attraction.getLongitude());
+            array.add(temp);
+        }
+        json.put("data", array);
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().println(json);
+    }
+}

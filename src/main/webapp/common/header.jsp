@@ -11,10 +11,7 @@
          pageEncoding="UTF-8"%>
 
   <div class="d-flex flex-wrap justify-content-center container">
-    <a
-            href="/"
-            class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none"
-    >
+    <a href="${root}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
 <%--      <img src="../../../assets/img/logo.png" width="40" class="me-3" />--%>
       <img src="${root}/assets/img/logo.png" width="40" class="me-3" />
       <span class="fs-4">Enjoy Trip</span>
@@ -22,19 +19,19 @@
 
     <ul class="nav nav-pills">
       <li>
-        <a href="${root}/search/tourList.html" class="nav-link px-2 link-dark">관광지조회</a>
+        <a href="${root}/attraction?action=search" class="nav-link px-2 link-dark">관광지조회</a>
       </li>
       <li>
-        <a href="#" class="nav-link px-2 link-dark">자유게시판</a>
+        <a href="${root}/article?action=list" class="nav-link px-2 link-dark">자유게시판</a>
       </li>
       <li>
-        <a href="/article/notification.html" class="nav-link px-2 link-dark">공지사항</a>
+        <a href="${root}/notion?action=list" class="nav-link px-2 link-dark">공지사항</a>
       </li>
       <li class="nav-item">
         <a href="/account/login.html" class="nav-link link-dark px-2">로그인</a>
       </li>
       <li class="nav-item">
-        <a id="btn-mv-join"  class="nav-link link-dark px-2">회원가입</a>
+        <a id="btn-mv-join" class="nav-link link-dark px-2">회원가입</a>
       </li>
     </ul>
   </div>
