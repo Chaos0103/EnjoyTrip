@@ -28,10 +28,23 @@
         <a href="${root}/notion?action=list" class="nav-link px-2 link-dark">공지사항</a>
       </li>
       <li class="nav-item">
-        <a href="/account/login.html" class="nav-link link-dark px-2">로그인</a>
+        <a id="btn-mv-login" class="nav-link link-dark px-2">로그인</a>
       </li>
+        <c:choose>
+        <c:when test="${empty userinfo}"><!-- 로그인 안됨 -->
       <li class="nav-item">
         <a id="btn-mv-join" class="nav-link link-dark px-2">회원가입</a>
       </li>
+        </c:when>
+            <c:otherwise>
+                <li class="nav-item">
+                    <a id="btn-mypage" class="nav-link link-dark px-2">마이페이지</a>
+                </li>
+                <li class="nav-item">
+                    <a id="btn-logout" href="${root}/account?action=logout" class="nav-link link-dark px-2">로그아웃</a>
+                </li>
+            </c:otherwise>
+
+        </c:choose>
     </ul>
   </div>

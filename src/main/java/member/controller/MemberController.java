@@ -39,7 +39,7 @@ public class MemberController extends HttpServlet {
                 System.out.println("MemberController.doGet");
                 response.sendRedirect(request.getContextPath()+"/member/addMember.jsp");
                 break;
-            case "view"://정보조회
+            case "view"://마이페이지조회
                 break;
             case "modify"://정보수정
                 break;
