@@ -19,7 +19,7 @@ public class AccountController extends HttpServlet {
     private AccountService accountService;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         accountService = AccountServiceImpl.getAccountService();
     }
 
@@ -39,6 +39,8 @@ public class AccountController extends HttpServlet {
             case "logout":
                 path = logout(request, response);
                 redirect(request, response, path);
+                break;
+            default:
                 break;
         }
     }
