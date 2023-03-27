@@ -27,12 +27,12 @@
         <a href="${root}/notion?action=list" class="nav-link px-2 link-dark">공지사항</a>
       </li>
       <li class="nav-item">
-        <a id="btn-mv-login" class="nav-link link-dark px-2">로그인</a>
+        <a href="${root}/account?action=mvlogin" id="btn-mv-login" class="nav-link link-dark px-2">로그인</a>
       </li>
         <c:choose>
         <c:when test="${empty userinfo}"><!-- 로그인 안됨 -->
       <li class="nav-item">
-        <a id="btn-mv-join" class="nav-link link-dark px-2">회원가입</a>
+        <a href="${root}/member?action=mvregister" id="btn-mv-join" class="nav-link link-dark px-2">회원가입</a>
       </li>
         </c:when>
             <c:otherwise>

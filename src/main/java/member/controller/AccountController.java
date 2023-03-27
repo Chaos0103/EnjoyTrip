@@ -4,9 +4,13 @@ import member.dto.LoginMember;
 import member.service.AccountService;
 import member.service.AccountServiceImpl;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/account")
@@ -25,7 +29,7 @@ public class AccountController extends HttpServlet {
         String path ="";
         switch (action){
             case "mvlogin":
-                response.sendRedirect(request.getContextPath()+"/account/login.jsp");
+                forward(request, response, "/account/login.jsp");
                 break;
             case "login":
                 path = doLogin(request,response);

@@ -38,8 +38,7 @@ public class MemberController extends HttpServlet {
                 doRegister(request, response);
                 break;
             case "mvregister"://가입
-                System.out.println("MemberController.doGet");
-                response.sendRedirect(request.getContextPath()+"/member/addMember.jsp");
+                forward(request, response, "/member/addMember.jsp");
                 break;
             case "mvview"://마이페이지로 이동
                 path = "/member/mypage.jsp";
