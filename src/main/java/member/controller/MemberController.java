@@ -9,6 +9,7 @@ import member.dto.MemberAddDto;
 import member.service.MemberService;
 import member.service.MemberServiceImpl;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,6 +32,7 @@ public class MemberController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
+        String path = "";
         switch (action) {
             case "register"://가입
                 doRegister(request, response);
@@ -38,6 +40,10 @@ public class MemberController extends HttpServlet {
             case "mvregister"://가입
                 System.out.println("MemberController.doGet");
                 response.sendRedirect(request.getContextPath()+"/member/addMember.jsp");
+                break;
+            case "mvview"://마이페이지로 이동
+                path = "/member/mypage.jsp";
+                redirect(request, response, path);
                 break;
             case "view"://마이페이지조회
                 break;
@@ -117,5 +123,15 @@ public class MemberController extends HttpServlet {
         memberService.withdrawal(loginMember.getId(), loginPw);
 
         response.sendRedirect("/");
+    }
+
+    private void forward(HttpServletRequest request, HttpServletResponse response, String path)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher(path);
+        dispatcher.forward(request, response);
+    }
+
+    private void redirect(HttpServletRequest request, HttpServletResponse response, String path) throws IOException {
+        response.sendRedirect(request.getContextPath() + path);
     }
 }
