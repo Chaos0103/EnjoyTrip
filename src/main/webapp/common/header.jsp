@@ -9,10 +9,9 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
-
   <div class="d-flex flex-wrap justify-content-center container">
     <a href="${root}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-<%--      <img src="../../../assets/img/logo.png" width="40" class="me-3" />--%>
+
       <img src="${root}/assets/img/logo.png" width="40" class="me-3" />
       <span class="fs-4">Enjoy Trip</span>
     </a>

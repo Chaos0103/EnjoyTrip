@@ -1,7 +1,7 @@
 package notion.controller;
 
 import common.Page;
-import member.Member;
+import member.dto.LoginMember;
 import notion.dto.NotionDto;
 import notion.service.NotionService;
 import notion.service.NotionServiceImpl;
@@ -39,9 +39,14 @@ public class NotionController extends HttpServlet {
             case "write":
                 doWriter(request, response);
                 break;
+            case "view":
+                doView(request, response);
+                break;
             case "mvmodify":
+                doMvmodify(request, response);
                 break;
             case "modify":
+                doModify(request, response);
                 break;
             case "remove":
                 break;
@@ -77,7 +82,6 @@ public class NotionController extends HttpServlet {
     }
 
     private void doMvWriter(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         RequestDispatcher dispatcher = request.getRequestDispatcher("/notion/addNotion.jsp");
         dispatcher.forward(request, response);
     }
@@ -88,7 +92,7 @@ public class NotionController extends HttpServlet {
             return;
         }
 
-        Member loginMember = (Member) session.getAttribute("userinfo");
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
 
         String title = request.getParameter("title");
         String content = request.getParameter("content");
@@ -102,6 +106,45 @@ public class NotionController extends HttpServlet {
         if (result == 0) {
             return;
         }
-        response.sendRedirect(request.getContextPath() + "/notion&action=list");
+        response.sendRedirect(request.getContextPath() + "/notion?action=list");
+    }
+
+    private void doView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Long notionId = Long.parseLong(request.getParameter("notionId"));
+
+        NotionDto notion = notionService.searchNotion(notionId);
+
+        request.setAttribute("notion", notion);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/notion/viewNotion.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void doMvmodify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Long notionId = Long.parseLong(request.getParameter("notionId"));
+
+        NotionDto notion = notionService.searchNotion(notionId);
+
+        request.setAttribute("notion", notion);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/notion/editNotion.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void doModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Long notionId = Long.parseLong(request.getParameter("notionId"));
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+
+        NotionDto notionDto = NotionDto.builder()
+                .id(notionId)
+                .title(title)
+                .content(content)
+                .build();
+
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+
+        int count = notionService.editNotion(notionId, loginMember.getId(), notionDto);
+
+        response.sendRedirect(request.getContextPath() + "/notion?action=view&notionId=" + notionId);
     }
 }
