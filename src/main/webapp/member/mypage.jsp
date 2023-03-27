@@ -28,90 +28,26 @@
         <div class="row">
             <%@ include file="/member/mypage/mypageNav.jsp" %>
 
-
-
-<%--            --%>
-<%--            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">--%>
-<%--                <div class="position-sticky pt-3 sidebar-sticky">--%>
-<%--                    <c:set var="currShow" value="myPage"/>--%>
-<%--                    <ul class="nav flex-column">--%>
-<%--                        <li class="nav-item">--%>
-<%--                            <c:if test="${currShow eq 'myPage'}">--%>
-<%--                            <a class="nav-link active" aria-current="page" href="#">--%>
-<%--                                </c:if>--%>
-<%--                                <c:if test="${currShow != 'myPage'}">--%>
-<%--                                    <a class="nav-link " aria-current="page" href="#">--%>
-<%--                                </c:if>--%>
-<%--                                <span data-feather="home" class="align-text-bottom"></span>--%>
-<%--                                <i class="bi bi-person"></i>--%>
-<%--                                마이페이지--%>
-<%--                            </a>--%>
-<%--                        </li>--%>
-<%--                        <li class="nav-item ">--%>
-<%--                            <c:if test="${currShow eq 'myArticle'}">--%>
-<%--                            <a class="nav-link active" aria-current="page" href="#">--%>
-<%--                                </c:if>--%>
-<%--                                <c:if test="${currShow != 'myArticle'}">--%>
-<%--                                <a class="nav-link " aria-current="page" href="#">--%>
-<%--                                    </c:if>--%>
-<%--                                <span data-feather="file" class="align-text-bottom"></span>--%>
-<%--                                내가 쓴 게시물--%>
-<%--                            </a>--%>
-<%--                        </li>--%>
-<%--                        <li class="nav-item">--%>
-<%--                            <a class="nav-link" href="#">--%>
-<%--                                <span data-feather="shopping-cart" class="align-text-bottom"></span>--%>
-<%--                                내가 등록한 핫플레이스--%>
-<%--                            </a>--%>
-<%--                        </li>--%>
-<%--                        <li class="nav-item mt-5">--%>
-<%--                            <c:if test="${currShow eq 'modifyPw'}">--%>
-<%--                            <a class="nav-link active" aria-current="page" href="#">--%>
-<%--                                </c:if>--%>
-<%--                                <c:if test="${currShow != 'modifyPw'}">--%>
-<%--                                <a class="nav-link " aria-current="page" href="#">--%>
-<%--                                    </c:if>--%>
-<%--                                <span data-feather="home" class="align-text-bottom"></span>--%>
-<%--                                <i class="bi bi-person"></i>--%>
-<%--                                비밀번호 변경--%>
-<%--                            </a>--%>
-<%--                        </li>--%>
-<%--                        <li class="nav-item">--%>
-<%--                            <a class="nav-link active" aria-current="page" href="#">--%>
-<%--                                <span data-feather="home" class="align-text-bottom"></span>--%>
-<%--                                <i class="bi bi-person"></i>--%>
-<%--                                별명 변경--%>
-<%--                            </a>--%>
-<%--                        </li>--%>
-<%--                        <li class="nav-item">--%>
-<%--                            <a class="nav-link active" aria-current="page" href="#">--%>
-<%--                                <span data-feather="home" class="align-text-bottom"></span>--%>
-<%--                                <i class="bi bi-person"></i>--%>
-<%--                                이메일 변경--%>
-<%--                            </a>--%>
-<%--                        </li>--%>
-<%--                        <li class="nav-item">--%>
-<%--                            <a class="nav-link active" aria-current="page" href="#">--%>
-<%--                                <span data-feather="home" class="align-text-bottom"></span>--%>
-<%--                                <i class="bi bi-person"></i>--%>
-<%--                                전화번호 변경--%>
-<%--                            </a>--%>
-<%--                        </li>--%>
-
-<%--                        <li class="nav-item mt-5">--%>
-<%--                            <a class="nav-link" href="#">--%>
-<%--                                <span data-feather="shopping-cart" class="align-text-bottom"></span>--%>
-<%--                                회원탈퇴--%>
-<%--                            </a>--%>
-<%--                        </li>--%>
-<%--                    </ul>--%>
-<%--                </div>--%>
-<%--            </nav>--%>
-
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 ms-5">
 
+                <c:choose>
+                    <c:when test="${currShow eq 'myPage'}">
+                        <%@ include file="/member/mypage/myInfo.jsp" %>
+                    </c:when>
+                    <c:when test="${currShow eq 'modifyPw'}">
+                        <%@ include file="/member/mypage/mypageChangePw.jsp" %>
+                    </c:when>
+<%--                    <c:when test="${currShow eq 'myPage'}">--%>
+<%--                        <%@ include file="/member/mypage/myInfo.jsp" %>--%>
+<%--                    </c:when>--%>
+<%--                    <c:when test="${currShow eq 'myPage'}">--%>
+<%--                        <%@ include file="/member/mypage/myInfo.jsp" %>--%>
+<%--                    </c:when>--%>
+                    <c:otherwise>
 
-                <%@ include file="/member/mypage/myInfo.jsp" %>
+                    </c:otherwise>
+                </c:choose>
+
 
 
             </main>
@@ -125,5 +61,13 @@
 <!-- end footer -->
 
 <%-- script --%>
+<script>
+    document.querySelector("#btn-change-pw").addEventListener("click", function (){
+        let form = document.querySelector("#change-pw-form");
+        // alert("비밀번호가 변경되었습니다. ")
+        form.setAttribute("action","${root}/member?action=modifyPw");
+        form.submit();
+    });
+</script>
 </body>
 </html>
