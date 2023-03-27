@@ -9,14 +9,14 @@ import java.time.LocalDateTime;
 public class Member {
 
     private Long id;
-    private String loginId;
+    private String loginId;//
     private String loginPw;
-    private String username;
-    private String email;
-    private String phone;
-    private String birth;
-    private String gender;
-    private String nickname;
+    private String username;//
+    private String email;//
+    private String phone;//
+    private String birth;//
+    private String gender;//
+    private String nickname;//
     private LocalDateTime nicknameLastModifiedDate;
     private Authority authority;
     private LocalDateTime createdDate;

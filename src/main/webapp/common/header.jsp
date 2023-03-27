@@ -38,7 +38,7 @@
         </c:when>
             <c:otherwise>
                 <li class="nav-item">
-                    <a id="btn-mypage" class="nav-link link-dark px-2">마이페이지</a>
+                    <a id="btn-mypage" href="${root}/member?action=mvview" class="nav-link link-dark px-2">마이페이지</a>
                 </li>
                 <li class="nav-item">
                     <a id="btn-logout" href="${root}/account?action=logout" class="nav-link link-dark px-2">로그아웃</a>
