@@ -26,20 +26,23 @@ public class HotPlaceJdbcRepository implements HotPlaceRepository {
     }
 
     @Override
-    public int save(HotPlace hotPlace) {
+    public int save(Long memberId, Long contentId, HotPlace hotPlace) {
         int count = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "insert into hot_place values (?, ?, ?, ?, ?);";
+            String sql = "insert into hot_place(member_id, content_id, content_type_id, name, desc, visited_date, upload_file_name, store_file_name) values (?, ?, ?, ?, ?, ?, ?, ?);";
 
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, hotPlace.getName());
-            pstmt.setString(2, hotPlace.getDesc());
-            pstmt.setString(3, hotPlace.getVisitedDate());
-            pstmt.setString(4, hotPlace.getUploadFile().getUploadFileName());
-            pstmt.setString(5, hotPlace.getUploadFile().getStoreFileName());
+            pstmt.setLong(1, memberId);
+            pstmt.setLong(2, contentId);
+            pstmt.setInt(3, hotPlace.getContentTypeId());
+            pstmt.setString(4, hotPlace.getName());
+            pstmt.setString(5, hotPlace.getDesc());
+            pstmt.setString(6, hotPlace.getVisitedDate());
+            pstmt.setString(7, hotPlace.getUploadFile().getUploadFileName());
+            pstmt.setString(8, hotPlace.getUploadFile().getStoreFileName());
 
             count = pstmt.executeUpdate();
         } catch (SQLException e) {
