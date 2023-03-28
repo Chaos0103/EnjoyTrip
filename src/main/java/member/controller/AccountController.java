@@ -29,7 +29,7 @@ public class AccountController extends HttpServlet {
         String path ="";
         switch (action){
             case "mvlogin":
-                forward(request, response, "/account/login.jsp");
+                redirect(request, response, "/account/login.jsp");
                 break;
             case "login":
                 path = doLogin(request,response);
@@ -40,9 +40,41 @@ public class AccountController extends HttpServlet {
                 path = logout(request, response);
                 redirect(request, response, path);
                 break;
+            case "findPw":
+                path = findPw(request, response);
+                forward(request, response, path);
+                break;
+            case "findId":
+                path = findId(request, response);
+                forward(request, response, path);
+                break;
+            case "getFindResult":
+                forward(request, response, "/account/findPwResult.jsp");
+                break;
             default:
                 break;
         }
+    }
+
+    private String findId(HttpServletRequest request, HttpServletResponse response) {
+        String findPwPhone = request.getParameter("findIdPhone");
+        String findPwEmail = request.getParameter("findIdEmail");
+
+        String findId = accountService.findLoginId(findPwEmail,findPwPhone);
+        request.setAttribute("findId", findId);
+        return "/account?action=getFindResult";
+    }
+
+    private String findPw(HttpServletRequest request, HttpServletResponse response) {
+        String findPwId = request.getParameter("findPwId");
+        String findPwPhone = request.getParameter("findPwPhone");
+        String findPwEmail = request.getParameter("findPwEmail");
+
+        String findPw = accountService.findLoginPw(findPwId,findPwEmail,findPwPhone);
+        request.setAttribute("findPw", findPw);
+        return "/account?action=getFindResult";
+
+
     }
 
     private String logout(HttpServletRequest request, HttpServletResponse response) {
