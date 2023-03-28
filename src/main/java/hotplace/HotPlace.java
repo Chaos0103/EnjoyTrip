@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import member.Member;
 
+import java.time.LocalDateTime;
+
 @Getter
 public class HotPlace {
 
@@ -13,6 +15,8 @@ public class HotPlace {
     private String desc;
     private String visitedDate;
     private UploadFile uploadFile;
+    private LocalDateTime createdDate;
+    private LocalDateTime lastModifiedDate;
 
     private Integer contentTypeId;
     private Member member;
