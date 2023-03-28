@@ -78,6 +78,27 @@ public class HotPlaceJdbcRepository implements HotPlaceRepository {
         return Optional.ofNullable(hotPlace);
     }
 
+    @Override
+    public int remove(Long hotPlaceId) {
+        int count = 0;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "delete from hot_place where hot_place_id = ?";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, hotPlaceId);
+
+            count = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(pstmt, conn);
+        }
+        return count;
+    }
+
     private HotPlace createHotplace(ResultSet rs) throws SQLException {
         return HotPlace.builder()
                 .id(rs.getLong("hot_place_id"))
