@@ -67,10 +67,11 @@
       </nav>
     </div>
     <%-- 페이징 종료 --%>
-
-    <div class='wrapper m-auto mt-5'>
-      <a href='${root}?action=mvwrite' type='button' id='btnAddNotification' class='btn btn-success'>공지등록</a>
-    </div>
+    <c:if test="${authority eq 'ADMIN'}">
+      <div class='wrapper m-auto mt-5'>
+        <a href='${root}?action=mvwrite' type='button' id='btnAddNotification' class='btn btn-success'>공지등록</a>
+      </div>
+    </c:if>
   </div>
 </main>
 <%-- end section --%>

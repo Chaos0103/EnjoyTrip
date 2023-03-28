@@ -62,6 +62,14 @@ public class NotionController extends HttpServlet {
     }
 
     private void doList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+        if (loginMember == null) {
+            request.setAttribute("authority", null);
+        } else {
+            request.setAttribute("authority", loginMember.getAuthority());
+        }
+
         int pageNum = 1;
         int amount = 10;
 
@@ -73,7 +81,7 @@ public class NotionController extends HttpServlet {
         List<NotionDto> notions = notionService.searchNotions(pageNum, amount);
         int totalCount = notionService.getTotalCount();
         Page page = new Page(pageNum, amount, totalCount);
-        System.out.println("page = " + page);
+
         request.setAttribute("page", page);
         request.setAttribute("notions", notions);
 

@@ -41,6 +41,7 @@ public class AccountServiceImpl implements AccountService {
                 .id(member.getId())
                 .loginId(member.getLoginId())
                 .loginPw(member.getLoginPw())
+                .authority(member.getAuthority().toString())
                 .build();
     }
 
