@@ -60,4 +60,23 @@ public class HotPlaceServiceImpl implements HotPlaceService{
 
         return hotPlaceRepository.save(memberId, contentId, hotPlace);
     }
+
+    @Override
+    public int removeHotPlace(Long hotPlaceId, Long memberId) {
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        if (!findMember.isPresent()) {
+            throw new HotPlaceException();
+        }
+
+        Optional<HotPlace> findHotPlace = hotPlaceRepository.findById(hotPlaceId);
+        if (!findHotPlace.isPresent()) {
+            throw new HotPlaceException();
+        }
+        HotPlace hotPlace = findHotPlace.get();
+        if (hotPlace.getMember().getId().equals(memberId)) {
+            throw new HotPlaceException();
+        }
+
+        return hotPlaceRepository.remove(hotPlaceId);
+    }
 }
