@@ -118,6 +118,14 @@ public class NotionController extends HttpServlet {
     }
 
     private void doView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+        if (loginMember == null) {
+            request.setAttribute("authority", null);
+        } else {
+            request.setAttribute("authority", loginMember.getAuthority());
+        }
+
         Long notionId = Long.parseLong(request.getParameter("notionId"));
 
         NotionDto notion = notionService.searchNotion(notionId);

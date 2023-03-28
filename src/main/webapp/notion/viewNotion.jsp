@@ -29,14 +29,18 @@
       </div>
     </div>
   </div>
+
+  <c:if test="${authority eq 'ADMIN'}">
   <div class='notion-footer mt-5 '>
     <a class='btn btn-outline-success' href="/notion?action=mvmodify&notionId=${notion.id}">수정하기</a>
-    <button class='btn btn-outline-danger' data-bs-toggle="modal" data-bs-target="#notificationDeleteModal">삭제하기</button>
+    <button class='btn btn-outline-danger' data-bs-toggle="modal" data-bs-target="#notificationDeleteModal">삭제하기
+    </button>
   </div>
+  </c:if>
 
   <div class='m-5 m-auto p-lg-5 container-sm justify-content-center align-content-center'>
     <div class='row justify-content-end'>
-      <a href='/article/notification.html' type='button' class=' col-1 btn btn-outline-info'>목록으로</a>
+      <a href='${root}/notion?action=list' type='button' class=' col-1 btn btn-outline-info'>목록으로</a>
     </div>
   </div>
   <!-- end section -->
