@@ -185,5 +185,6 @@ public class MemberServiceImpl implements MemberService {
         }
 
         memberRepository.remove(memberId);
+
     }
 }

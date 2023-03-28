@@ -37,17 +37,22 @@
                     <c:when test="${currShow eq 'modifyPw'}">
                         <%@ include file="/member/mypage/mypageChangePw.jsp" %>
                     </c:when>
-<%--                    <c:when test="${currShow eq 'myPage'}">--%>
-<%--                        <%@ include file="/member/mypage/myInfo.jsp" %>--%>
-<%--                    </c:when>--%>
-<%--                    <c:when test="${currShow eq 'myPage'}">--%>
-<%--                        <%@ include file="/member/mypage/myInfo.jsp" %>--%>
-<%--                    </c:when>--%>
+                    <c:when test="${currShow eq 'modifyNickname'}">
+                        <%@ include file="/member/mypage/mypageChangeNickname.jsp" %>
+                    </c:when>
+                    <c:when test="${currShow eq 'modifyEmail'}">
+                        <%@ include file="/member/mypage/mypageChangeEmail.jsp" %>
+                    </c:when>
+                    <c:when test="${currShow eq 'modifyTel'}">
+                        <%@ include file="/member/mypage/mypageChangeTel.jsp" %>
+                    </c:when>
+                    <c:when test="${currShow eq 'deleteMember'}">
+                        <%@ include file="/member/mypage/mypageDelete.jsp" %>
+                    </c:when>
                     <c:otherwise>
 
                     </c:otherwise>
                 </c:choose>
-
 
 
             </main>
@@ -62,18 +67,33 @@
 
 <%-- script --%>
 <script>
-    document.querySelector("#btn-change-pw").addEventListener("click", function (){
+    document.querySelector("#btn-change-pw").addEventListener("click", function () {
         let form = document.querySelector("#change-pw-form");
-        // alert("비밀번호가 변경되었습니다. ")
-        form.setAttribute("action","${root}/member?action=modifyPw");
+        form.setAttribute("action", "${root}/member?action=modifyPw");
         form.submit();
     });
 
-    document.querySelector("#btn-change-nickname").addEventListener("click", function (){
-            let form = document.querySelector("#change-nickname-form");
-            form.setAttribute("action","${root}/member?action=modifyNickname");
-            form.submit();
-        });
+    document.querySelector("#btn-change-nickname").addEventListener("click", function () {
+        let form = document.querySelector("#change-nickname-form");
+        form.setAttribute("action", "${root}/member?action=modifyNickname");
+        form.submit();
+    });
+
+    document.querySelector("#btn-change-email").addEventListener("click", function () {
+        let form = document.querySelector("#change-email-form");
+        form.setAttribute("action", "${root}/member?action=modifyEmail");
+        form.submit();
+    });
+    document.querySelector("#btn-change-tel").addEventListener("click", function () {
+        let form = document.querySelector("#change-tel-form");
+        form.setAttribute("action", "${root}/member?action=modifyTel");
+        form.submit();
+    });
+    document.querySelector("#btn-delete-member").addEventListener("click", function () {
+        let form = document.querySelector("#delete-member-form");
+        form.setAttribute("action", "${root}/member?action=withdrawal");
+        form.submit();
+    });
 </script>
 </body>
 </html>

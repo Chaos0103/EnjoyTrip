@@ -56,8 +56,6 @@ public class MemberController extends HttpServlet {
                 break;
             case "modifyPw"://pw수정
                 path = modifyPw(request, response);
-//                RequestDispatcher dispatcher = request.getRequestDispatcher(path);
-//                dispatcher.forward(request, response);
                 forward(request, response, path);
                 break;
             case "mvModifyPw"://pw수정폼 보기
@@ -74,28 +72,100 @@ public class MemberController extends HttpServlet {
                 forward(request, response, path);
                 break;
 
-//            case "modifyEmail":
-//                path = modifyEmail(request, response);
-//                redirect(request, response, path);
-//                break;
-//            case "mvModifyEmail":
-//                path = mvModifyEmail(request, response);
-//                forward(request, response, path);
-//                break;
-//
-//            case "modifyTel":
-//                path = modifyTel(request, response);
-//                redirect(request, response, path);
-//                break;
-//            case "mvModifyTel":
-//                path = mvModifyTel(request, response);
-//                forward(request, response, path);
-//                break;
-
+            case "modifyEmail":
+                path = modifyEmail(request, response);
+                redirect(request, response, path);
+                break;
+            case "mvModifyEmail":
+                path = mvModifyEmail(request, response);
+                forward(request, response, path);
+                break;
+            case "ModifyTel":
+                path = modifyTel(request, response);
+                redirect(request, response, path);
+                break;
+            case "mvModifyTel":
+                path = mvModifyTel(request, response);
+                forward(request, response, path);
+                break;
+            case "mvwithdrawal":
+                path = mvwithdrawal(request, response);
+                forward(request, response, path);
+                break;
             case "withdrawal"://탈퇴
                 doWithdrawal(request, response);
                 break;
         }
+    }
+
+    private String mvwithdrawal(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        session.setAttribute("currShow","deleteMember");
+        System.out.println("session.getAttribute(\"currShow\") = " + session.getAttribute("currShow"));
+        return "/member/mypage.jsp";
+    }
+
+    // TODO: 2023/03/28 전화번호 수정페이지로 이동
+    private String mvModifyTel(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        session.setAttribute("currShow","modifyTel");
+        System.out.println("session.getAttribute(\"currShow\") = " + session.getAttribute("currShow"));
+        return "/member/mypage.jsp";
+    }
+
+    // TODO: 2023/03/28 전화번호 수정
+    private String modifyTel(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+
+        String currTel = request.getParameter("currTel");
+        String newTel = request.getParameter("newTel");
+        String pwCheck = request.getParameter("pwCheck");
+
+        if(!pwCheck.equals(loginMember.getLoginPw())){
+            request.setAttribute("msg","비밀번호가 틀렸습니다.");
+            return "/member/mypage.jsp";
+        }
+        if(currTel.equals(newTel)){
+            request.setAttribute("msg","기존 이메일 같습니다.");
+            return "/member/mypage.jsp";
+        }
+
+
+        memberService.changePhone(loginMember.getId(),newTel);
+        request.setAttribute("msg","전화번호 변경이 완료되었습니다.");
+        return "/member?action=view";
+    }
+
+    // TODO: 2023/03/28 이메일 수정 로직
+    private String modifyEmail(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+
+        String currEmail = request.getParameter("currEmail");
+        String newEmail = request.getParameter("newEmail");
+        String pwCheck = request.getParameter("pwCheck");
+
+        if(!pwCheck.equals(loginMember.getLoginPw())){
+            request.setAttribute("msg","비밀번호가 틀렸습니다.");
+            return "/member/mypage.jsp";
+        }
+        if(currEmail.equals(newEmail)){
+            request.setAttribute("msg","기존 이메일 같습니다.");
+            return "/member/mypage.jsp";
+        }
+
+
+        memberService.changeEmail(loginMember.getId(),newEmail);
+        request.setAttribute("msg","이메일 변경이 완료되었습니다.");
+        return "/member?action=view";
+    }
+
+    private String mvModifyEmail(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        session.setAttribute("currShow","modifyEmail");
+        System.out.println("session.getAttribute(\"currShow\") = " + session.getAttribute("currShow"));
+        return "/member/mypage.jsp";
     }
 
     private String mvModifyNickname(HttpServletRequest request, HttpServletResponse response) {
@@ -105,6 +175,7 @@ public class MemberController extends HttpServlet {
         return "/member/mypage.jsp";
     }
 
+    // TODO: 2023/03/28 이메일 변경 로직
     private String modifyNickname(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -113,20 +184,23 @@ public class MemberController extends HttpServlet {
         String currNickname = request.getParameter("currNickname");
         String newNickname = request.getParameter("newNickname");
         String pwCheck = request.getParameter("pwCheck");
+        System.out.println("MemberController.modifyNickname");
+        System.out.println("pwCheck = " + pwCheck);
+        System.out.println("loginMember.getLoginPw() = " + loginMember.getLoginPw());
 
         if(!pwCheck.equals(loginMember.getLoginPw())){
             request.setAttribute("msg","비밀번호가 틀렸습니다.");
-            forward(request,response,"/member/mypage.jsp");
+            forward(request, response, "/member/mypage.jsp");
         }
         if(currNickname.equals(newNickname)){
             request.setAttribute("msg","기존 닉네임과 같습니다.");
-            forward(request,response,"/member/mypage.jsp");
+            forward(request, response, "/member/mypage.jsp");
         }
 
         memberService.changeNickname(loginMember.getId(), newNickname);
         request.setAttribute("msg","닉네임 변경이 완료되었습니다. ");
         session.setAttribute("currShow","myPage");
-        return "/account?action=view";
+        return "/member?action=view";
 
     }
 
@@ -243,17 +317,17 @@ public class MemberController extends HttpServlet {
 
     private void doWithdrawal(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Member loginMember = (Member) session.getAttribute("loginMember");
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
         if (loginMember == null) {
             response.sendRedirect("/");
             return;
         }
 
-        String loginPw = request.getParameter("loginPw");
+        String loginPw = request.getParameter("pw");
 
         memberService.withdrawal(loginMember.getId(), loginPw);
 
-        response.sendRedirect("/");
+        response.sendRedirect("/account?action=logout");
     }
 
     @Override

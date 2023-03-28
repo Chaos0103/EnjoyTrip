@@ -66,8 +66,8 @@ public class AccountController extends HttpServlet {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("msg", "로그인 중 에러 발생!!!");
-            return "/error/error.jsp";
+            request.setAttribute("msg", "아이디 또는 비밀번호 확인 후 다시 로그인하세요.");
+            return "/account/login.jsp";
         }
     }
 
