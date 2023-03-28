@@ -26,7 +26,7 @@ public class HotPlaceJdbcRepository implements HotPlaceRepository {
     }
 
     @Override
-    public int save(Long memberId, Long contentId, HotPlace hotPlace) {
+    public int save(Long memberId, int contentId, HotPlace hotPlace) {
         int count = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -36,7 +36,7 @@ public class HotPlaceJdbcRepository implements HotPlaceRepository {
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, memberId);
-            pstmt.setLong(2, contentId);
+            pstmt.setInt(2, contentId);
             pstmt.setInt(3, hotPlace.getContentTypeId());
             pstmt.setString(4, hotPlace.getName());
             pstmt.setString(5, hotPlace.getDesc());
