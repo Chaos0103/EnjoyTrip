@@ -48,7 +48,7 @@ public class AttractionJdbcRepository implements AttractionRepository {
         } finally {
             dbConnectionUtil.close(rs, pstmt, conn);
         }
-        return attractionInfo;
+        return Optional.ofNullable(attractionInfo);
     }
 
     @Override
