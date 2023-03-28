@@ -56,9 +56,9 @@ public class MemberController extends HttpServlet {
                 break;
             case "modifyPw"://pw수정
                 path = modifyPw(request, response);
-                RequestDispatcher dispatcher = request.getRequestDispatcher(path);
-                dispatcher.forward(request, response);
-//                redirect(request, response, path);
+//                RequestDispatcher dispatcher = request.getRequestDispatcher(path);
+//                dispatcher.forward(request, response);
+                forward(request, response, path);
                 break;
             case "mvModifyPw"://pw수정폼 보기
                 path = mvModifyPw(request, response);
@@ -105,10 +105,29 @@ public class MemberController extends HttpServlet {
         return "/member/mypage.jsp";
     }
 
-    private String modifyNickname(HttpServletRequest request, HttpServletResponse response) {
-        //해야함
+    private String modifyNickname(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
 
-        return "";
+        String currNickname = request.getParameter("currNickname");
+        String newNickname = request.getParameter("newNickname");
+        String pwCheck = request.getParameter("pwCheck");
+
+        if(!pwCheck.equals(loginMember.getLoginPw())){
+            request.setAttribute("msg","비밀번호가 틀렸습니다.");
+            forward(request,response,"/member/mypage.jsp");
+        }
+        if(currNickname.equals(newNickname)){
+            request.setAttribute("msg","기존 닉네임과 같습니다.");
+            forward(request,response,"/member/mypage.jsp");
+        }
+
+        memberService.changeNickname(loginMember.getId(), newNickname);
+        request.setAttribute("msg","닉네임 변경이 완료되었습니다. ");
+        session.setAttribute("currShow","myPage");
+        return "/account?action=view";
+
     }
 
     private String mvModifyPw(HttpServletRequest request, HttpServletResponse response) {
@@ -118,7 +137,7 @@ public class MemberController extends HttpServlet {
         return "/member/mypage.jsp";
     }
 
-    //      비밀번호 수정 아래 해야함
+
     private String modifyPw(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
@@ -127,12 +146,8 @@ public class MemberController extends HttpServlet {
         String newPw = request.getParameter("newPw");
         String newPwCheck = request.getParameter("newPwCheck");
 
-
-
         if(!currPw.equals(loginMember.getLoginPw())){
             request.setAttribute("msg","비밀번호가 틀렸습니다.");
-            //dis
-            //for
             return "/member/mypage.jsp";
         }
         if(!newPw.equals(newPwCheck)){
