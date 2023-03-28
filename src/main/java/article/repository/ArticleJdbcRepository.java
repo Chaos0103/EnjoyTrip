@@ -105,62 +105,12 @@ public class ArticleJdbcRepository implements ArticleRepository {
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from article a join member m on a.member_id = m.member_id";
-            boolean isFirstWhereCondition = true;
-
-            //title
-            if (hasText(condition.getTitle())) {
-                if (isFirstWhereCondition) {
-                    sql += " where";
-                    isFirstWhereCondition = false;
-                } else {
-                    sql += " and";
-                }
-                sql += " a.title like ?";
-            }
-            //content
-            if (hasText(condition.getContent())) {
-                if (isFirstWhereCondition) {
-                    sql += " where";
-                    isFirstWhereCondition = false;
-                } else {
-                    sql += " and";
-                }
-                sql += " a.content like ?";
-            }
-            //writer
-            if (hasText(condition.getWriter())) {
-                if (isFirstWhereCondition) {
-                    sql += " where";
-                    isFirstWhereCondition = false;
-                } else {
-                    sql += " and";
-                }
-                sql += " m.nickname like ?";
-            }
-
-            sql += " order by a.created_date desc";
-            if (hasText(condition.getHit())) {
-                sql += " and a.hit desc";
-            }
-
+            String sql = "select * from article a";
             pstmt = conn.prepareStatement(sql);
-
-            int index = 1;
-            if (hasText(condition.getTitle())) {
-                pstmt.setString(index++, condition.getTitle());
-            }
-            if (hasText(condition.getContent())) {
-                pstmt.setString(index++, condition.getContent());
-            }
-            if (hasText(condition.getWriter())) {
-                pstmt.setString(index++, condition.getWriter());
-            }
-//            pstmt.setString(index++, condition.getCreatedDate());
-//            if (hasText(condition.getHit())) {
-//                pstmt.setString(index++, condition.getHit());
-//            }
             rs = pstmt.executeQuery();
+            while (rs.next()) {
+                articles.add(createArticle(rs));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
