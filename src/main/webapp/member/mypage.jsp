@@ -68,6 +68,12 @@
         form.setAttribute("action","${root}/member?action=modifyPw");
         form.submit();
     });
+
+    document.querySelector("#btn-change-nickname").addEventListener("click", function (){
+            let form = document.querySelector("#change-nickname-form");
+            form.setAttribute("action","${root}/member?action=modifyNickname");
+            form.submit();
+        });
 </script>
 </body>
 </html>
