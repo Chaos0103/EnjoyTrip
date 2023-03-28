@@ -32,22 +32,77 @@
 ### 메인 화면
 ![main.png](display%2Fmain.png)
 
-### 로그인 화면
+### 회원관리
+#### 로그인
+- 로그인 페이지 입니다.
+- 유효하지 않은 값이 입력되면 '아이디 혹은 비밀번호 확인 후 다시 로그인하세요'라는 경고창이 나타납니다.
 ![login.png](display%2Flogin.png)
+- 로그인이 완료되면 헤더 부분에 로그인/회원가입 버튼 대신 마이페이지와 로그아웃이 나타납니다.
+![loginResult.png](display%2FloginResult.png)
 
-### 회원가입 화면
+#### 회원가입 화면
+- 회원가입 페이지 입니다.
+- 조건에 맞지 않는 값을 입력했을 경우 가입이 되지 않습니다.
+- 회원가입이 완료되면 로그인 페이지로 이동됩니다.
 ![signup.png](display%2Fsignup.png)
 
+#### 아이디/비밀번호 찾기
+- 로그인 페이지에서 아이디찾기, 비밀번호 찾기를 누르면 모달창이 나타납니다.
+- 아이디는 전화번호와 이메일를 이용해 찾을 수 있습니다.
+- 비밀번호는 아이디와 전화번호, 이메일을 이용해 찾을 수 있습니다.
+![findID_PW1.png](display%2FfindID_PW1.png)
+- 아이디/비밀번호 찾기 결과창입니다.
+- 찾은 정보와 로그인 하기로 연결되는 버튼이 있습니다.
+![findID_PW2.png](display%2FfindID_PW2.png)
+![findID_PW3.png](display%2FfindID_PW3.png)
+
+#### 마이페이지 조회
+- 마이페이지 화면입니다.
+- 로그인 한 유저가 본인의 정보를 확인할 수 있습니다.
+![myinfo.png](display%2Fmyinfo.png)
+
+#### 회원정보 수정
+- 마이페이지 화면에서 사이드바를 클릭하면 각 정보를 수정할 수 있습니다.
+- 비밀번호가 일치하지 않거나 유효한 값이 아니면 경고창을 띄웁니다.
+- 비밀번호가 변경되면 로그아웃되고 다시 로그인하라는 경고창을 띄웁니다.
+![modifyMember1.png](display%2FmodifyMember1.png)
+- 다른 정보는 기존 정보를 같이 출력해줍니다.
+![modifyMember2.png](display%2FmodifyMember2.png)
+
+#### 회원 탈퇴
+- 회원 탈퇴 클릭 시 비밀번호를 입력받습니다.
+- 탈퇴하면 메인 세션이 지워지고 메인페이지로 이동합니다.
+![memberDelete.png](display%2FmemberDelete.png)
+
 ### 관광지 조회 화면
-![attraction.png](display%2Fattraction.png)
+- 관광지 조회 화면입니다.
+- 지도에 관광지 위치에 마크가 찍히고 사진과 함께 설명이 출력됩니다.
+![article1.png](display%2Farticle1.png)
+![article2.png](display%2Farticle2.png)
+![article3.png](display%2Farticle3.png)
+![article4.png](display%2Farticle4.png)
+- 결과얻기 버튼을 클릭하면 왼쪽 사이트바가 나타나 목록을 확인할 수 있습니다.
+![article5.png](display%2Farticle5.png)
 
-### 공지사항 목록 화면
-![notion.png](display%2Fnotion.png)
+### 게시판 구현
+- 자유게시판과 공지사항 게시판 입니다.
+#### 자유게시판
+- 자유게시판을 클릭하면 자유게시판 목록이 출력됩니다.
+- 관리자 권한이 없어도 모든 이용자가 게시글 작성, 읽기 권한이 있습니다.
+- 이용자는 자신이 쓴 글에대한 게시글 수정, 삭제 권한이 있습니다.
+- 관리자는 모든 글에대한 삭제 권한이 있습니다.
 
-### 공지사항 세부 화면
+#### 공지사항
+- 관리자 계정이 아니면 공지 등록 버튼이 보이지 않고 목록만 출력됩니다.
+![notion1.png](display%2Fnotion1.png)
+- 관리자 계정으로 로그인 하면 버튼이 활성화 됩니다.
+![notion2.png](display%2Fnotion2.png)
+- 관리자가 공지사항 글 봤을 때 수정과 삭제 버튼이 나타납니다.
 ![view_notion.png](display%2Fview_notion.png)
+- 관리자는 수정과 삭제 등록을 할 수 있지만 일반 사용자는 읽기만 가능합니다.
 
 ### 페이지 준비중 화면
+- 아직 구현되지 않은 페이지에 접근할 경우 준비중 화면이 출력됩니다.
 ![ready.png](display%2Fready.png)
 
 ## ⚒️ 기능 목록
