@@ -3,6 +3,7 @@ package article.service;
 
 import article.Article;
 import article.dto.ArticleDto;
+import article.dto.ArticleSearch;
 import article.repository.ArticleJdbcRepository;
 import article.repository.ArticleRepository;
 import common.exception.ArticleException;
@@ -16,6 +17,7 @@ import member.repository.MemberRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static common.exception.ExceptionMessage.*;
 
@@ -55,6 +57,41 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         return articleRepository.save(memberId, articleDto);
+    }
+
+    @Override
+    public ArticleDto searchArticle(Long articleId) {
+        Optional<Article> findArticle = articleRepository.findById(articleId);
+        if (!findArticle.isPresent()) {
+            throw new ArticleException(ARTICLE_EXCEPTION);
+        }
+        Article article = findArticle.get();
+        return ArticleDto.builder()
+                .title(article.getTitle())
+                .content(article.getContent())
+                .hit(article.getHit())
+                .createdDate(article.getCreatedDate())
+                .build();
+    }
+
+    @Override
+    public List<ArticleDto> searchArticles(ArticleSearch condition) {
+        List<Article> findArticles = articleRepository.findByCondition(condition);
+        return findArticles.stream()
+                .map(article -> ArticleDto.builder()
+                        .articleId(article.getArticleId())
+                        .title(article.getTitle())
+                        .content(article.getContent())
+                        .hit(article.getHit())
+                        .createdDate(article.getCreatedDate())
+                        .build()
+                )
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public int getTotalCount() {
+        return articleRepository.findTotalCount();
     }
 
     @Override

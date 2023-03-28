@@ -34,7 +34,7 @@ class ArticleServiceTest {
     void beforeEach() {
         memberRepository.save(new MemberAddDto("ssafy", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "010101", "1", "광주5반", CLIENT));
         memberId = memberRepository.findByLoginId("ssafy").get().getId();
-        articleRepository.save(memberId , new ArticleDto("beforeEach title", "beforeEach content"));
+        articleRepository.save(memberId , ArticleDto.builder().title("beforeEach title").content("beforeEach content").build());
         articleId = articleRepository.findByMemberId(memberId).get(0).getArticleId();
     }
 
@@ -48,7 +48,7 @@ class ArticleServiceTest {
     @DisplayName("게시물 등록")
     void addArticle() {
         //given
-        ArticleDto articleDto = new ArticleDto("title", "content");
+        ArticleDto articleDto = ArticleDto.builder().title("beforeEach title").content("beforeEach content").build();
 
         //when
         int count = articleService.addArticle(memberId, articleDto);
@@ -61,7 +61,7 @@ class ArticleServiceTest {
     @DisplayName("게시물 등록#미등록 회원 예외")
     void exception_member() {
         //given
-        ArticleDto articleDto = new ArticleDto("title", "content");
+        ArticleDto articleDto = ArticleDto.builder().title("beforeEach title").content("beforeEach content").build();
 
         //when
         //then
@@ -74,7 +74,7 @@ class ArticleServiceTest {
     @DisplayName("게시물 수정")
     void editArticle() {
         //given
-        ArticleDto articleDto = new ArticleDto("new title", "new content");
+        ArticleDto articleDto = ArticleDto.builder().title("beforeEach title").content("beforeEach content").build();
 
         //when
         int count = articleService.editArticle(articleId, memberId, articleDto);
@@ -88,7 +88,7 @@ class ArticleServiceTest {
     @DisplayName("게시물 수정#수정 권한이 없는 회원")
     void editArticle_exception_member() {
         //given
-        ArticleDto articleDto = new ArticleDto("new title", "new content");
+        ArticleDto articleDto = ArticleDto.builder().title("beforeEach title").content("beforeEach content").build();
 
         //when
         //then
@@ -101,7 +101,7 @@ class ArticleServiceTest {
     @DisplayName("게시물 수정#등록되지 않은 게시물")
     void editArticle_exception_article() {
         //given
-        ArticleDto articleDto = new ArticleDto("new title", "new content");
+        ArticleDto articleDto = ArticleDto.builder().title("beforeEach title").content("beforeEach content").build();
 
         //when
         //then

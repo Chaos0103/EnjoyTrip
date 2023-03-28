@@ -26,11 +26,11 @@
         </tr>
         </thead>
         <tbody class="table-group-divider">
-        <c:forEach items="${notions}" var="notion" varStatus="status">
+        <c:forEach items="${articles}" var="article" varStatus="status">
           <tr>
             <th scope="row" class='text-center'>${status.count}</th>
-            <td><a class='linkToNotion' href='${root}?action=view&notionId=${notion.id}'>${notion.title}</a></td>
-            <td class='text-center'>${notion.createdDate}</td>
+            <td><a class='linkToNotion' href='${root}?action=view&notionId=${article.id}'>${article.title}</a></td>
+            <td class='text-center'>${article.createdDate}</td>
           </tr>
         </c:forEach>
         </tbody>
@@ -51,7 +51,7 @@
           <%-- 페이징번호 처리시작 --%>
           <c:forEach var="num" begin="${page.startPage}" end="${page.endPage}">
             <li class="page-item">
-              <a class="page-link" href="${root}/notion?action=list&pageNum=${num}&amount=${page.amount}">${num}</a>
+              <a class="page-link" href="${root}/article?action=list&pageNum=${num}&amount=${page.amount}">${num}</a>
             </li>
           </c:forEach>
           <%-- 페이징번호 처리종료 --%>
@@ -59,7 +59,7 @@
           <c:if test="${page.next}">
             <li class="page-item">
               <a class="page-link"
-                 href="${root}/notion?action=list&pageNum=${page.endPage + 1}&amount=${page.amount}">다음</a>
+                 href="${root}/article?action=list&pageNum=${page.endPage + 1}&amount=${page.amount}">다음</a>
             </li>
           </c:if>
           <%-- 시작버튼종료 --%>
@@ -67,11 +67,9 @@
       </nav>
     </div>
     <%-- 페이징 종료 --%>
-    <c:if test="${authority eq 'ADMIN'}">
-      <div class='wrapper m-auto mt-5'>
-        <a href='${root}?action=mvwrite' type='button' id='btnAddNotification' class='btn btn-success'>공지등록</a>
-      </div>
-    </c:if>
+    <div class='wrapper m-auto mt-5'>
+      <a href='${root}?action=mvwrite' type='button' id='btnAddNotification' class='btn btn-success'>게시물 등록</a>
+    </div>
   </div>
 </main>
 <%-- end section --%>

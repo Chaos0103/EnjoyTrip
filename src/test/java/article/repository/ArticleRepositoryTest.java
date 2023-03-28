@@ -38,7 +38,7 @@ class ArticleRepositoryTest {
     void save() {
         //given
         Member member = memberRepository.findByLoginId("ssafy").get();
-        ArticleDto articleDto = new ArticleDto("title", "content");
+        ArticleDto articleDto = ArticleDto.builder().title("beforeEach title").content("beforeEach content").build();
 
         //when
         int count = articleRepository.save(member.getId(), articleDto);
@@ -52,10 +52,10 @@ class ArticleRepositoryTest {
     void update() {
         //given
         Member member = memberRepository.findByLoginId("ssafy").get();
-        articleRepository.save(member.getId(), new ArticleDto("title", "content"));
+        articleRepository.save(member.getId(), ArticleDto.builder().title("beforeEach title").content("beforeEach content").build());
         List<Article> articles = articleRepository.findByMemberId(member.getId());
         Article article = articles.get(0);
-        ArticleDto articleDto = new ArticleDto("new title", "new content");
+        ArticleDto articleDto = ArticleDto.builder().title("beforeEach title").content("beforeEach content").build();
 
         //when
         int count = articleRepository.update(article.getArticleId(), articleDto);
@@ -69,7 +69,7 @@ class ArticleRepositoryTest {
     void remove() {
         //given
         Member member = memberRepository.findByLoginId("ssafy").get();
-        articleRepository.save(member.getId(), new ArticleDto("title", "content"));
+        articleRepository.save(member.getId(), ArticleDto.builder().title("beforeEach title").content("beforeEach content").build());
         List<Article> articles = articleRepository.findByMemberId(member.getId());
         Article article = articles.get(0);
 

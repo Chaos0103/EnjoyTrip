@@ -49,10 +49,12 @@ public class MemberController extends HttpServlet {
                 forward(request, response, path);
                 break;
             case "myArticle"://내가 쓴 게시물 보기
+                forward(request, response, "/error/ready.jsp");
 //                path = viewMypage(request, response);
 //                redirect(request, response, path);
                 break;
             case "myHotplace"://내가 등록한 핫플레이스 목록 보비
+                forward(request, response, "/error/ready.jsp");
 //                path = viewMypage(request, response);
 //                redirect(request, response, path);
                 break;

@@ -1,7 +1,11 @@
 package article.controller;
 
+import article.dto.ArticleDto;
+import article.dto.ArticleSearch;
 import article.service.ArticleService;
 import article.service.ArticleServiceImpl;
+import common.Page;
+import member.dto.LoginMember;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,7 +13,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/article")
 public class ArticleController extends HttpServlet {
@@ -23,7 +29,120 @@ public class ArticleController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/error/ready.jsp");
+        String action = request.getParameter("action");
+        switch (action) {
+            case "list":
+                doList(request, response);
+                break;
+            case "mvwrite":
+                doMvWriter(request, response);
+                break;
+            case "write":
+                doWriter(request, response);
+                break;
+            case "view":
+                doView(request, response);
+                break;
+            default:
+                forward(request, response, "/error/ready.jsp");
+                break;
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        doGet(request, response);
+    }
+
+    private void doList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        String writer = request.getParameter("writer");
+        String hit = request.getParameter("hit");
+        if (hit == null) {
+            hit = "desc";
+        }
+        String createdDate = request.getParameter("createdDate");
+        if (createdDate == null) {
+            createdDate = "desc";
+        }
+
+        int pageNum = 1;
+        int amount = 10;
+
+        if (request.getParameter("pageNum") != null && request.getParameter("amount") != null) {
+            pageNum = Integer.parseInt(request.getParameter("pageNum"));
+            amount = Integer.parseInt(request.getParameter("amount"));
+        }
+
+
+        ArticleSearch condition = ArticleSearch.builder()
+                .title(title)
+                .content(content)
+                .writer(writer)
+                .hit(hit)
+                .createdDate(createdDate)
+                .build();
+
+        List<ArticleDto> articles = articleService.searchArticles(condition);
+        int totalCount = articleService.getTotalCount();
+        Page page = new Page(pageNum, amount, totalCount);
+
+        request.setAttribute("page", page);
+        request.setAttribute("articles", articles);
+        forward(request, response, "/article/articleList.jsp");
+    }
+
+    private void doMvWriter(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+        if (loginMember == null) {
+            request.setAttribute("msg", "로그인 후 사용해주세요.");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/article/articleList.jsp");
+            dispatcher.forward(request, response);
+        }
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/article/addArticle.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void doWriter(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return;
+        }
+
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+
+        ArticleDto articleDto = ArticleDto.builder()
+                .title(title)
+                .content(content)
+                .build();
+
+        int result = articleService.addArticle(loginMember.getId(), articleDto);
+        if (result == 0) {
+            return;
+        }
+        response.sendRedirect(request.getContextPath() + "/article?action=list");
+    }
+
+    private void doView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+
+        Long articleId = Long.parseLong(request.getParameter("articleId"));
+
+        ArticleDto article = articleService.searchArticle(articleId);
+
+        request.setAttribute("article", article);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/article/viewArticle.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void forward(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher(path);
         dispatcher.forward(request, response);
     }
 }

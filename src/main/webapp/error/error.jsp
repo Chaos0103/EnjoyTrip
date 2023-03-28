@@ -9,12 +9,12 @@
 <body>
 <!-- start header -->
 <header class="border-bottom py-3 mb-4">
-<%--  <%@include file="/common/header.jsp" %>--%>
+  <%@include file="/common/header.jsp" %>
 </header>
 <!-- end header -->
 <div class="text-center">
-  <img src="../assets/img/error.jpeg" alt="에러"/>
+  <img src="../assets/img/error.png" alt="에러"/>
 </div>
-<%--<%@include file="/common/footer.jsp" %>--%>
+<%@include file="/common/footer.jsp" %>
 </body>
 </html>
