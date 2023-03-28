@@ -23,12 +23,14 @@ public class HotPlace {
     private AttractionInfo attractionInfo;
 
     @Builder
-    public HotPlace(Long id, String name, String desc, String visitedDate, UploadFile uploadFile, Integer contentTypeId, Member member, AttractionInfo attractionInfo) {
+    public HotPlace(Long id, String name, String desc, String visitedDate, UploadFile uploadFile, LocalDateTime createdDate, LocalDateTime lastModifiedDate, Integer contentTypeId, Member member, AttractionInfo attractionInfo) {
         this.id = id;
         this.name = name;
         this.desc = desc;
         this.visitedDate = visitedDate;
         this.uploadFile = uploadFile;
+        this.createdDate = createdDate;
+        this.lastModifiedDate = lastModifiedDate;
         this.contentTypeId = contentTypeId;
         this.member = member;
         this.attractionInfo = attractionInfo;
