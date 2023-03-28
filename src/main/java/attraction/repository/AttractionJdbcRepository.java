@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class AttractionJdbcRepository implements AttractionRepository {
 
@@ -24,6 +25,31 @@ public class AttractionJdbcRepository implements AttractionRepository {
         return attractionRepository;
     }
 
+
+    @Override
+    public Optional<AttractionInfo> findById(int contentId) {
+        AttractionInfo attractionInfo = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from attraction_info where cotent_id = ?";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, contentId);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                attractionInfo = createAttractionInfo(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return attractionInfo;
+    }
 
     @Override
     public List<AttractionInfo> findByConditions(AttractionSearch condition) {
