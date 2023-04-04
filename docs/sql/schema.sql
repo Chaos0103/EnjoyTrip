@@ -16,7 +16,7 @@ create table if not exists `MEMBER`
     `gender`                      varchar(1)  not null,
     `nickname`                    varchar(10) not null,
     `nickname_last_modified_date` timestamp   not null default current_timestamp,
-    `authority`                   varchar(10) not null default `client`,
+    `authority`                   varchar(10) not null default 'client',
     `created_date`                timestamp   not null default current_timestamp,
     `last_modified_date`          timestamp   not null default current_timestamp
 );
@@ -55,3 +55,8 @@ create table if not exists `NOTION`
     foreign key (`created_by`) references MEMBER (`member_id`),
     foreign key (`last_modified_by`) references MEMBER (`member_id`)
 );
+
+create table if not exists `HOT_PLACE`
+(
+
+)
