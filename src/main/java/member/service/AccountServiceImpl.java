@@ -26,14 +26,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public LoginMember login(String loginId, String password) {
+    public LoginMember login(String loginId, String loginPw) {
         Optional<Member> findMember = memberRepository.findByLoginId(loginId);
         if (!findMember.isPresent()) {
             throw new LoginException(LOGIN_EXCEPTION);
         }
 
         Member member = findMember.get();
-        if (!member.getLoginPw().equals(password)) {
+        if (!member.getLoginPw().equals(loginPw)) {
             throw new LoginException(LOGIN_EXCEPTION);
         }
 
