@@ -35,9 +35,8 @@
             <div class="input-group">
                     <textarea type="text" name="content" class="form-control" id="basic-url"
                               aria-describedby="basic-addon3"
-                              aria-label="With textarea" rows='20'></textarea>
+                              aria-label="With textarea" rows='20' placeholder="내용을 입력하세요"></textarea>
             </div>
-            <div class="form-text">내용을 입력하세요</div>
           </div>
         </div>
       </div>

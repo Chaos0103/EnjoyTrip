@@ -57,7 +57,8 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
           <button type="button" class="btn btn-danger" data-bs-target="#DeleteConfirmModal"
-                  data-bs-toggle="modal" data-bs-dismiss="modal">삭제하기</button>
+                  data-bs-toggle="modal" data-bs-dismiss="modal">삭제하기
+          </button>
         </div>
       </div>
     </div>
@@ -75,16 +76,17 @@
         </div>
         <div class="modal-footer">
           <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"
-                  data-bs-dismiss="modal">확인</button>
+                  data-bs-dismiss="modal">확인
+          </button>
         </div>
       </div>
     </div>
   </div>
   <%-- 삭제 모달 --%>
+</div>
+<!-- start footer -->
 
-  <!-- start footer -->
-
-  <%@include file="/common/footer.jsp" %>
-  <!-- end footer -->
+<%@include file="/common/footer.jsp" %>
+<!-- end footer -->
 </body>
 </html>
