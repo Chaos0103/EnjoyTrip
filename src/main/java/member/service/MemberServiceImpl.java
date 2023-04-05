@@ -32,7 +32,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public int signUp(MemberAddDto memberAddDto) {
         Optional<Member> findMember = memberRepository.duplicateSignup(memberAddDto);
-        if (!findMember.isPresent()) {
+        if (findMember.isPresent()) {
             throw new SignUpException();
         }
 
