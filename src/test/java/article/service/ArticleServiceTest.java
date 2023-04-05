@@ -74,7 +74,7 @@ class ArticleServiceTest {
     @DisplayName("게시물 수정")
     void editArticle() {
         //given
-        ArticleDto articleDto = ArticleDto.builder().title("beforeEach title").content("beforeEach content").build();
+        ArticleDto articleDto = ArticleDto.builder().title("new title").content("new content").build();
 
         //when
         int count = articleService.editArticle(articleId, memberId, articleDto);
