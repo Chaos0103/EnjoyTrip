@@ -18,7 +18,7 @@
   <div class="container-sm">
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-sm-start ">
       <table class="table m-auto wrapper">
-        <thead>
+        <thead class="table-light">
         <tr>
           <th scope="col" class=' text-center'>번호</th>
           <th scope="col" class=' text-center'>제목</th>
@@ -26,6 +26,15 @@
         </tr>
         </thead>
         <tbody class="table-group-divider">
+        <c:forEach items="${topNotions}" var="notion">
+          <tr>
+            <th scope="row" class='text-center'>
+              <span class="badge text-bg-primary">공지</span>
+            </th>
+            <td><a class='linkToNotion' href='${root}?action=view&notionId=${notion.id}'>${notion.title}</a></td>
+            <td class='text-center'>${notion.createdDate}</td>
+          </tr>
+        </c:forEach>
         <c:forEach items="${notions}" var="notion" varStatus="status">
           <tr>
             <th scope="row" class='text-center'>${status.count}</th>

@@ -30,14 +30,19 @@
     </div>
     <div class='notion-body'>
       <div>
-        <div class=' notion-content'>
+        <div class='notion-content'>
           <div class="mb-3">
             <div class="input-group">
                     <textarea type="text" name="content" class="form-control" id="basic-url"
                               aria-describedby="basic-addon3"
-                              aria-label="With textarea" rows='20'></textarea>
+                              aria-label="With textarea" rows='20' placeholder="내용을 입력하세요"></textarea>
             </div>
-            <div class="form-text">내용을 입력하세요</div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+              <label class="form-check-label" for="flexCheckDefault">
+                상단 고정
+              </label>
+            </div>
           </div>
         </div>
       </div>
