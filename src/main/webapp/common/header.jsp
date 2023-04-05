@@ -14,6 +14,9 @@
       <a href="${root}/article?action=list" class="nav-link px-2 link-dark">자유게시판</a>
     </li>
     <li>
+      <a href="${root}/hotPlace?action=list" class="nav-link px-2 link-dark">핫플레이스</a>
+    </li>
+    <li>
       <a href="${root}/notion?action=list" class="nav-link px-2 link-dark">공지사항</a>
     </li>
 
