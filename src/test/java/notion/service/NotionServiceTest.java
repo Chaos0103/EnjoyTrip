@@ -29,10 +29,10 @@ class NotionServiceTest {
     @BeforeEach
     void beforeEach() {
         memberRepository.save(new MemberAddDto("admin", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "010101", "1", "광주5반", ADMIN));
-        adminId = memberRepository.findByLoginIdAndLoginPw("admin").get().getId();
+        adminId = memberRepository.findByLoginId("admin").get().getId();
 
         memberRepository.save(new MemberAddDto("client", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "010101", "1", "광주5반", CLIENT));
-        clientId = memberRepository.findByLoginIdAndLoginPw("client").get().getId();
+        clientId = memberRepository.findByLoginId("client").get().getId();
 
         notionRepository.save(adminId, new NotionDto(0L, "notion title", "notion content", false, null));
         notionId = notionRepository.findAll().get(0).getId();

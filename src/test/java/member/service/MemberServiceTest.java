@@ -43,7 +43,7 @@ class MemberServiceTest {
         memberService.signUp(memberAddDto);
 
         //then
-        Optional<Member> findMember = memberRepository.findByLoginIdAndLoginPw("ssafy");
+        Optional<Member> findMember = memberRepository.findByLoginId("ssafy");
         assertThat(findMember).isPresent();
     }
 
@@ -101,7 +101,7 @@ class MemberServiceTest {
     @DisplayName("비밀번호 변경")
     void changeLoginPw() {
         //given
-        Member member = memberRepository.findByLoginIdAndLoginPw("ssafy").get();
+        Member member = memberRepository.findByLoginId("ssafy").get();
 
         //when
         memberService.changePassword(member.getId(), "pw123456");
@@ -125,7 +125,7 @@ class MemberServiceTest {
     @DisplayName("이메일 변경")
     void changeEmail() {
         //given
-        Member member = memberRepository.findByLoginIdAndLoginPw("ssafy").get();
+        Member member = memberRepository.findByLoginId("ssafy").get();
 
         //when
         memberService.changeEmail(member.getId(), "ssafy9@ssafy.com");
@@ -149,7 +149,7 @@ class MemberServiceTest {
     @DisplayName("이메일 변경#이메일 중복")
     void changeEmail_exception_email() {
         //given
-        Member member = memberRepository.findByLoginIdAndLoginPw("ssafy").get();
+        Member member = memberRepository.findByLoginId("ssafy").get();
 
         //when
         //then
@@ -161,7 +161,7 @@ class MemberServiceTest {
     @DisplayName("연락처 변경")
     void changePhone() {
         //given
-        Member member = memberRepository.findByLoginIdAndLoginPw("ssafy").get();
+        Member member = memberRepository.findByLoginId("ssafy").get();
 
         //when
         memberService.changePhone(member.getId(), "01011111111");
@@ -185,7 +185,7 @@ class MemberServiceTest {
     @DisplayName("연락처 변경#연락처 중복")
     void changePhone_exception_phone() {
         //given
-        Member member = memberRepository.findByLoginIdAndLoginPw("ssafy").get();
+        Member member = memberRepository.findByLoginId("ssafy").get();
 
         //when
         //then
@@ -197,7 +197,7 @@ class MemberServiceTest {
     @DisplayName("닉네임 변경")
     void changeNickname() {
         //given
-        Member member = memberRepository.findByLoginIdAndLoginPw("ssafy").get();
+        Member member = memberRepository.findByLoginId("ssafy").get();
 
         //when
         memberService.changeNickname(member.getId(), "싸피9기광주5반");
@@ -221,7 +221,7 @@ class MemberServiceTest {
     @DisplayName("닉네임 변경#닉네임 중복")
     void changeNickname_exception_nickname() {
         //given
-        Member member = memberRepository.findByLoginIdAndLoginPw("ssafy").get();
+        Member member = memberRepository.findByLoginId("ssafy").get();
 
         //when
         //then
@@ -233,7 +233,7 @@ class MemberServiceTest {
     @DisplayName("닉네임 변경#변경기간")
     void changeNickname_exception_term() {
         //given
-        Member member = memberRepository.findByLoginIdAndLoginPw("ssafy").get();
+        Member member = memberRepository.findByLoginId("ssafy").get();
 
         //when
         memberService.changeNickname(member.getId(), "싸피9기광주5반");
