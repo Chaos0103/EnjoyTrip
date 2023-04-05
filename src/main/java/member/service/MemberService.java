@@ -9,7 +9,7 @@ public interface MemberService {
 
     int signUp(MemberAddDto memberAddDto);
 
-    Optional<MemberDto> myPage(Long memberId);
+    MemberDto myPage(Long memberId);
 
     void changePassword(Long memberId, String loginPw);
 

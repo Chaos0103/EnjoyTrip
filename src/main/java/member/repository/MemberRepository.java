@@ -15,6 +15,8 @@ public interface MemberRepository {
 
     Optional<Member> findByLoginIdAndLoginPw(String loginId, String loginPw);
 
+    Optional<Member> duplicateSignup(MemberAddDto memberAddDto);
+
     Optional<Member> findByEmail(String email);
 
     Optional<Member> findByPhone(String phone);

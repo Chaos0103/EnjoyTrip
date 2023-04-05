@@ -31,23 +31,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public int signUp(MemberAddDto memberAddDto) {
-        Optional<Member> loginIdCheck = memberRepository.findByLoginId(memberAddDto.getLoginId());
-        if (loginIdCheck.isPresent()) {
-            throw new SignUpException();
-        }
-
-        Optional<Member> emailCheck = memberRepository.findByEmail(memberAddDto.getEmail());
-        if (emailCheck.isPresent()) {
-            throw new SignUpException();
-        }
-
-        Optional<Member> phoneCheck = memberRepository.findByPhone(memberAddDto.getPhone());
-        if (phoneCheck.isPresent()) {
-            throw new SignUpException();
-        }
-
-        Optional<Member> nicknameCheck = memberRepository.findByNickname(memberAddDto.getNickname());
-        if (nicknameCheck.isPresent()) {
+        Optional<Member> findMember = memberRepository.duplicateSignup(memberAddDto);
+        if (!findMember.isPresent()) {
             throw new SignUpException();
         }
 
@@ -55,14 +40,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Optional<MemberDto> myPage(Long memberId) {
-        Optional<Member> findMember = memberRepository.findById(memberId);
-        if (!findMember.isPresent()) {
-            return Optional.empty();
-        }
+    public MemberDto myPage(Long memberId) {
+        Member member = getMemberByMemberId(memberId);
 
-        Member member = findMember.get();
-        MemberDto memberDto = MemberDto.builder()
+        return MemberDto.builder()
                 .loginId(member.getLoginId())
                 .loginPw(member.getLoginPw())
                 .username(member.getUsername())
@@ -73,18 +54,11 @@ public class MemberServiceImpl implements MemberService {
                 .nickname(member.getNickname())
                 .authority(member.getAuthority())
                 .build();
-
-        return Optional.of(memberDto);
     }
 
     @Override
     public void changePassword(Long memberId, String loginPw) {
-        Optional<Member> findMember = memberRepository.findById(memberId);
-        if (!findMember.isPresent()) {
-            throw new InformationChangeException();
-        }
-
-        Member member = findMember.get();
+        Member member = getMemberByMemberId(memberId);
         member.changeLoginPw(loginPw);
 
         updateValidation(member);
@@ -94,17 +68,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void changeEmail(Long memberId, String email) {
-        Optional<Member> findMember = memberRepository.findById(memberId);
-        if (!findMember.isPresent()) {
-            throw new InformationChangeException();
-        }
+        Member member = getMemberByMemberId(memberId);
 
         Optional<Member> emailCheck = memberRepository.findByEmail(email);
         if (emailCheck.isPresent()) {
             throw new InformationChangeException();
         }
 
-        Member member = findMember.get();
         member.changeEmail(email);
 
         updateValidation(member);
@@ -114,17 +84,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void changePhone(Long memberId, String phone) {
-        Optional<Member> findMember = memberRepository.findById(memberId);
-        if (!findMember.isPresent()) {
-            throw new InformationChangeException();
-        }
+        Member member = getMemberByMemberId(memberId);
 
         Optional<Member> phoneCheck = memberRepository.findByPhone(phone);
         if (phoneCheck.isPresent()) {
             throw new InformationChangeException();
         }
 
-        Member member = findMember.get();
         member.changePhone(phone);
 
         updateValidation(member);
@@ -134,17 +100,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void changeNickname(Long memberId, String nickname) {
-        Optional<Member> findMember = memberRepository.findById(memberId);
-        if (!findMember.isPresent()) {
-            throw new InformationChangeException();
-        }
-
+        Member member = getMemberByMemberId(memberId);
         Optional<Member> nicknameCheck = memberRepository.findByNickname(nickname);
         if (nicknameCheck.isPresent()) {
             throw new InformationChangeException();
         }
 
-        Member member = findMember.get();
+
         if (member.getNicknameLastModifiedDate().isAfter(LocalDateTime.now().minusDays(30))) {
             throw new InformationChangeException();
         }
@@ -154,6 +116,27 @@ public class MemberServiceImpl implements MemberService {
         updateValidation(member);
 
         memberRepository.update(memberId, member);
+    }
+
+    @Override
+    public void withdrawal(Long memberId, String loginPw) {
+        Member member = getMemberByMemberId(memberId);
+
+        if (!member.getLoginPw().equals(loginPw)) {
+            throw new WithdrawalException();
+        }
+
+        memberRepository.remove(memberId);
+
+    }
+
+    private Member getMemberByMemberId(Long memberId) {
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        if (!findMember.isPresent()) {
+            throw new InformationChangeException();
+        }
+
+        return findMember.get();
     }
 
     private void updateValidation(Member member) {
@@ -170,21 +153,5 @@ public class MemberServiceImpl implements MemberService {
         if (!responses.isEmpty()) {
             throw new InformationChangeException();
         }
-    }
-
-    @Override
-    public void withdrawal(Long memberId, String loginPw) {
-        Optional<Member> findMember = memberRepository.findById(memberId);
-        if (!findMember.isPresent()) {
-            throw new WithdrawalException();
-        }
-
-        Member member = findMember.get();
-        if (!member.getLoginPw().equals(loginPw)) {
-            throw new WithdrawalException();
-        }
-
-        memberRepository.remove(memberId);
-
     }
 }

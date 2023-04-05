@@ -134,6 +134,35 @@ public class MemberJdbcRepository implements MemberRepository {
     }
 
     @Override
+    public Optional<Member> duplicateSignup(MemberAddDto memberAddDto) {
+        Member member = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from member where login_id = ? or email = ? or phone = ? or nickname = ?";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, memberAddDto.getLoginId());
+            pstmt.setString(2, memberAddDto.getEmail());
+            pstmt.setString(3, memberAddDto.getPhone());
+            pstmt.setString(4, memberAddDto.getNickname());
+
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                member = createMember(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return Optional.ofNullable(member);
+    }
+
+    @Override
     public Optional<Member> findByEmail(String email) {
         Member member = null;
         Connection conn = null;
