@@ -79,7 +79,7 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> findArticles = articleRepository.findByCondition(condition);
         return findArticles.stream()
                 .map(article -> ArticleDto.builder()
-                        .articleId(article.getArticleId())
+                        .id(article.getArticleId())
                         .title(article.getTitle())
                         .content(article.getContent())
                         .hit(article.getHit())

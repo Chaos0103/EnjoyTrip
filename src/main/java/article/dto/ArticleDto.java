@@ -8,15 +8,15 @@ import java.time.LocalDateTime;
 @Data
 public class ArticleDto {
 
-    private Long articleId;
+    private Long id;
     private String title;
     private String content;
     private int hit;
     private LocalDateTime createdDate;
 
     @Builder
-    public ArticleDto(Long articleId, String title, String content, int hit, LocalDateTime createdDate) {
-        this.articleId = articleId;
+    public ArticleDto(Long id, String title, String content, int hit, LocalDateTime createdDate) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.hit = hit;
