@@ -15,7 +15,7 @@ import member.repository.MemberRepository;
 
 import java.util.Optional;
 
-public class HotPlaceServiceImpl implements HotPlaceService{
+public class HotPlaceServiceImpl implements HotPlaceService {
 
     private static final HotPlaceService hotPlaceService = new HotPlaceServiceImpl();
 
