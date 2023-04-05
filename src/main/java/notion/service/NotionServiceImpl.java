@@ -56,9 +56,10 @@ public class NotionServiceImpl implements NotionService {
     }
 
     @Override
-    public List<NotionDto> searchNotions(int pageNum, int amount) {
-        List<Notion> notions = notionRepository.findByPaging(pageNum, amount);
-        return notions.stream()
+    public List<NotionDto> searchTopNotions() {
+        List<Notion> topNotions = notionRepository.findTopAll();
+
+        return topNotions.stream()
                 .map(notion ->
                         NotionDto.builder()
                                 .id(notion.getId())
@@ -66,6 +67,21 @@ public class NotionServiceImpl implements NotionService {
                                 .content(notion.getContent())
                                 .createdDate(notion.getCreatedDate())
                                 .build()
+                )
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<NotionDto> searchNotions(int pageNum, int amount) {
+        List<Notion> notions = notionRepository.findByPaging(pageNum, amount);
+
+        return notions.stream()
+                .map(notion -> NotionDto.builder()
+                        .id(notion.getId())
+                        .title(notion.getTitle())
+                        .content(notion.getContent())
+                        .createdDate(notion.getCreatedDate())
+                        .build()
                 )
                 .collect(Collectors.toList());
     }

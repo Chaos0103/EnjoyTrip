@@ -14,6 +14,8 @@ public interface NotionRepository {
 
     List<Notion> findAll();
 
+    List<Notion> findTopAll();
+
     List<Notion> findByPaging(int pageNum, int amount);
 
     int getTotalCount();

@@ -78,11 +78,13 @@ public class NotionController extends HttpServlet {
             amount = Integer.parseInt(request.getParameter("amount"));
         }
 
+        List<NotionDto> topNotions = notionService.searchTopNotions();
         List<NotionDto> notions = notionService.searchNotions(pageNum, amount);
         int totalCount = notionService.getTotalCount();
         Page page = new Page(pageNum, amount, totalCount);
 
         request.setAttribute("page", page);
+        request.setAttribute("topNotions", topNotions);
         request.setAttribute("notions", notions);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/notion/notionList.jsp");

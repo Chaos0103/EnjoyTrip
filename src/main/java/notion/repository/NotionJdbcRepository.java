@@ -98,6 +98,31 @@ public class NotionJdbcRepository implements NotionRepository {
     }
 
     @Override
+    public List<Notion> findTopAll() {
+        List<Notion> notions = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from notion where top = 1 order by created_date desc";
+
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                notions.add(createNotion(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return notions;
+    }
+
+    @Override
     public List<Notion> findByPaging(int pageNum, int amount) {
         List<Notion> notions = new ArrayList<>();
         Connection conn = null;
@@ -105,7 +130,7 @@ public class NotionJdbcRepository implements NotionRepository {
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from notion order by created_date desc limit ?, ?;";
+            String sql = "select * from notion where top = 0 order by created_date desc limit ?, ?;";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, (pageNum - 1) * amount);
