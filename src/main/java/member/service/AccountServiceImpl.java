@@ -27,15 +27,11 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public LoginMember login(String loginId, String loginPw) {
-        Optional<Member> findMember = memberRepository.findByLoginId(loginId);
+        Optional<Member> findMember = memberRepository.findByLoginIdAndLoginPw(loginId, loginPw);
         if (!findMember.isPresent()) {
             throw new LoginException(LOGIN_EXCEPTION);
         }
-
         Member member = findMember.get();
-        if (!member.getLoginPw().equals(loginPw)) {
-            throw new LoginException(LOGIN_EXCEPTION);
-        }
 
         return LoginMember.builder()
                 .id(member.getId())
@@ -53,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
         }
 
         Member member = findMember.get();
-        if (!member.getPhone().equals(phone)) {
+        if (isNotEqual(member.getPhone(), phone)) {
             throw new AccountException(ACCOUNT_EXCEPTION);
         }
 
@@ -66,12 +62,17 @@ public class AccountServiceImpl implements AccountService {
         if (!findMember.isPresent()) {
             throw new AccountException(ACCOUNT_EXCEPTION);
         }
-
         Member member = findMember.get();
-        if (!member.getEmail().equals(email) || !member.getPhone().equals(phone)) {
+
+        if (isNotEqual(member.getEmail(), email)
+                || isNotEqual(member.getPhone(), phone)) {
             throw new AccountException(ACCOUNT_EXCEPTION);
         }
 
         return member.getLoginPw();
+    }
+
+    private static boolean isNotEqual(String target1, String target2) {
+        return !target1.equals(target2);
     }
 }

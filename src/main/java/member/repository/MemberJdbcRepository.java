@@ -32,7 +32,7 @@ public class MemberJdbcRepository implements MemberRepository {
         try {
             conn = dbConnectionUtil.getConnection();
             String sql = "insert into member(login_id, login_pw, username, email, phone, birth, gender, nickname, nickname_last_modified_date, authority)" +
-                    " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                    " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, memberAddDto.getLoginId());
@@ -63,7 +63,7 @@ public class MemberJdbcRepository implements MemberRepository {
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from member where member_id = ?;";
+            String sql = "select * from member where member_id = ?";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, memberId);
@@ -88,10 +88,37 @@ public class MemberJdbcRepository implements MemberRepository {
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from member where login_id = ?;";
+            String sql = "select * from member where login_id = ?";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, loginId);
+
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                member = createMember(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return Optional.ofNullable(member);
+    }
+
+    @Override
+    public Optional<Member> findByLoginIdAndLoginPw(String loginId, String loginPw) {
+        Member member = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from member where login_id = ? and login_pw = ?";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, loginId);
+            pstmt.setString(2, loginPw);
 
             rs = pstmt.executeQuery();
 
@@ -114,7 +141,7 @@ public class MemberJdbcRepository implements MemberRepository {
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from member where email = ?;";
+            String sql = "select * from member where email = ?";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, email);
@@ -140,7 +167,7 @@ public class MemberJdbcRepository implements MemberRepository {
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from member where phone = ?;";
+            String sql = "select * from member where phone = ?";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, phone);
@@ -166,7 +193,7 @@ public class MemberJdbcRepository implements MemberRepository {
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from member where nickname = ?;";
+            String sql = "select * from member where nickname = ?";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, nickname);
@@ -193,7 +220,7 @@ public class MemberJdbcRepository implements MemberRepository {
             conn = dbConnectionUtil.getConnection();
             String sql = "update member" +
                     " set login_pw=?, email=?, phone=?, nickname=?, nickname_last_modified_date=?, last_modified_date=?" +
-                    " where member_id=?;";
+                    " where member_id=?";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, member.getLoginPw());
@@ -220,7 +247,7 @@ public class MemberJdbcRepository implements MemberRepository {
         PreparedStatement pstmt = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "delete from member where member_id=?;";
+            String sql = "delete from member where member_id=?";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, memberId);
@@ -240,7 +267,7 @@ public class MemberJdbcRepository implements MemberRepository {
         PreparedStatement pstmt = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "delete from member;";
+            String sql = "delete from member";
 
             pstmt = conn.prepareStatement(sql);
 

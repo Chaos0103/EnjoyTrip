@@ -33,7 +33,7 @@ class ArticleServiceTest {
     @BeforeEach
     void beforeEach() {
         memberRepository.save(new MemberAddDto("ssafy", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "010101", "1", "광주5반", CLIENT));
-        memberId = memberRepository.findByLoginId("ssafy").get().getId();
+        memberId = memberRepository.findByLoginIdAndLoginPw("ssafy").get().getId();
         articleRepository.save(memberId , ArticleDto.builder().title("beforeEach title").content("beforeEach content").build());
         articleId = articleRepository.findByMemberId(memberId).get(0).getArticleId();
     }

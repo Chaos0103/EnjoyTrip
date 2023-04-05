@@ -44,7 +44,7 @@ class MemberRepositoryTest {
     @DisplayName("PK로 조회")
     void findById() {
         //given
-        Member member = memberRepository.findByLoginId("ssafy").get();
+        Member member = memberRepository.findByLoginIdAndLoginPw("ssafy").get();
 
         //when
         Optional<Member> findMember = memberRepository.findById(member.getId());
@@ -60,7 +60,7 @@ class MemberRepositoryTest {
         String loginId = "ssafy";
 
         //when
-        Optional<Member> findMember = memberRepository.findByLoginId(loginId);
+        Optional<Member> findMember = memberRepository.findByLoginIdAndLoginPw(loginId);
 
         //then
         assertThat(findMember).isPresent();
@@ -109,7 +109,7 @@ class MemberRepositoryTest {
     @DisplayName("회원업데이트")
     void update() {
         //given
-        Member member = memberRepository.findByLoginId("ssafy").get();
+        Member member = memberRepository.findByLoginIdAndLoginPw("ssafy").get();
         member.changeNickname("SSAFY9기");
         //when
         int count = memberRepository.update(member.getId(), member);
@@ -122,7 +122,7 @@ class MemberRepositoryTest {
     @DisplayName("회원삭제")
     void remove() {
         //given
-        Member member = memberRepository.findByLoginId("ssafy").get();
+        Member member = memberRepository.findByLoginIdAndLoginPw("ssafy").get();
 
         //when
         int count = memberRepository.remove(member.getId());

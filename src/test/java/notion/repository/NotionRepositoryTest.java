@@ -25,7 +25,7 @@ class NotionRepositoryTest {
     void beforeEach() {
         MemberAddDto memberAddDto = new MemberAddDto("admin", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "010101", "1", "광주5반", ADMIN);
         memberRepository.save(memberAddDto);
-        member = memberRepository.findByLoginId("admin").get();
+        member = memberRepository.findByLoginIdAndLoginPw("admin").get();
     }
 
     @AfterEach

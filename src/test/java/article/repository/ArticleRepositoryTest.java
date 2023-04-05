@@ -37,7 +37,7 @@ class ArticleRepositoryTest {
     @DisplayName("게시글 저장")
     void save() {
         //given
-        Member member = memberRepository.findByLoginId("ssafy").get();
+        Member member = memberRepository.findByLoginIdAndLoginPw("ssafy").get();
         ArticleDto articleDto = ArticleDto.builder().title("beforeEach title").content("beforeEach content").build();
 
         //when
@@ -51,7 +51,7 @@ class ArticleRepositoryTest {
     @DisplayName("게시글 수정")
     void update() {
         //given
-        Member member = memberRepository.findByLoginId("ssafy").get();
+        Member member = memberRepository.findByLoginIdAndLoginPw("ssafy").get();
         articleRepository.save(member.getId(), ArticleDto.builder().title("beforeEach title").content("beforeEach content").build());
         List<Article> articles = articleRepository.findByMemberId(member.getId());
         Article article = articles.get(0);
@@ -68,7 +68,7 @@ class ArticleRepositoryTest {
     @DisplayName("게시글 삭제")
     void remove() {
         //given
-        Member member = memberRepository.findByLoginId("ssafy").get();
+        Member member = memberRepository.findByLoginIdAndLoginPw("ssafy").get();
         articleRepository.save(member.getId(), ArticleDto.builder().title("beforeEach title").content("beforeEach content").build());
         List<Article> articles = articleRepository.findByMemberId(member.getId());
         Article article = articles.get(0);
