@@ -73,3 +73,25 @@ create table if not exists `HOT_PLACE`
     foreign key (`member_id`) references MEMBER (`member_id`),
     foreign key (`content_id`) references ATTRACTION_INFO (`content_id`)
 );
+
+create table if not exists `trip_plan`
+(
+    `trip_plan_id` bigint not null primary key auto_increment,
+    `member_id` bigint not null,
+    `title` varchar(100) not null,
+    `created_date` timestamp not null default current_timestamp,
+    `last_modified_date` timestamp not null default current_timestamp,
+    foreign key (`member_id`) references MEMBER (`member_id`)
+);
+
+create table if not exists `detail_plan`
+(
+    `detail_plan_id` bigint not null primary key auto_increment,
+    `trip_plan_id` bigint not null,
+    `content_id` int not null,
+    `sequence` int not null default 0,
+    `created_date` timestamp not null default current_timestamp,
+    `last_modified_date` timestamp not null default current_timestamp,
+    foreign key (`trip_plan_id`) references TRIP_PLAN (`trip_plan_id`),
+    foreign key (`content_id`) references ATTRACTION_INFO (`content_id`)
+);

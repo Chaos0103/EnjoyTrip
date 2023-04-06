@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class PlanJdbcRepository implements PlanRepository {
@@ -84,6 +86,49 @@ public class PlanJdbcRepository implements PlanRepository {
             dbConnectionUtil.close(rs, pstmt, conn);
         }
         return Optional.ofNullable(tripPlan);
+    }
+
+    @Override
+    public List<TripPlan> findAllByMemberId(Long memberId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<TripPlan> tripPlans = new ArrayList<>();
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from trip_plan where member_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, memberId);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                tripPlans.add(createTripPlan(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return tripPlans;
+    }
+
+    @Override
+    public void clear() {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "delete from detail_plan";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.executeUpdate();
+
+            sql = "delete from trip_plan";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(pstmt, conn);
+        }
     }
 
     private TripPlan createTripPlan(ResultSet rs) throws SQLException {
