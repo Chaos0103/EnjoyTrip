@@ -86,6 +86,26 @@ public class PlanJdbcRepository implements PlanRepository {
         return Optional.ofNullable(tripPlan);
     }
 
+    @Override
+    public void clear() {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "delete from detail_plan";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.executeUpdate();
+
+            sql = "delete from trip_plan";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(pstmt, conn);
+        }
+    }
+
     private TripPlan createTripPlan(ResultSet rs) throws SQLException {
         return TripPlan.builder()
                 .id(rs.getLong("trip_plan_id"))
