@@ -1,16 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: leeyr
-  Date: 2023/03/28
-  Time: 7:34 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-
 <form id="delete-member-form" method="post" class="needs-validation" action="/member?action=withdrawal">
   <div
-          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom col-md-7 col-lg-8"
+    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom col-md-7 col-lg-8"
   >
     <h1 class="h2">회원 탈퇴</h1>
     <div class="btn-toolbar mb-2 mb-md-0 ">
@@ -19,10 +11,8 @@
       </div>
     </div>
   </div>
-
   <div>
     <div class="col-md-7 col-lg-8">
-
       <input type="hidden" name="action" value="modifyPw">
       정말로 삭제하시겠습니까?
       <div class="row g-3">

@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+         pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <%@ include file="/common/head.jsp"%>
+  <%@ include file="/common/head.jsp" %>
   <link href="${root}/assets/css/common.member.css" rel="stylesheet"/>
   <link href="${root}/assets/css/register.css" rel="stylesheet"/>
 </head>
@@ -12,7 +12,7 @@
 <body>
 <!-- start header -->
 <header class="border-bottom py-3 mb-4">
-  <%@include file="/common/header.jsp"%>
+  <%@include file="/common/header.jsp" %>
 </header>
 <!-- end header -->
 
@@ -93,7 +93,7 @@
 <!-- end section -->
 
 <!-- start footer -->
-<%@include file="/common/footer.jsp"%>
+<%@include file="/common/footer.jsp" %>
 <!-- end footer -->
 </body>
 </html>
