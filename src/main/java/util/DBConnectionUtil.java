@@ -3,16 +3,18 @@ package util;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import static util.ConnectionConst.*;
+import java.util.ResourceBundle;
 
 public class DBConnectionUtil {
+
+    private final String baseName = "dbresource";
+    private final ResourceBundle resource = ResourceBundle.getBundle("/config/" + baseName);
 
     private static final DBConnectionUtil instance = new DBConnectionUtil();
 
     private DBConnectionUtil() {
         try {
-            Class.forName(DRIVER);
+            Class.forName(resource.getString("mysql.driver"));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -23,7 +25,11 @@ public class DBConnectionUtil {
     }
 
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+        String url = resource.getString("mysql.url");
+        String user = resource.getString("mysql.user");
+        String password = resource.getString("mysql.password");
+
+        return DriverManager.getConnection(url, user, password);
     }
 
     public void close(AutoCloseable... autoCloseables) {
