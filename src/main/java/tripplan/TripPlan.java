@@ -1,0 +1,37 @@
+package tripplan;
+
+import lombok.Builder;
+import lombok.Getter;
+import member.Member;
+
+import java.time.LocalDateTime;
+
+@Getter
+public class TripPlan {
+
+    private Long id;
+    private Member member;
+    private String title;
+    private LocalDateTime createdDate;
+    private LocalDateTime lastModifiedDate;
+
+    @Builder
+    public TripPlan(Long id, Member member, String title, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+        this.id = id;
+        this.member = member;
+        this.title = title;
+        this.createdDate = createdDate;
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    @Override
+    public String toString() {
+        return "TripPlan{" +
+                "id=" + id +
+                ", member=" + member +
+                ", title='" + title + '\'' +
+                ", createdDate=" + createdDate +
+                ", lastModifiedDate=" + lastModifiedDate +
+                '}';
+    }
+}
