@@ -20,7 +20,7 @@
       <form class="row g-3" method="get" action="${root}/hotPlace?action=list">
         <input type="hidden" name="action" value="list">
         <div class="col-auto">
-          <input type="text" class="form-control" id="inputPassword2" name="condition" placeholder="작성자, 제목, 내용">
+          <input type="text" class="form-control" id="condition" name="condition" placeholder="작성자, 제목, 내용">
         </div>
         <div class="col-auto">
           <select class="form-select" name="select">
@@ -31,6 +31,7 @@
         </div>
         <div class="col-auto">
           <button type="submit" class="btn btn-secondary mb-3">검색</button>
+          <button type="button" class="btn btn-primary mb-3" onclick="location.href='/hotPlace?action=mvwrite'">글쓰기</button>
         </div>
       </form>
     </div>

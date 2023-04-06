@@ -1,17 +1,26 @@
 package hotplace.controller;
 
+import common.FileStore;
+import hotplace.HotPlace;
+import hotplace.UploadFile;
+import hotplace.dto.HotPlaceDto;
 import hotplace.service.HotPlaceService;
 import hotplace.service.HotPlaceServiceImpl;
+import member.dto.LoginMember;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
+import java.util.Arrays;
 
 @WebServlet("/hotPlace")
+@MultipartConfig(
+        maxFileSize = 1024 * 1024 * 5,
+        maxRequestSize = 1024 * 1024 * 50
+)
 public class HotPlaceController extends HttpServlet {
 
     private HotPlaceService hotPlaceService;
@@ -28,6 +37,12 @@ public class HotPlaceController extends HttpServlet {
             case "list":
                 doList(request, response);
                 break;
+            case "mvwrite":
+                doMvwrite(request, response);
+                break;
+            case "write":
+                doWrite(request, response);
+                break;
         }
     }
 
@@ -41,8 +56,51 @@ public class HotPlaceController extends HttpServlet {
         forward(request, response, "/hotplace/hotplaceList.jsp");
     }
 
+    private void doMvwrite(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        forward(request, response, "/hotplace/addHotplace.jsp");
+    }
+
+    private void doWrite(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+        if (loginMember == null) {
+            request.setAttribute("msg", "로그인 후 사용해주세요.");
+            forward(request, response, "/account/login.jsp");
+            return;
+        }
+
+        String name = request.getParameter("name");
+        String visitedDate = request.getParameter("visitedDate");
+        int contentTypeId = Integer.parseInt(request.getParameter("contentTypeId"));
+        String desc = request.getParameter("desc");
+        int contentId = Integer.parseInt(request.getParameter("contentId"));
+
+        Part part = request.getPart("hotplaceImg");
+
+        FileStore fileStore = new FileStore();
+        UploadFile uploadFile = fileStore.storeFile(part);
+
+        HotPlaceDto hotPlaceDto = HotPlaceDto.builder()
+                .name(name)
+                .visitedDate(visitedDate)
+                .contentTypeId(contentTypeId)
+                .desc(desc)
+                .uploadFile(uploadFile)
+                .build();
+
+        int result = hotPlaceService.addHotPlace(loginMember.getId(), contentId, hotPlaceDto);
+
+        redirect(request, response, "/hotPlace?action=list");
+    }
+
     private void forward(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher(path);
         dispatcher.forward(request, response);
     }
+
+    private void redirect(HttpServletRequest request, HttpServletResponse response, String path) throws IOException {
+        response.sendRedirect(request.getContextPath() + path);
+    }
+
+
 }
