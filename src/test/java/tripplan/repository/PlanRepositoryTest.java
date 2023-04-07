@@ -61,4 +61,20 @@ class PlanRepositoryTest {
         //then
         assertThat(result).isEqualTo(1);
     }
+
+    @Test
+    @DisplayName("여행계획 업데이트")
+    void updateTripPlan() {
+        //given
+        planRepository.addTripPlan(memberId, "abc");
+        List<TripPlan> findTripPlans = planRepository.findAllByMemberId(memberId);
+        TripPlan tripPlan = findTripPlans.get(0);
+
+        //when
+        tripPlan.changeTitle("new title");
+        int result = planRepository.updateTripPlan(tripPlan.getId(), tripPlan);
+
+        //then
+        assertThat(result).isEqualTo(1);
+    }
 }
