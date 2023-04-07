@@ -14,6 +14,8 @@ public interface PlanRepository {
 
     List<TripPlan> findAllByMemberId(Long memberId);
 
+    int updateTripPlan(Long tripPlanId, TripPlan tripPlan);
+
     void clear();
 }
 
