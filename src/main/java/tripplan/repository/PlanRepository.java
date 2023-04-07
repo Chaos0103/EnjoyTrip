@@ -1,5 +1,6 @@
 package tripplan.repository;
 
+import tripplan.DetailPlan;
 import tripplan.TripPlan;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public interface PlanRepository {
     List<TripPlan> findAllByMemberId(Long memberId);
 
     int updateTripPlan(Long tripPlanId, TripPlan tripPlan);
+
+    int removeDetailPlan(Long detailPlanId);
 
     void clear();
 }
