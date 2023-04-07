@@ -1,6 +1,8 @@
 package tripplan.repository;
 
+import attraction.AttractionInfo;
 import member.Member;
+import tripplan.DetailPlan;
 import tripplan.TripPlan;
 import util.DBConnectionUtil;
 
@@ -109,6 +111,30 @@ public class PlanJdbcRepository implements PlanRepository {
     }
 
     @Override
+    public List<DetailPlan> findAllByTripPlanId(Long tripPlanId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<DetailPlan> detailPlans = new ArrayList<>();
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from detail_plan where trip_plan_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, tripPlanId);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                detailPlans.add(createDetailPlan(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return detailPlans;
+    }
+
+
+    @Override
     public int updateTripPlan(Long tripPlanId, TripPlan tripPlan) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -176,6 +202,22 @@ public class PlanJdbcRepository implements PlanRepository {
                         .build()
                 )
                 .title(rs.getString("title"))
+                .createdDate(rs.getTimestamp("created_date").toLocalDateTime())
+                .lastModifiedDate(rs.getTimestamp("last_modified_date").toLocalDateTime())
+                .build();
+    }
+
+    private static DetailPlan createDetailPlan(ResultSet rs) throws SQLException {
+        return DetailPlan.builder()
+                .id(rs.getLong("detail_plan_id"))
+                .tripPlan(TripPlan.builder()
+                        .id(rs.getLong("trip_plan_id"))
+                        .build()
+                )
+                .attractionInfo(AttractionInfo.builder()
+                        .id(rs.getInt("content_id"))
+                        .build())
+                .sequence(rs.getInt("sequence"))
                 .createdDate(rs.getTimestamp("created_date").toLocalDateTime())
                 .lastModifiedDate(rs.getTimestamp("last_modified_date").toLocalDateTime())
                 .build();
