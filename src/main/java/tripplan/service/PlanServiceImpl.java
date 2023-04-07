@@ -57,4 +57,21 @@ public class PlanServiceImpl implements PlanService {
 
         return planRepository.addDetailPlan(tripPlanId, contentId);
     }
+
+    @Override
+    public int updateTripPlan(Long memberId, Long tripPlanId, String title) {
+        Optional<TripPlan> findTripPlan = planRepository.findById(tripPlanId);
+        if (!findTripPlan.isPresent()) {
+            throw new PlanException();
+        }
+
+        TripPlan tripPlan = findTripPlan.get();
+        if (!tripPlan.getMember().getId().equals(memberId)) {
+            throw new PlanException();
+        }
+
+        tripPlan.changeTitle(title);
+
+        return planRepository.updateTripPlan(tripPlanId, tripPlan);
+    }
 }

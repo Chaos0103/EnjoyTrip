@@ -24,6 +24,12 @@ public class TripPlan {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    //== 비즈니스 로직 ==//
+    public void changeTitle(String title) {
+        this.title = title;
+        this.lastModifiedDate = LocalDateTime.now();
+    }
+
     @Override
     public String toString() {
         return "TripPlan{" +
