@@ -41,6 +41,9 @@ public class AttractionApiController extends HttpServlet {
             case "search":
                 doSearch(request, response);
                 break;
+            case "hotplace":
+
+                break;
         }
     }
 
@@ -92,5 +95,11 @@ public class AttractionApiController extends HttpServlet {
 
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().println(json);
+    }
+
+    private void doSearchHotPlace(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String title = request.getParameter("title");
+
+//        attractionService.
     }
 }

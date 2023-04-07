@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class AttractionJdbcRepository implements AttractionRepository {
+public class AttractionJdbcRepository  implements AttractionRepository {
 
     private static final AttractionRepository attractionRepository = new AttractionJdbcRepository();
     private final DBConnectionUtil dbConnectionUtil;
@@ -66,6 +66,31 @@ public class AttractionJdbcRepository implements AttractionRepository {
             pstmt.setInt(1, condition.getSidoCode());
             pstmt.setInt(2, condition.getGugunCode());
             pstmt.setInt(3, condition.getContentTypeId());
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                attractionInfos.add(createAttractionInfo(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return attractionInfos;
+    }
+
+    @Override
+    public List<AttractionInfo> findByTitle(String title) {
+        List<AttractionInfo> attractionInfos = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from attraction_info where title like ?";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, '%' + title + '%');
 
             rs = pstmt.executeQuery();
             while (rs.next()) {

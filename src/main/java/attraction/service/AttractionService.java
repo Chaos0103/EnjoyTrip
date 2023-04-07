@@ -9,4 +9,5 @@ public interface AttractionService {
 
     List<AttractionDto> searchAttraction(AttractionSearch condition);
 
+    List<AttractionDto> searchAttraction(String title);
 }

@@ -26,17 +26,8 @@
   <div class="row">
     <div class="col text-end">
       <form class="row mb-3">
-        <div class="col-8">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="관광지 검색"
-            aria-label="keyword"
-            id="keyword"
-            value=""
-          />
-        </div>
-        <div class="col">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="관광지 검색" aria-label="관광지 검색" aria-describedby="button-addon2">
           <button
             type="button"
             class="btn btn-secondary"
@@ -57,16 +48,9 @@
               />
             </svg>
           </button>
-          <!-- 검색버튼 -->
-          <button type="button" class="btn btn-success" onclick="done()">일정 확정</button>
         </div>
       </form>
-      <div id="map" class="mh-100">
-        <script
-          type="text/javascript"
-          src="//dapi.kakao.com/v2/maps/sdk.js?appkey=31ed1510d2c74b22c1d16fd9692fae6f"
-        ></script>
-      </div>
+      <div id="map" style="width: 100%; height: 500px"></div>
     </div>
     <form class="col col-6" action="${root}/hotPlace?action=write" method="post" enctype="multipart/form-data">
       <label for="uploadFileName">인증샷</label>
@@ -96,21 +80,12 @@
         name="desc"
         rows="5"
       ></textarea>
-
-      <!-- <label for='hotplaceDetail'>글쓰기</label> -->
-      <!-- <textarea id='hotplaceDetail' name='hotplaceDetail' type='file' class='form-control mb-3'> -->
-      <div class="row justify-content-end">
-        <button type="submit" class="col-1 btn btn-outline-success m-3">목록</button>
-        <button type="submit" class="col-1 btn btn-outline-primary m-3">글쓰기</button>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+        <button class="btn btn-primary me-md-2" type="submit">글쓰기</button>
+        <button class="btn btn-secondary" type="button">목록</button>
       </div>
     </form>
   </div>
-
-
-  <!-- <div class="mt-3">
-        <div id="map" style="width: 100%; height: 600px"></div>
-    </div> -->
-
   <!-- end album -->
   <!-- start right bar -->
 
@@ -148,5 +123,37 @@
 <!-- start footer -->
 <%@include file="/common/footer.jsp" %>
 <!-- end footer -->
+<script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92031818da3bea1d2a0cd22686ab48ea">
+</script>
+<script>
+    var container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
+    var options = {
+        //지도를 생성할 때 필요한 기본 옵션
+        center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+        level: 3, //지도의 레벨(확대, 축소 정도)
+    };
+
+    var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+    function setCenter(x, y) {
+        // 이동할 위도 경도 위치를 생성합니다
+        var moveLatLon = new kakao.maps.LatLng(x, y);
+
+        // 지도 중심을 이동 시킵니다
+        map.setCenter(moveLatLon);
+        // 마커가 표시될 위치입니다
+        var markerPosition = new kakao.maps.LatLng(x, y);
+
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({
+            position: markerPosition,
+        });
+
+        map.setLevel(4);
+        // 마커가 지도 위에 표시되도록 설정합니다
+        marker.setMap(map);
+    }
+</script>
 </body>
 </html>

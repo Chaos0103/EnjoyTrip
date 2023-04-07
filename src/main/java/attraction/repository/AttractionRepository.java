@@ -12,4 +12,5 @@ public interface AttractionRepository {
 
     List<AttractionInfo> findByConditions(AttractionSearch condition);
 
+    List<AttractionInfo> findByTitle(String title);
 }
