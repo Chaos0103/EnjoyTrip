@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import tripplan.DetailPlan;
 import tripplan.TripPlan;
 
 import java.util.List;
@@ -57,6 +58,39 @@ class PlanRepositoryTest {
 
         //when
         int result = planRepository.addDetailPlan(tripPlan.getId(), 125405);
+
+        //then
+        assertThat(result).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("여행계획 업데이트")
+    void updateTripPlan() {
+        //given
+        planRepository.addTripPlan(memberId, "abc");
+        List<TripPlan> findTripPlans = planRepository.findAllByMemberId(memberId);
+        TripPlan tripPlan = findTripPlans.get(0);
+
+        //when
+        tripPlan.changeTitle("new title");
+        int result = planRepository.updateTripPlan(tripPlan.getId(), tripPlan);
+
+        //then
+        assertThat(result).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("상세여행계획 삭제")
+    void removeDetailPlan() {
+        //given
+        planRepository.addTripPlan(memberId, "abc");
+        List<TripPlan> findTripPlans = planRepository.findAllByMemberId(memberId);
+        TripPlan tripPlan = findTripPlans.get(0);
+        planRepository.addDetailPlan(tripPlan.getId(), 125405);
+        DetailPlan findDetailPlan = planRepository.findAllByTripPlanId(tripPlan.getId()).get(0);
+
+        //when
+        int result = planRepository.removeDetailPlan(findDetailPlan.getId());
 
         //then
         assertThat(result).isEqualTo(1);

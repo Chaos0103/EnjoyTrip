@@ -7,6 +7,7 @@ import common.exception.PlanException;
 import member.Member;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
+import tripplan.DetailPlan;
 import tripplan.TripPlan;
 import tripplan.repository.PlanJdbcRepository;
 import tripplan.repository.PlanRepository;
@@ -56,5 +57,41 @@ public class PlanServiceImpl implements PlanService {
         }
 
         return planRepository.addDetailPlan(tripPlanId, contentId);
+    }
+
+    @Override
+    public int updateTripPlan(Long memberId, Long tripPlanId, String title) {
+        Optional<TripPlan> findTripPlan = planRepository.findById(tripPlanId);
+        if (!findTripPlan.isPresent()) {
+            throw new PlanException();
+        }
+
+        TripPlan tripPlan = findTripPlan.get();
+        if (!tripPlan.getMember().getId().equals(memberId)) {
+            throw new PlanException();
+        }
+
+        tripPlan.changeTitle(title);
+
+        return planRepository.updateTripPlan(tripPlanId, tripPlan);
+    }
+
+    @Override
+    public int removeDetailPlan(Long memberId, Long detailPlanId) {
+        Optional<DetailPlan> findDetailPlan = planRepository.findByDetailPlanId(detailPlanId);
+        if (!findDetailPlan.isPresent()) {
+            throw new PlanException();
+        }
+
+        DetailPlan detailPlan = findDetailPlan.get();
+        if (isNotMine(detailPlan, memberId)) {
+            throw new PlanException();
+        }
+
+        return planRepository.removeDetailPlan(detailPlanId);
+    }
+
+    private boolean isNotMine(DetailPlan detailPlan, Long memberId) {
+        return !detailPlan.getTripPlan().getMember().getId().equals(memberId);
     }
 }
