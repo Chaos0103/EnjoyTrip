@@ -13,6 +13,8 @@ public interface PlanRepository {
 
     Optional<TripPlan> findById(Long tripPlanId);
 
+    Optional<DetailPlan> findByDetailPlanId(Long detailPlanId);
+
     List<TripPlan> findAllByMemberId(Long memberId);
 
     List<DetailPlan> findAllByTripPlanId(Long tripPlanId);

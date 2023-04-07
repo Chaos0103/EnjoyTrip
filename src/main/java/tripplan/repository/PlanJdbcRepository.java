@@ -88,6 +88,34 @@ public class PlanJdbcRepository implements PlanRepository {
     }
 
     @Override
+    public Optional<DetailPlan> findByDetailPlanId(Long detailPlanId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        DetailPlan detailPlan = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select *" +
+                    " from detail_plan dp" +
+                    " join trip_plan tp" +
+                    " on dp.trip_plan_id = tp.trip_plan_id" +
+                    " where detail_plan_id = ?";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, detailPlanId);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                detailPlan = createJoinDetailPlan(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return Optional.ofNullable(detailPlan);
+    }
+
+    @Override
     public List<TripPlan> findAllByMemberId(Long memberId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -214,6 +242,19 @@ public class PlanJdbcRepository implements PlanRepository {
                         .id(rs.getLong("trip_plan_id"))
                         .build()
                 )
+                .attractionInfo(AttractionInfo.builder()
+                        .id(rs.getInt("content_id"))
+                        .build())
+                .sequence(rs.getInt("sequence"))
+                .createdDate(rs.getTimestamp("created_date").toLocalDateTime())
+                .lastModifiedDate(rs.getTimestamp("last_modified_date").toLocalDateTime())
+                .build();
+    }
+
+    private DetailPlan createJoinDetailPlan(ResultSet rs) throws SQLException {
+        return DetailPlan.builder()
+                .id(rs.getLong("detail_plan_id"))
+                .tripPlan(createTripPlan(rs))
                 .attractionInfo(AttractionInfo.builder()
                         .id(rs.getInt("content_id"))
                         .build())
