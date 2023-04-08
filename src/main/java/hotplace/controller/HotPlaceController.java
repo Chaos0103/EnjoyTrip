@@ -4,6 +4,8 @@ import common.FileStore;
 import hotplace.HotPlace;
 import hotplace.UploadFile;
 import hotplace.dto.HotPlaceDto;
+import hotplace.dto.HotPlaceListDto;
+import hotplace.dto.HotPlaceSearch;
 import hotplace.service.HotPlaceService;
 import hotplace.service.HotPlaceServiceImpl;
 import member.dto.LoginMember;
@@ -14,7 +16,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.List;
 
 @WebServlet("/hotPlace")
 @MultipartConfig(
@@ -53,6 +55,18 @@ public class HotPlaceController extends HttpServlet {
     }
 
     private void doList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = request.getParameter("name") == null ? "" : request.getParameter("name");
+        int select = Integer.parseInt(request.getParameter("select") == null ? "1" : request.getParameter("select"));
+
+        HotPlaceSearch hotPlaceSearch = HotPlaceSearch.builder()
+                .name(name)
+                .sortCondition(select)
+                .build();
+
+        List<HotPlaceListDto> hotPlaces = hotPlaceService.searchHotPlace(hotPlaceSearch);
+
+        request.setAttribute("hotPlaces", hotPlaces);
+
         forward(request, response, "/hotplace/hotplaceList.jsp");
     }
 

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class FileStore {
 
-    public String fileDir = "C:\\SSAFY\\EnjoyTrip\\src\\main\\webapp\\assets\\test\\";
+    public String fileDir = "/Users/dong82/java/EnjoyTrip/src/main/webapp/assets/store/";
 
     public String getFullPath(String filename) {
         return fileDir + filename;

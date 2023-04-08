@@ -20,7 +20,7 @@
       <form class="row g-3" method="get" action="${root}/hotPlace?action=list">
         <input type="hidden" name="action" value="list">
         <div class="col-auto">
-          <input type="text" class="form-control" id="condition" name="condition" placeholder="작성자, 제목, 내용">
+          <input type="text" class="form-control" id="name" name="name" placeholder="작성자, 제목, 내용">
         </div>
         <div class="col-auto">
           <select class="form-select" name="select">
@@ -37,88 +37,24 @@
     </div>
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-sm-start">
       <div class="row row-cols-1 row-cols-md-4 g-4">
-        <div class="col">
-          <div class="card h-100">
-            <img src="http://placehold.it/200x150" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">핫플레이스</h5>
-              <p class="card-text text-truncate">This is a wider card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit longer.</p>
-              <div>
-                <img src="icon-num-play.png" alt="" class="" style="size: 20px;"/> 1
+        <c:forEach items="${hotPlaces}" var="hotPlace">
+          <div class="col">
+            <div class="card h-100">
+              <img src="${root}/assets/store/${hotPlace.storeFileName}" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">${hotPlace.name}</h5>
+                <p class="card-text text-truncate">${hotPlace.desc}</p>
+                <div>
+                  <img src="icon-num-play.png" alt="" class="" style="size: 20px;"/> ${hotPlace.hit}
+                </div>
+                <button type="button" class="btn btn-primary" onclick="location.href='/hotPlace?action=view&hotPlaceId=${hotPlace.id}'">더보기</button>
               </div>
-              <button type="button" class="btn btn-primary">더보기</button>
-            </div>
-            <div class="card-footer">
-              <small class="text-body-secondary">Last updated 3 mins ago</small>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="http://placehold.it/200x150" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">핫플레이스</h5>
-              <p class="card-text">This is a wider card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit longer.</p>
-              <div>
-                <img src="icon-num-play.png" alt="" class="" style="size: 20px;"/> 1
-              </div>
-              <button type="button" class="btn btn-primary">더보기</button>
-            </div>
-            <div class="card-footer">
-              <small class="text-body-secondary">Last updated 3 mins ago</small>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="http://placehold.it/200x150" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">핫플레이스</h5>
-              <p class="card-text">This is a wider card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit longer.</p>
-              <div>
-                <img src="icon-num-play.png" alt="" class="" style="size: 20px;"/> 1
+              <div class="card-footer">
+                <small class="text-body-secondary">${hotPlace.createdDate}</small>
               </div>
             </div>
-            <div class="card-footer">
-              <small class="text-body-secondary">Last updated 3 mins ago</small>
-            </div>
           </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="http://placehold.it/200x150" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">핫플레이스</h5>
-              <p class="card-text">This is a wider card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit longer.</p>
-              <div>
-                <img src="icon-num-play.png" alt="" class="" style="size: 20px;"/> 1
-              </div>
-            </div>
-            <div class="card-footer">
-              <small class="text-body-secondary">Last updated 3 mins ago</small>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="http://placehold.it/200x150" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">핫플레이스</h5>
-              <p class="card-text">This is a wider card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit longer.</p>
-              <div>
-                <img src="icon-num-play.png" alt="" class="" style="size: 20px;"/> 1
-              </div>
-            </div>
-            <div class="card-footer">
-              <small class="text-body-secondary">Last updated 3 mins ago</small>
-            </div>
-          </div>
-        </div>
+        </c:forEach>
       </div>
     </div>
   </div>

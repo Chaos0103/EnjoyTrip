@@ -3,6 +3,7 @@ package hotplace.service;
 import attraction.AttractionInfo;
 import attraction.repository.AttractionJdbcRepository;
 import attraction.repository.AttractionRepository;
+import common.FileStore;
 import common.exception.HotPlaceException;
 import hotplace.HotPlace;
 import hotplace.UploadFile;
@@ -69,12 +70,15 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     @Override
     public List<HotPlaceListDto> searchHotPlace(HotPlaceSearch condition) {
         List<HotPlace> hotPlaces = hotPlaceRepository.findByCondition(condition);
+        FileStore fileStore = new FileStore();
+
         return hotPlaces.stream()
                 .map(hotPlace -> HotPlaceListDto.builder()
                         .id(hotPlace.getId())
                         .name(hotPlace.getName())
                         .desc(hotPlace.getDesc())
                         .hit(hotPlace.getHit())
+                        .storeFileName(hotPlace.getUploadFile().getStoreFileName())
                         .nickname(hotPlace.getMember().getNickname())
                         .createdDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(hotPlace.getCreatedDate()))
                         .build()
