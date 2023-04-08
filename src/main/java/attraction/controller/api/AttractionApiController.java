@@ -42,7 +42,7 @@ public class AttractionApiController extends HttpServlet {
                 doSearch(request, response);
                 break;
             case "hotplace":
-
+                doSearchHotPlace(request, response);
                 break;
         }
     }
@@ -100,6 +100,25 @@ public class AttractionApiController extends HttpServlet {
     private void doSearchHotPlace(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String title = request.getParameter("title");
 
-//        attractionService.
+        List<AttractionDto> attractions = attractionService.searchAttraction(title);
+
+        JSONObject json = new JSONObject();
+        JSONArray array = new JSONArray();
+        for (AttractionDto attraction : attractions) {
+            JSONObject temp = new JSONObject();
+            temp.put("id", attraction.getId());
+            temp.put("contentTypeId", attraction.getContentTypeId());
+            temp.put("title",attraction.getTitle());
+            temp.put("addr1",attraction.getAddr1());
+            temp.put("zipcode",attraction.getZipcode());
+            temp.put("firstImage",attraction.getFirstImage());
+            temp.put("latitude",attraction.getLatitude());
+            temp.put("longitude",attraction.getLongitude());
+            array.add(temp);
+        }
+        json.put("data", array);
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().println(json);
     }
 }
