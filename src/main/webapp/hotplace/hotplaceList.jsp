@@ -44,8 +44,8 @@
               <div class="card-body">
                 <h5 class="card-title">${hotPlace.name}</h5>
                 <p class="card-text text-truncate">${hotPlace.desc}</p>
-                <div>
-                  <img src="icon-num-play.png" alt="" class="" style="size: 20px;"/> ${hotPlace.hit}
+                <div class="text-end">
+                  조회수 : ${hotPlace.hit} | 작성자 : ${hotPlace.nickname}
                 </div>
                 <button type="button" class="btn btn-primary" onclick="location.href='/hotPlace?action=view&hotPlaceId=${hotPlace.id}'">더보기</button>
               </div>
