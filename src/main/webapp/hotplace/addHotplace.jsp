@@ -14,6 +14,7 @@
 <!-- end header -->
 
 <%-- start section --%>
+<!-- start section -->
 <main class="container">
   <div class="p-4 p-md-5 mb-4 text-secondary rounded bg-white shadow">
     <div class="col-md-6 px-0">
@@ -27,25 +28,10 @@
     <div class="col text-end">
       <form class="row mb-3">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="관광지 검색" aria-label="관광지 검색" aria-describedby="button-addon2">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasScrolling"
-            onclick="getTourList()"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-search"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-              />
+          <input type="text" id="attracttionName" class="form-control" placeholder="관광지 검색" aria-label="관광지 검색" aria-describedby="button-addon2"/>
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="searchAttraction()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16" >
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
             </svg>
           </button>
         </div>
@@ -53,14 +39,27 @@
       <div id="map" style="width: 100%; height: 500px"></div>
     </div>
     <form class="col col-6" action="${root}/hotPlace?action=write" method="post" enctype="multipart/form-data">
-      <label for="uploadFileName">인증샷</label>
-      <input id="uploadFileName" name="uploadFileName" type="file" class="form-control mb-3"/>
-      <label for="name">핫플 이름</label>
-      <input id="name" name="name" type="text" class="form-control mb-3"/>
-      <label for="visitedDate">방문 날짜</label>
-      <input id="visitedDate" name="visitedDate" type="date" class="form-control mb-3"/>
-
-      <label for="contentTypeId">장소 유형</label>
+      <div class="mb-3">
+        <label for="uploadFileName" class="form-label">인증샷</label>
+        <input type="file" class="form-control" id="uploadFileName">
+      </div>
+      <div class="mb-3">
+        <label for="name" class="form-label">나만의 핫플레이스 이름</label>
+        <input type="text" class="form-control" id="name">
+      </div>
+      <div class="mb-3">
+        <label for="visitedDate" class="form-label">방문 날짜</label>
+        <input type="date" class="form-control" id="visitedDate">
+      </div>
+      <div class="mb-3">
+        <label for="desc" class="form-label">핫플레이스 설명</label>
+        <textarea class="form-control" id="desc" rows="3"></textarea>
+      </div>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+        <button class="btn btn-primary me-md-2" type="submit">글쓰기</button>
+        <button class="btn btn-secondary" type="button">목록</button>
+      </div>
+      <!-- <label for="contentTypeId">장소 유형</label>
       <select class="form-select" aria-label="contentTypeId" id="contentTypeId">
         <option value="12">관광지</option>
         <option value="14">문화시설</option>
@@ -70,54 +69,33 @@
         <option value="32">숙박</option>
         <option value="38">쇼핑</option>
         <option value="39">음식점</option>
-      </select>
-
-      <label for="desc">핫플 상세설명</label>
-      <textarea
-        class="form-control"
-        placeholder="방문 후기"
-        id="desc"
-        name="desc"
-        rows="5"
-      ></textarea>
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
-        <button class="btn btn-primary me-md-2" type="submit">글쓰기</button>
-        <button class="btn btn-secondary" type="button">목록</button>
-      </div>
+      </select> -->
     </form>
   </div>
   <!-- end album -->
-  <!-- start right bar -->
-
-  <div
-    class="offcanvas offcanvas-start"
-    data-bs-scroll="true"
-    data-bs-backdrop="false"
-    tabindex="-1"
-    id="offcanvasScrolling"
-    aria-labelledby="offcanvasScrollingLabel"
-  >
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasScrollingLabel">검색 결과</h5>
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="offcanvas"
-        aria-label="Close"
-      ></button>
-    </div>
-    <div class="offcanvas-body">
-      <div class="album py-5">
-        <div class="container">
-          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-1 g-3" id="tour-list">
-            <!-- 관광지 정보 비동기 통신 -->
-          </div>
-        </div>
+</main>
+<!-- end section -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">검색결과</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="attraction">
+        <button type="button" class="w-100 btn btn-outline-dark text-start mb-3">
+          <div>AHC 스파</div>
+          <div>서울특별시 강남구 도산대로 237</div>
+        </button>
+        <button type="button" class="w-100 btn btn-outline-dark text-start mb-3">
+          <div>신사동 가로수길</div>
+          <div>서울특별시 강남구 신사동 일대</div>
+        </button>
       </div>
     </div>
   </div>
-  <!-- end right bar -->
-</main>
+</div>
 <%-- end section --%>
 
 <!-- start footer -->
