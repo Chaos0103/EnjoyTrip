@@ -14,4 +14,7 @@ public abstract class ValidationMessage {
     public static final String TITLE = "유효하지 않은 제목";
     public static final String CONTENT = "유효하지 않은 내용";
 
+    public static final String NAME = "유효하지 않은 이름";
+    public static final String DESC = "유효하지 않은 내용";
+    public static final String VISITED_DATE = "유효하지 않은 날짜";
 }

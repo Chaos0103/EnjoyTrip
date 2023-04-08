@@ -19,7 +19,7 @@ public class FileStore {
 
         if (!originalFileName.isEmpty()) {
             String storeFileName = createStoreFileName(originalFileName);
-            part.write("C:\\SSAFY\\EnjoyTrip\\src\\main\\webapp\\assets\\test\\" + storeFileName);
+            part.write("/Users/dong82/java/EnjoyTrip/src/main/webapp/assets/store/" + storeFileName);
             return new UploadFile(originalFileName, storeFileName);
         }
 
