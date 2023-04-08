@@ -3,6 +3,7 @@ package hotplace.repository;
 import attraction.AttractionInfo;
 import hotplace.HotPlace;
 import hotplace.UploadFile;
+import hotplace.dto.HotPlaceSearch;
 import member.Member;
 import util.DBConnectionUtil;
 
@@ -10,7 +11,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+
+import static member.Authority.ADMIN;
+import static member.Authority.CLIENT;
 
 public class HotPlaceJdbcRepository implements HotPlaceRepository {
 
@@ -79,6 +85,45 @@ public class HotPlaceJdbcRepository implements HotPlaceRepository {
     }
 
     @Override
+    public List<HotPlace> findByCondition(HotPlaceSearch condition) {
+        List<HotPlace> hotPlaces = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from hot_place hp" +
+                    " join member m" +
+                    " on hp.member_id = m.member_id" +
+                    " where m.nickname like ?" +
+                    " or hp.name like ?" +
+                    " or hp.desc like ?";
+
+            if (condition.getSortCondition() == 2) {
+                sql += " order by hp.hit desc";
+            } else {
+                sql += " order by hp.created_date desc";
+            }
+
+            //작성자, 제목, 내용
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, '%' + condition.getName() + '%');
+            pstmt.setString(2, '%' + condition.getName() + '%');
+            pstmt.setString(3, '%' + condition.getName() + '%');
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                hotPlaces.add(createJoinHotPlace(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return hotPlaces;
+    }
+
+    @Override
     public int remove(Long hotPlaceId) {
         int count = 0;
         Connection conn = null;
@@ -123,6 +168,53 @@ public class HotPlaceJdbcRepository implements HotPlaceRepository {
                                 .id(rs.getInt("attraction_info_id"))
                                 .build()
                 )
+                .build();
+    }
+
+    private HotPlace createJoinHotPlace(ResultSet rs) throws SQLException {
+        return HotPlace.builder()
+                .id(rs.getLong("hot_place_id"))
+                .name(rs.getString("name"))
+                .desc(rs.getString("desc"))
+                .hit(rs.getInt("hit"))
+                .visitedDate(rs.getString("visitedDate"))
+                .uploadFile(
+                        UploadFile.builder()
+                                .uploadFileName(rs.getString("upload_file_name"))
+                                .storeFileName(rs.getString("store_file_name"))
+                                .build()
+                )
+                .createdDate(rs.getTimestamp("createdDate").toLocalDateTime())
+                .lastModifiedDate(rs.getTimestamp("lastModifiedDate").toLocalDateTime())
+                .contentTypeId(rs.getInt("content_type_id"))
+                .member(createMember(rs))
+                .attractionInfo(
+                        AttractionInfo.builder()
+                                .id(rs.getInt("attraction_info_id"))
+                                .build()
+                )
+                .build();
+    }
+
+    private Member createMember(ResultSet rs) throws SQLException {
+        return Member.builder()
+                .id(rs.getLong("member_id"))
+                .loginId(rs.getString("login_id"))
+                .loginPw(rs.getString("login_pw"))
+                .username(rs.getString("username"))
+                .email(rs.getString("email"))
+                .phone(rs.getString("phone"))
+                .birth(rs.getString("birth"))
+                .gender(rs.getString("gender"))
+                .nickname(rs.getString("nickname"))
+                .nicknameLastModifiedDate(
+                        rs.getTimestamp("nickname_last_modified_date").toLocalDateTime()
+                )
+                .authority(
+                        rs.getString("authority").equals("CLIENT") ? CLIENT : ADMIN
+                )
+                .createdDate(rs.getTimestamp("created_date").toLocalDateTime())
+                .lastModifiedDate(rs.getTimestamp("last_modified_date").toLocalDateTime())
                 .build();
     }
 }
