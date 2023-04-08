@@ -7,13 +7,18 @@ import common.exception.HotPlaceException;
 import hotplace.HotPlace;
 import hotplace.UploadFile;
 import hotplace.dto.HotPlaceDto;
+import hotplace.dto.HotPlaceListDto;
+import hotplace.dto.HotPlaceSearch;
 import hotplace.repository.HotPlaceJdbcRepository;
 import hotplace.repository.HotPlaceRepository;
 import member.Member;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
 
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class HotPlaceServiceImpl implements HotPlaceService {
 
@@ -59,6 +64,22 @@ public class HotPlaceServiceImpl implements HotPlaceService {
                 .build();
 
         return hotPlaceRepository.save(memberId, contentId, hotPlace);
+    }
+
+    @Override
+    public List<HotPlaceListDto> searchHotPlace(HotPlaceSearch condition) {
+        List<HotPlace> hotPlaces = hotPlaceRepository.findByCondition(condition);
+        return hotPlaces.stream()
+                .map(hotPlace -> HotPlaceListDto.builder()
+                        .id(hotPlace.getId())
+                        .name(hotPlace.getName())
+                        .desc(hotPlace.getDesc())
+                        .hit(hotPlace.getHit())
+                        .nickname(hotPlace.getMember().getNickname())
+                        .createdDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(hotPlace.getCreatedDate()))
+                        .build()
+                )
+                .collect(Collectors.toList());
     }
 
     @Override
