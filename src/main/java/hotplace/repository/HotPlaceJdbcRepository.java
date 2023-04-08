@@ -32,7 +32,7 @@ public class HotPlaceJdbcRepository implements HotPlaceRepository {
         PreparedStatement pstmt = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "insert into hot_place(member_id, content_id, content_type_id, name, desc, visited_date, upload_file_name, store_file_name) values (?, ?, ?, ?, ?, ?, ?, ?);";
+            String sql = "insert into hot_place(member_id, content_id, content_type_id, name, `desc`, visited_date, upload_file_name, store_file_name) values (?, ?, ?, ?, ?, ?, ?, ?);";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, memberId);
