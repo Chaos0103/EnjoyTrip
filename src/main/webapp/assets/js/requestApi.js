@@ -41,3 +41,28 @@ function getSigunguCode(sidoCode) {
     document.getElementById("gugunCode").innerHTML = content;
   }
 }
+
+function searchAttraction() {
+  console.log('searchAttraction');
+  let attractionName = document.getElementById('attractionName').value;
+
+  const url = `http://localhost:8080/api/attraction?action=hotplace&title=${attractionName}`;
+
+  fetch(url)
+      .then((response) => response.json())
+      .then((response) => createButton(response));
+
+  function createButton(response) {
+    let items = response.data;
+    let content = "";
+    items.forEach(function (item) {
+      content += `<button type="button" data-bs-dismiss="modal" aria-label="Close" class="w-100 btn btn-outline-dark text-start mb-3" onclick="selectAttraction('${item.id}', '${item.contentTypeId}', '${item.title}', '${item.addr1}', '${item.zipcode}', '${item.firstImage}', '${item.latitude}', '${item.longitude}')">
+                    <div>${item.title}</div>
+                    <div>${item.zipcode} ${item.addr1}</div>
+                  </button>`
+    });
+    document.getElementById('attraction').innerHTML = content;
+  }
+}
+
+
