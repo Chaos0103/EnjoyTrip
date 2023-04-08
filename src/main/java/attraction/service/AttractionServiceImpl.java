@@ -39,15 +39,20 @@ public class AttractionServiceImpl implements AttractionService {
                 .collect(Collectors.toList());
     }
 
-    // TODO: 2023-04-07 임우택 작업중
     @Override
     public List<AttractionDto> searchAttraction(String title) {
         List<AttractionInfo> findAttractionInfos = attractionRepository.findByTitle(title);
         return findAttractionInfos.stream()
                 .map(attractionInfo ->
                         AttractionDto.builder()
+                                .id(attractionInfo.getId())
+                                .contentTypeId(attractionInfo.getContentTypeId())
                                 .title(attractionInfo.getTitle())
                                 .addr1(attractionInfo.getAddr1())
+                                .zipcode(attractionInfo.getZipcode())
+                                .firstImage(attractionInfo.getFirstImage())
+                                .latitude(attractionInfo.getLatitude())
+                                .longitude(attractionInfo.getLongitude())
                                 .build()
                 )
                 .collect(Collectors.toList());
