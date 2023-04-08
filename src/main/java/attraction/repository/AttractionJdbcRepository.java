@@ -34,7 +34,7 @@ public class AttractionJdbcRepository  implements AttractionRepository {
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from attraction_info where cotent_id = ?";
+            String sql = "select * from attraction_info where content_id = ?";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, contentId);
@@ -107,6 +107,7 @@ public class AttractionJdbcRepository  implements AttractionRepository {
     private AttractionInfo createAttractionInfo(ResultSet rs) throws SQLException {
         return AttractionInfo.builder()
                 .id(rs.getInt("content_id"))
+                .contentTypeId(rs.getInt("content_type_id"))
                 .title(rs.getString("title"))
                 .addr1(rs.getString("addr1"))
                 .addr2(rs.getString("addr2"))
