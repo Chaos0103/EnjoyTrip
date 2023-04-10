@@ -52,7 +52,15 @@ public class NotionServiceImpl implements NotionService {
             throw new NotionException();
         }
 
-        return notionRepository.save(memberId, notionDto);
+        Notion notion = Notion.builder()
+                .title(notionDto.getTitle())
+                .content(notionDto.getContent())
+                .top(notionDto.isTop())
+                .createdBy(member)
+                .lastModifiedBy(member)
+                .build();
+
+        return notionRepository.save(notion);
     }
 
     @Override
