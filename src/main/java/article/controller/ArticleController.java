@@ -5,6 +5,10 @@ import article.dto.ArticleSearch;
 import article.service.ArticleService;
 import article.service.ArticleServiceImpl;
 import common.Page;
+import common.exception.ArticleException;
+import common.validation.ArticleValidation;
+import common.validation.dto.ArticleRequest;
+import common.validation.dto.InvalidResponse;
 import member.dto.LoginMember;
 
 import javax.servlet.RequestDispatcher;
@@ -16,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
+
+import static common.exception.ExceptionMessage.ARTICLE_EXCEPTION;
 
 @WebServlet("/article")
 public class ArticleController extends HttpServlet {
@@ -117,15 +123,24 @@ public class ArticleController extends HttpServlet {
         String title = request.getParameter("title");
         String content = request.getParameter("content");
 
+        ArticleValidation articleValidation = new ArticleValidation();
+        ArticleRequest articleRequest = ArticleRequest.builder()
+                .title(title)
+                .content(content)
+                .build();
+
+        List<InvalidResponse> validate = articleValidation.validate(articleRequest);
+        if (!validate.isEmpty()) {
+            throw new ArticleException(ARTICLE_EXCEPTION);
+        }
+
         ArticleDto articleDto = ArticleDto.builder()
                 .title(title)
                 .content(content)
                 .build();
 
         int result = articleService.addArticle(loginMember.getId(), articleDto);
-        if (result == 0) {
-            return;
-        }
+
         response.sendRedirect(request.getContextPath() + "/article?action=list");
     }
 

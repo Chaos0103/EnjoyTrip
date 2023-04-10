@@ -43,19 +43,6 @@ public class ArticleServiceImpl implements ArticleService {
             throw new ArticleException(ARTICLE_EXCEPTION);
         }
 
-        ArticleValidation articleValidation = new ArticleValidation();
-
-        ArticleRequest request = ArticleRequest.builder()
-                .title(articleDto.getTitle())
-                .content(articleDto.getContent())
-                .build();
-
-        List<InvalidResponse> validate = articleValidation.validate(request);
-
-        if (!validate.isEmpty()) {
-            throw new ArticleException(ARTICLE_EXCEPTION);
-        }
-
         Article article = Article.builder()
                 .title(articleDto.getTitle())
                 .content(articleDto.getContent())
