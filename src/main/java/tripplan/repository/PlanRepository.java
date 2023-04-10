@@ -1,6 +1,9 @@
 package tripplan.repository;
 
+import article.Article;
+import article.dto.ArticleSearch;
 import tripplan.DetailPlan;
+import tripplan.PlanSearch;
 import tripplan.TripPlan;
 
 import java.util.List;
@@ -19,6 +22,8 @@ public interface PlanRepository {
     List<TripPlan> findAllByMemberId(Long memberId);
 
     List<DetailPlan> findAllByTripPlanId(Long tripPlanId);
+
+    List<TripPlan> findByCondition(PlanSearch condition);
 
     int updateTripPlan(Long tripPlanId, TripPlan tripPlan);
 

@@ -3,6 +3,7 @@ package tripplan.repository;
 import attraction.AttractionInfo;
 import member.Member;
 import tripplan.DetailPlan;
+import tripplan.PlanSearch;
 import tripplan.TripPlan;
 import util.DBConnectionUtil;
 
@@ -159,6 +160,33 @@ public class PlanJdbcRepository implements PlanRepository {
             dbConnectionUtil.close(rs, pstmt, conn);
         }
         return detailPlans;
+    }
+
+    @Override
+    public List<TripPlan> findByCondition(PlanSearch condition) {
+        List<TripPlan> plans = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from trip_plan tp " +
+                    "join member m on tp.member_id = m.member_id " +
+                    "where tp.title like ? or m.nickname like ? " +
+                    "order by tp.created_date desc";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "%" + condition.getTitle() + "%");
+            pstmt.setString(2, "%" + condition.getMember().getNickname() + "%");
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                plans.add(createTripPlan(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return plans;
     }
 
 
