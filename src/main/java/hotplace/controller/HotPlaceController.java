@@ -1,7 +1,6 @@
 package hotplace.controller;
 
 import common.FileStore;
-import hotplace.HotPlace;
 import hotplace.UploadFile;
 import hotplace.dto.HotPlaceDto;
 import hotplace.dto.HotPlaceListDto;
@@ -45,6 +44,17 @@ public class HotPlaceController extends HttpServlet {
             case "write":
                 doWrite(request, response);
                 break;
+            case "detail":
+                doDetail(request, response);
+                break;
+            case "mvedit":
+                break;
+            case "edit":
+                break;
+            case "remove":
+                break;
+            default:
+                break;
         }
     }
 
@@ -63,7 +73,7 @@ public class HotPlaceController extends HttpServlet {
                 .sortCondition(select)
                 .build();
 
-        List<HotPlaceListDto> hotPlaces = hotPlaceService.searchHotPlace(hotPlaceSearch);
+        List<HotPlaceListDto> hotPlaces = hotPlaceService.searchHotPlaces(hotPlaceSearch);
 
         request.setAttribute("hotPlaces", hotPlaces);
 
@@ -107,6 +117,16 @@ public class HotPlaceController extends HttpServlet {
         redirect(request, response, "/hotPlace?action=list");
     }
 
+    private void doDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Long hotPlaceId = Long.parseLong(request.getParameter("hotPlaceId"));
+
+        HotPlaceDto hotPlace = hotPlaceService.searchHotPlace(hotPlaceId);
+
+        request.setAttribute("hotPlace", hotPlace);
+
+        forward(request, response, "/hotplace/viewHotplace.jsp");
+    }
+
     private void forward(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher(path);
         dispatcher.forward(request, response);
@@ -115,6 +135,4 @@ public class HotPlaceController extends HttpServlet {
     private void redirect(HttpServletRequest request, HttpServletResponse response, String path) throws IOException {
         response.sendRedirect(request.getContextPath() + path);
     }
-
-
 }
