@@ -18,8 +18,17 @@ class MemberRepositoryTest {
 
     @BeforeEach
     void beforeEach() {
-        MemberAddDto memberAddDto = new MemberAddDto("ssafy", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "010101", "1", "광주5반", CLIENT);
-        memberRepository.save(memberAddDto);
+        memberRepository.save(Member.builder()
+                .loginId("ssafy")
+                .loginPw("12345678")
+                .username("김싸피")
+                .email("ssafy@ssafy.com")
+                .phone("01012345678")
+                .birth("010101")
+                .gender("1")
+                .nickname("광주5반")
+                .authority(CLIENT)
+                .build());
     }
 
     @AfterEach
@@ -31,10 +40,20 @@ class MemberRepositoryTest {
     @DisplayName("회원저장")
     void save() {
         //given
-        MemberAddDto memberAddDto = new MemberAddDto("ssafy", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "010101", "1", "광주5반", CLIENT);
+        Member member = Member.builder()
+                .loginId("ssafy")
+                .loginPw("12345678")
+                .username("김싸피")
+                .email("ssafy@ssafy.com")
+                .phone("01012345678")
+                .birth("010101")
+                .gender("1")
+                .nickname("광주5반")
+                .authority(CLIENT)
+                .build();
 
         //when
-        int count = memberRepository.save(memberAddDto);
+        int count = memberRepository.save(member);
 
         //then
         assertThat(count).isEqualTo(1);

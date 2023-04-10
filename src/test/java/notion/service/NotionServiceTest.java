@@ -1,6 +1,7 @@
 package notion.service;
 
 import common.exception.NotionException;
+import member.Member;
 import member.dto.MemberAddDto;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
@@ -28,10 +29,30 @@ class NotionServiceTest {
 
     @BeforeEach
     void beforeEach() {
-        memberRepository.save(new MemberAddDto("admin", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "010101", "1", "광주5반", ADMIN));
+        memberRepository.save(Member.builder()
+                .loginId("admin")
+                .loginPw("12345678")
+                .username("김싸피")
+                .email("ssafy@ssafy.com")
+                .phone("01012345678")
+                .birth("010101")
+                .gender("1")
+                .nickname("광주5반")
+                .authority(ADMIN)
+                .build());
         adminId = memberRepository.findByLoginId("admin").get().getId();
 
-        memberRepository.save(new MemberAddDto("client", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "010101", "1", "광주5반", CLIENT));
+        memberRepository.save(Member.builder()
+                .loginId("client")
+                .loginPw("12345678")
+                .username("김싸피")
+                .email("ssafy@ssafy.com")
+                .phone("01012345678")
+                .birth("010101")
+                .gender("1")
+                .nickname("광주5반")
+                .authority(CLIENT)
+                .build());
         clientId = memberRepository.findByLoginId("client").get().getId();
 
         notionRepository.save(adminId, new NotionDto(0L, "notion title", "notion content", false, null));

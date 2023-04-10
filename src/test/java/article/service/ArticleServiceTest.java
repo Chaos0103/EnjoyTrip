@@ -5,6 +5,7 @@ import article.dto.ArticleDto;
 import article.repository.ArticleJdbcRepository;
 import article.repository.ArticleRepository;
 import common.exception.ArticleException;
+import member.Member;
 import member.dto.MemberAddDto;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
@@ -32,7 +33,18 @@ class ArticleServiceTest {
 
     @BeforeEach
     void beforeEach() {
-        memberRepository.save(new MemberAddDto("ssafy", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "010101", "1", "광주5반", CLIENT));
+        Member member = Member.builder()
+                .loginId("ssafy")
+                .loginPw("12345678")
+                .username("김싸피")
+                .email("ssafy@ssafy.com")
+                .phone("01012345678")
+                .birth("010101")
+                .gender("1")
+                .nickname("광주5반")
+                .authority(CLIENT)
+                .build();
+        memberRepository.save(member);
         memberId = memberRepository.findByLoginId("ssafy").get().getId();
         articleRepository.save(memberId , ArticleDto.builder().title("beforeEach title").content("beforeEach content").build());
         articleId = articleRepository.findByMemberId(memberId).get(0).getArticleId();

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static member.Authority.ADMIN;
+import static member.Authority.CLIENT;
 import static org.assertj.core.api.Assertions.*;
 
 class NotionRepositoryTest {
@@ -23,8 +24,17 @@ class NotionRepositoryTest {
 
     @BeforeEach
     void beforeEach() {
-        MemberAddDto memberAddDto = new MemberAddDto("admin", "12345678", "김싸피", "ssafy@ssafy.com", "01012345678", "010101", "1", "광주5반", ADMIN);
-        memberRepository.save(memberAddDto);
+        memberRepository.save(Member.builder()
+                .loginId("admin")
+                .loginPw("12345678")
+                .username("김싸피")
+                .email("ssafy@ssafy.com")
+                .phone("01012345678")
+                .birth("010101")
+                .gender("1")
+                .nickname("광주5반")
+                .authority(CLIENT)
+                .build());
         member = memberRepository.findByLoginId("admin").get();
     }
 
