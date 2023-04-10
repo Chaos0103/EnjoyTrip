@@ -7,7 +7,6 @@ import article.dto.ArticleSearch;
 import article.service.ArticleService;
 import article.service.ArticleServiceImpl;
 import common.Page;
-import common.exception.ArticleException;
 import common.validation.ArticleValidation;
 import common.validation.dto.ArticleRequest;
 import common.validation.dto.InvalidResponse;
@@ -22,8 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
-
-import static common.exception.ExceptionMessage.ARTICLE_EXCEPTION;
 
 @WebServlet("/article")
 public class ArticleController extends HttpServlet {

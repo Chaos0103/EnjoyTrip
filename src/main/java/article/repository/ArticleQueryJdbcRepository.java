@@ -1,6 +1,5 @@
 package article.repository;
 
-import article.Article;
 import article.dto.ArticleDetailDto;
 import article.dto.ArticleListDto;
 import article.dto.ArticleSearch;
