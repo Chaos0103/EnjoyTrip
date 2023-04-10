@@ -68,8 +68,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleListDto> searchArticles(ArticleSearch condition) {
-        return articleQueryRepository.findListByCondition(condition);
+    public List<ArticleListDto> searchArticles(ArticleSearch condition, int pageNum, int amount) {
+        return articleQueryRepository.findListByCondition(condition, pageNum, amount);
     }
 
     @Override

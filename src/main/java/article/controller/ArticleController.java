@@ -145,7 +145,7 @@ public class ArticleController extends HttpServlet {
                 .createdDate(createdDate)
                 .build();
 
-        List<ArticleListDto> articles = articleService.searchArticles(condition);
+        List<ArticleListDto> articles = articleService.searchArticles(condition, pageNum, amount);
         int totalCount = articleService.getTotalCount();
         Page page = new Page(pageNum, amount, totalCount);
 
@@ -168,6 +168,7 @@ public class ArticleController extends HttpServlet {
         ArticleDetailDto article = articleService.searchArticle(articleId);
 
         request.setAttribute("article", article);
+        request.setAttribute("isMine", article.getMemberId().equals(loginMember.getId()));
         forward(request, response, "/article/viewArticle.jsp");
     }
 

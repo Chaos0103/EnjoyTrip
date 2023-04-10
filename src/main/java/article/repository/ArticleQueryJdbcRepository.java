@@ -66,15 +66,18 @@ public class ArticleQueryJdbcRepository implements ArticleQueryRepository {
     }
 
     @Override
-    public List<ArticleListDto> findListByCondition(ArticleSearch condition) {
+    public List<ArticleListDto> findListByCondition(ArticleSearch condition, int pageNum, int amount) {
         List<ArticleListDto> articleListDtos = new ArrayList<>();
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select article_id, title, created_date from article";
+            String sql = "select article_id, title, created_date from article order by created_date desc limit ?, ?";
             pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, (pageNum - 1) * amount);
+            pstmt.setInt(2, amount);
+
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 ArticleListDto articleListDto = ArticleListDto.builder()

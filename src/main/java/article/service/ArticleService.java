@@ -13,7 +13,7 @@ public interface ArticleService {
 
     ArticleDetailDto searchArticle(Long articleId);
 
-    List<ArticleListDto> searchArticles(ArticleSearch condition);
+    List<ArticleListDto> searchArticles(ArticleSearch condition, int pageNum, int amount);
 
     int getTotalCount();
 
