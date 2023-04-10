@@ -174,7 +174,23 @@ public class ArticleController extends HttpServlet {
     }
 
     private void doEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+        if (loginMember == null) {
+            return;
+        }
 
+        Long articleId = Long.parseLong(request.getParameter("articleId"));
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+
+        ArticleDto articleDto = ArticleDto.builder()
+                .title(title)
+                .content(content)
+                .build();
+
+        int result = articleService.editArticle(articleId, loginMember.getId(), articleDto);
+        redirect(request, response, "/article?action=detail&articleId=" + articleId);
     }
 
     private void doRemove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
