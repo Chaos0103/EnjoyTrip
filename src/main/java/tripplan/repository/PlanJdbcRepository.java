@@ -184,6 +184,25 @@ public class PlanJdbcRepository implements PlanRepository {
     }
 
     @Override
+    public int removeTripPlan(Long tripPlanId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        int count = 0;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "delete from trip_plan where trip_plan_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, tripPlanId);
+            count = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(pstmt, conn);
+        }
+        return count;
+    }
+
+    @Override
     public int removeDetailPlan(Long detailPlanId) {
         Connection conn = null;
         PreparedStatement pstmt = null;

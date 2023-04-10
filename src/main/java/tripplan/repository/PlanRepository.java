@@ -22,6 +22,8 @@ public interface PlanRepository {
 
     int updateTripPlan(Long tripPlanId, TripPlan tripPlan);
 
+    int removeTripPlan(Long tripPlanId);
+
     int removeDetailPlan(Long detailPlanId);
 
     void clear();
