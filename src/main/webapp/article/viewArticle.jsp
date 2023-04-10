@@ -30,11 +30,12 @@
     </div>
   </div>
 
+  <c:if test="${isMine}">
   <div class='notion-footer mt-5 '>
     <a class='btn btn-outline-success' href="${root}/article?action=mvedit&articleId=${article.articleId}">수정하기</a>
-    <button class='btn btn-outline-danger' data-bs-toggle="modal" data-bs-target="#notificationDeleteModal">삭제하기
-    </button>
+    <button class='btn btn-outline-danger' data-bs-toggle="modal" data-bs-target="#articleDeleteModal">삭제하기</button>
   </div>
+  </c:if>
 
   <div class='m-5 m-auto p-lg-5 container-sm justify-content-center align-content-center'>
     <div class='row justify-content-end'>
@@ -43,7 +44,7 @@
   </div>
   <!-- end section -->
   <!-- 삭제 Modal -->
-  <div class="modal fade" id="notificationDeleteModal" tabindex="-1" aria-labelledby="notificationDeleteModalLabel"
+  <div class="modal fade" id="articleDeleteModal" tabindex="-1" aria-labelledby="articleDeleteModalLabel"
        aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
