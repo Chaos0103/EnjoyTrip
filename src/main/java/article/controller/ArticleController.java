@@ -37,17 +37,26 @@ public class ArticleController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         switch (action) {
-            case "list":
-                doList(request, response);
-                break;
             case "mvwrite":
                 doMvWriter(request, response);
                 break;
             case "write":
                 doWriter(request, response);
                 break;
-            case "view":
-                doView(request, response);
+            case "list":
+                doList(request, response);
+                break;
+            case "detail":
+                doDetail(request, response);
+                break;
+            case "mvedit":
+                doMvedit(request, response);
+                break;
+            case "edit":
+                doEdit(request, response);
+                break;
+            case "remove":
+                doRemove(request, response);
                 break;
             default:
                 forward(request, response, "/error/ready.jsp");
@@ -59,45 +68,6 @@ public class ArticleController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("utf-8");
         doGet(request, response);
-    }
-
-    private void doList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String title = request.getParameter("title");
-        String content = request.getParameter("content");
-        String writer = request.getParameter("writer");
-        String hit = request.getParameter("hit");
-        if (hit == null) {
-            hit = "desc";
-        }
-        String createdDate = request.getParameter("createdDate");
-        if (createdDate == null) {
-            createdDate = "desc";
-        }
-
-        int pageNum = 1;
-        int amount = 10;
-
-        if (request.getParameter("pageNum") != null && request.getParameter("amount") != null) {
-            pageNum = Integer.parseInt(request.getParameter("pageNum"));
-            amount = Integer.parseInt(request.getParameter("amount"));
-        }
-
-
-        ArticleSearch condition = ArticleSearch.builder()
-                .title(title)
-                .content(content)
-                .writer(writer)
-                .hit(hit)
-                .createdDate(createdDate)
-                .build();
-
-        List<ArticleDto> articles = articleService.searchArticles(condition);
-        int totalCount = articleService.getTotalCount();
-        Page page = new Page(pageNum, amount, totalCount);
-
-        request.setAttribute("page", page);
-        request.setAttribute("articles", articles);
-        forward(request, response, "/article/articleList.jsp");
     }
 
     private void doMvWriter(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -144,9 +114,46 @@ public class ArticleController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/article?action=list");
     }
 
-    private void doView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void doList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        String writer = request.getParameter("writer");
+        String hit = request.getParameter("hit");
+        if (hit == null) {
+            hit = "desc";
+        }
+        String createdDate = request.getParameter("createdDate");
+        if (createdDate == null) {
+            createdDate = "desc";
+        }
+
+        int pageNum = 1;
+        int amount = 10;
+
+        if (request.getParameter("pageNum") != null && request.getParameter("amount") != null) {
+            pageNum = Integer.parseInt(request.getParameter("pageNum"));
+            amount = Integer.parseInt(request.getParameter("amount"));
+        }
 
 
+        ArticleSearch condition = ArticleSearch.builder()
+                .title(title)
+                .content(content)
+                .writer(writer)
+                .hit(hit)
+                .createdDate(createdDate)
+                .build();
+
+        List<ArticleDto> articles = articleService.searchArticles(condition);
+        int totalCount = articleService.getTotalCount();
+        Page page = new Page(pageNum, amount, totalCount);
+
+        request.setAttribute("page", page);
+        request.setAttribute("articles", articles);
+        forward(request, response, "/article/articleList.jsp");
+    }
+
+    private void doDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long articleId = Long.parseLong(request.getParameter("articleId"));
 
         ArticleDto article = articleService.searchArticle(articleId);
@@ -156,8 +163,24 @@ public class ArticleController extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
+    private void doMvedit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+
+    private void doEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+
+    private void doRemove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+
     private void forward(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher(path);
         dispatcher.forward(request, response);
+    }
+
+    private void redirect(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException {
+        response.sendRedirect(request.getContextPath() + path);
     }
 }
