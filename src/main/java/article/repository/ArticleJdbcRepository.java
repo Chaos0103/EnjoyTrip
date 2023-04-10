@@ -1,7 +1,6 @@
 package article.repository;
 
 import article.Article;
-import article.dto.ArticleSearch;
 import member.Member;
 import util.DBConnectionUtil;
 
@@ -71,22 +70,20 @@ public class ArticleJdbcRepository implements ArticleRepository {
     }
 
     @Override
-    public List<Article> findByMemberId(Long memberId) {
+    public List<Article> findAll() {
         List<Article> articles = new ArrayList<>();
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from article where member_id = ?;";
+            String sql = "select * from article";
 
             pstmt = conn.prepareStatement(sql);
-            pstmt.setLong(1, memberId);
 
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                Article article = createArticle(rs);
-                articles.add(article);
+                articles.add(createArticle(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -94,30 +91,6 @@ public class ArticleJdbcRepository implements ArticleRepository {
             dbConnectionUtil.close(rs, pstmt, conn);
         }
         return articles;
-    }
-
-    @Override
-    public int findTotalCount() {
-        int result = 0;
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            conn = dbConnectionUtil.getConnection();
-            String sql = "select count(*) as total from article;";
-
-            pstmt = conn.prepareStatement(sql);
-
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                result = rs.getInt("total");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            dbConnectionUtil.close(rs, pstmt, conn);
-        }
-        return result;
     }
 
     @Override
@@ -206,17 +179,14 @@ public class ArticleJdbcRepository implements ArticleRepository {
     }
 
     private Article createArticle(ResultSet rs) throws SQLException {
-        long articleId = rs.getLong("article_id");
-        long memberId = rs.getLong("member_id");
-        String title = rs.getString("title");
-        String content = rs.getString("content");
-        int hit = rs.getInt("hit");
-        LocalDateTime createdDate = rs.getTimestamp("created_date").toLocalDateTime();
-        LocalDateTime lastModifiedDate = rs.getTimestamp("last_modified_date").toLocalDateTime();
-        return new Article(articleId, title, content, hit, createdDate, lastModifiedDate, new Member(memberId));
-    }
-
-    private boolean hasText(String target) {
-        return target == null || target.trim().isEmpty();
+        return Article.builder()
+                .id(rs.getLong("article_id"))
+                .title(rs.getString("title"))
+                .content(rs.getString("content"))
+                .hit(rs.getInt("hit"))
+                .createdDate(rs.getTimestamp("created_date").toLocalDateTime())
+                .lastModifiedDate(rs.getTimestamp("last_modified_date").toLocalDateTime())
+                .member(new Member(rs.getLong("member_id")))
+                .build();
     }
 }

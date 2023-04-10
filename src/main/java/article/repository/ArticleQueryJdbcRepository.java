@@ -110,6 +110,30 @@ public class ArticleQueryJdbcRepository implements ArticleQueryRepository {
         return articleListDtos;
     }
 
+    @Override
+    public int findTotalCount() {
+        int result = 0;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select count(*) as total from article;";
+
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                result = rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return result;
+    }
+
     private String dateFormat(LocalDateTime dateTime) {
         if (dateTime == null) {
             return null;

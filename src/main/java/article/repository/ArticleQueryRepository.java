@@ -12,4 +12,6 @@ public interface ArticleQueryRepository {
     Optional<ArticleDetailDto> findDetailById(Long articleId);
 
     List<ArticleListDto> findListByCondition(ArticleSearch condition, int pageNum, int amount);
+
+    int findTotalCount();
 }
