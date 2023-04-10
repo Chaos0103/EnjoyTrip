@@ -1,13 +1,16 @@
 package hotplace;
 
 import attraction.AttractionInfo;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import member.Member;
 
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class HotPlace {
 
     private Long id;
@@ -22,6 +25,10 @@ public class HotPlace {
     private Integer contentTypeId;
     private Member member;
     private AttractionInfo attractionInfo;
+
+    public HotPlace(Long id) {
+        this.id = id;
+    }
 
     @Builder
     public HotPlace(Long id, String name, String desc, int hit, String visitedDate, UploadFile uploadFile, LocalDateTime createdDate, LocalDateTime lastModifiedDate, Integer contentTypeId, Member member, AttractionInfo attractionInfo) {
