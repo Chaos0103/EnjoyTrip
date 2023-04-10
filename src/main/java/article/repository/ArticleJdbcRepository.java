@@ -97,29 +97,6 @@ public class ArticleJdbcRepository implements ArticleRepository {
     }
 
     @Override
-    public List<Article> findByCondition(ArticleSearch condition) {
-        List<Article> articles = new ArrayList<>();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            conn = dbConnectionUtil.getConnection();
-            String sql = "select * from article a";
-            pstmt = conn.prepareStatement(sql);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                articles.add(createArticle(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            dbConnectionUtil.close(rs, pstmt, conn);
-        }
-
-        return articles;
-    }
-
-    @Override
     public int findTotalCount() {
         int result = 0;
         Connection conn = null;
