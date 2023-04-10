@@ -4,6 +4,7 @@ package article.service;
 import article.Article;
 import article.dto.ArticleDetailDto;
 import article.dto.ArticleDto;
+import article.dto.ArticleListDto;
 import article.dto.ArticleSearch;
 import article.repository.ArticleJdbcRepository;
 import article.repository.ArticleQueryJdbcRepository;
@@ -67,18 +68,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleDto> searchArticles(ArticleSearch condition) {
-        List<Article> findArticles = articleRepository.findByCondition(condition);
-        return findArticles.stream()
-                .map(article -> ArticleDto.builder()
-                        .id(article.getId())
-                        .title(article.getTitle())
-                        .content(article.getContent())
-                        .hit(article.getHit())
-                        .createdDate(article.getCreatedDate())
-                        .build()
-                )
-                .collect(Collectors.toList());
+    public List<ArticleListDto> searchArticles(ArticleSearch condition) {
+        return articleQueryRepository.findListByCondition(condition);
     }
 
     @Override

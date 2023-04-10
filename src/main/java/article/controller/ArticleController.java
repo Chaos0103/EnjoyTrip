@@ -2,6 +2,7 @@ package article.controller;
 
 import article.dto.ArticleDetailDto;
 import article.dto.ArticleDto;
+import article.dto.ArticleListDto;
 import article.dto.ArticleSearch;
 import article.service.ArticleService;
 import article.service.ArticleServiceImpl;
@@ -145,7 +146,7 @@ public class ArticleController extends HttpServlet {
                 .createdDate(createdDate)
                 .build();
 
-        List<ArticleDto> articles = articleService.searchArticles(condition);
+        List<ArticleListDto> articles = articleService.searchArticles(condition);
         int totalCount = articleService.getTotalCount();
         Page page = new Page(pageNum, amount, totalCount);
 

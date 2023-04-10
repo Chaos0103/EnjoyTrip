@@ -2,6 +2,7 @@ package article.service;
 
 import article.dto.ArticleDetailDto;
 import article.dto.ArticleDto;
+import article.dto.ArticleListDto;
 import article.dto.ArticleSearch;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface ArticleService {
 
     ArticleDetailDto searchArticle(Long articleId);
 
-    List<ArticleDto> searchArticles(ArticleSearch condition);
+    List<ArticleListDto> searchArticles(ArticleSearch condition);
 
     int getTotalCount();
 

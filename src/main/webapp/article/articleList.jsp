@@ -29,7 +29,7 @@
         <c:forEach items="${articles}" var="article" varStatus="status">
           <tr>
             <th scope="row" class='text-center'>${status.count}</th>
-            <td><a class='linkToNotion' href='${root}?action=detail&articleId=${article.id}'>${article.title}</a></td>
+            <td><a class='linkToNotion' href='${root}?action=detail&articleId=${article.articleId}'>${article.title}</a></td>
             <td class='text-center'>${article.createdDate}</td>
           </tr>
         </c:forEach>
