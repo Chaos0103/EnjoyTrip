@@ -10,7 +10,7 @@ public interface PlanRepository {
 
     int save(TripPlan tripPlan);
 
-    int addDetailPlan(Long tripPlanId, int contentId);
+    int save(DetailPlan detailPlan);
 
     Optional<TripPlan> findById(Long tripPlanId);
 
