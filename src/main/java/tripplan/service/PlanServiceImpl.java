@@ -39,7 +39,7 @@ public class PlanServiceImpl implements PlanService {
 
         TripPlan tripPlan = TripPlan.builder()
                 .title(title)
-                .member(new Member(memberId))
+                .member(findMember.get())
                 .build();
 
         return planRepository.save(tripPlan);
