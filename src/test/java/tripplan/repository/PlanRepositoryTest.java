@@ -1,5 +1,6 @@
 package tripplan.repository;
 
+import attraction.AttractionInfo;
 import member.Member;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
@@ -72,9 +73,13 @@ class PlanRepositoryTest {
                 .build());
         List<TripPlan> findTripPlans = planRepository.findAllByMemberId(memberId);
         TripPlan tripPlan = findTripPlans.get(0);
+        DetailPlan detailPlan = DetailPlan.builder()
+                .tripPlan(tripPlan)
+                .attractionInfo(new AttractionInfo(125405))
+                .build();
 
         //when
-        int result = planRepository.addDetailPlan(tripPlan.getId(), 125405);
+        int result = planRepository.save(detailPlan);
 
         //then
         assertThat(result).isEqualTo(1);
@@ -111,7 +116,11 @@ class PlanRepositoryTest {
                 .build());
         List<TripPlan> findTripPlans = planRepository.findAllByMemberId(memberId);
         TripPlan tripPlan = findTripPlans.get(0);
-        planRepository.addDetailPlan(tripPlan.getId(), 125405);
+        DetailPlan detailPlan = DetailPlan.builder()
+                .tripPlan(tripPlan)
+                .attractionInfo(new AttractionInfo(125405))
+                .build();
+        planRepository.save(detailPlan);
         DetailPlan findDetailPlan = planRepository.findAllByTripPlanId(tripPlan.getId()).get(0);
 
         //when
