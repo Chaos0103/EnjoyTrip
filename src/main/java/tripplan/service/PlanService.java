@@ -8,5 +8,7 @@ public interface PlanService {
 
     int updateTripPlan(Long memberId, Long tripPlanId, String title);
 
+    int removeTripPlan(Long memberId, Long tripPlanId);
+
     int removeDetailPlan(Long memberId, Long detailPlanId);
 }

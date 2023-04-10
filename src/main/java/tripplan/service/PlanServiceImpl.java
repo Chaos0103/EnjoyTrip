@@ -88,6 +88,21 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
+    public int removeTripPlan(Long memberId, Long tripPlanId) {
+        Optional<TripPlan> findTripPlan = planRepository.findById(tripPlanId);
+        if(!findTripPlan.isPresent()) {
+            throw new PlanException();
+        }
+
+        TripPlan tripPlan = findTripPlan.get();
+        if (isNotMine(tripPlan, memberId)) {
+            throw new PlanException();
+        }
+
+        return planRepository.removeDetailPlan(tripPlanId);
+    }
+
+    @Override
     public int removeDetailPlan(Long memberId, Long detailPlanId) {
         Optional<DetailPlan> findDetailPlan = planRepository.findByDetailPlanId(detailPlanId);
         if (!findDetailPlan.isPresent()) {
@@ -100,6 +115,10 @@ public class PlanServiceImpl implements PlanService {
         }
 
         return planRepository.removeDetailPlan(detailPlanId);
+    }
+
+    private boolean isNotMine(TripPlan tripPlan, Long memberId) {
+        return !tripPlan.getMember().getId().equals(memberId);
     }
 
     private boolean isNotMine(DetailPlan detailPlan, Long memberId) {
