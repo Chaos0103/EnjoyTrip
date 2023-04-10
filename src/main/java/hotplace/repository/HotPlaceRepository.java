@@ -16,7 +16,7 @@ public interface HotPlaceRepository {
 
     int update(HotPlace hotPlace);
 
-    int updateHit(Long hotPlaceId, HotPlace hotPlace);
+    int updateHit(HotPlace hotPlace);
 
     int remove(Long hotPlaceId);
 
