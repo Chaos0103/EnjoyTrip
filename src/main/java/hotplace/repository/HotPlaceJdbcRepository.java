@@ -121,7 +121,7 @@ public class HotPlaceJdbcRepository implements HotPlaceRepository {
     }
 
     @Override
-    public int update(Long hotPlaceId, HotPlace hotPlace) {
+    public int update(HotPlace hotPlace) {
         int count = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -134,7 +134,7 @@ public class HotPlaceJdbcRepository implements HotPlaceRepository {
             pstmt.setString(2, hotPlace.getDesc());
             pstmt.setString(3, hotPlace.getVisitedDate());
             pstmt.setTimestamp(4, Timestamp.valueOf(hotPlace.getLastModifiedDate()));
-            pstmt.setLong(5, hotPlaceId);
+            pstmt.setLong(5, hotPlace.getId());
 
             count = pstmt.executeUpdate();
         } catch (SQLException e) {
