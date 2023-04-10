@@ -117,6 +117,19 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public int increaseHit(Long articleId) {
+        Optional<Article> findArticle = articleRepository.findById(articleId);
+        if (!findArticle.isPresent()) {
+            throw new ArticleException(ARTICLE_EXCEPTION);
+        }
+
+        Article article = findArticle.get();
+        article.increaseHit();
+
+        return articleRepository.updateHit(article);
+    }
+
+    @Override
     public int removeArticle(Long articleId, Long memberId) {
         Optional<Article> findArticle = articleRepository.findById(articleId);
         if (!findArticle.isPresent()) {

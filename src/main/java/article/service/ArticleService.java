@@ -17,5 +17,7 @@ public interface ArticleService {
 
     int editArticle(Long articleId, Long memberId, ArticleDto articleDto);
 
+    int increaseHit(Long articleId);
+
     int removeArticle(Long articleId, Long memberId);
 }
