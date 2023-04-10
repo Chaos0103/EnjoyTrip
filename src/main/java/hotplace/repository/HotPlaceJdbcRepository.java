@@ -188,6 +188,24 @@ public class HotPlaceJdbcRepository implements HotPlaceRepository {
         return count;
     }
 
+    @Override
+    public void clear() {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "delete from hot_place";
+
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(pstmt, conn);
+        }
+    }
+
     private HotPlace createHotplace(ResultSet rs) throws SQLException {
         return HotPlace.builder()
                 .id(rs.getLong("hot_place_id"))

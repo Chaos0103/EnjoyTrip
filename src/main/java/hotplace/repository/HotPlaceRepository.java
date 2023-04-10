@@ -19,4 +19,6 @@ public interface HotPlaceRepository {
     int updateHit(Long hotPlaceId, int hit);
 
     int remove(Long hotPlaceId);
+
+    void clear();
 }
