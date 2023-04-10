@@ -6,7 +6,6 @@ import article.repository.ArticleJdbcRepository;
 import article.repository.ArticleRepository;
 import common.exception.ArticleException;
 import member.Member;
-import member.dto.MemberAddDto;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -45,8 +44,14 @@ class ArticleServiceTest {
                 .authority(CLIENT)
                 .build();
         memberRepository.save(member);
-        memberId = memberRepository.findByLoginId("ssafy").get().getId();
-        articleRepository.save(memberId , ArticleDto.builder().title("beforeEach title").content("beforeEach content").build());
+        Member findMember = memberRepository.findByLoginId("ssafy").get();
+        memberId = findMember.getId();
+        Article article = Article.builder()
+                .title("beforeEach title")
+                .content("beforeEach content")
+                .member(findMember)
+                .build();
+        articleRepository.save(article);
         articleId = articleRepository.findByMemberId(memberId).get(0).getArticleId();
     }
 

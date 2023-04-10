@@ -56,7 +56,13 @@ public class ArticleServiceImpl implements ArticleService {
             throw new ArticleException(ARTICLE_EXCEPTION);
         }
 
-        return articleRepository.save(memberId, articleDto);
+        Article article = Article.builder()
+                .title(articleDto.getTitle())
+                .content(articleDto.getContent())
+                .member(findMember.get())
+                .build();
+
+        return articleRepository.save(article);
     }
 
     @Override
