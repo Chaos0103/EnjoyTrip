@@ -106,7 +106,7 @@ class HotPlaceRepositoryTest {
         hotPlace.editContent("new hot place name", "new hot place desc", "2023-01-01");
 
         //when
-        int result = hotPlaceRepository.update(hotPlaceId, hotPlace);
+        int result = hotPlaceRepository.update(hotPlace);
 
         //then
         assertThat(result).isEqualTo(1);
