@@ -106,6 +106,23 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     }
 
     @Override
+    public int editHotPlace(Long memberId, Long hotPlaceId, HotPlaceDto hotPlaceDto) {
+        Optional<HotPlace> findHotPlace = hotPlaceRepository.findById(hotPlaceId);
+        if (!findHotPlace.isPresent()) {
+            throw new HotPlaceException();
+        }
+
+        HotPlace hotPlace = findHotPlace.get();
+        if (!hotPlace.getMember().getId().equals(memberId)) {
+            throw new HotPlaceException();
+        }
+
+        hotPlace.editContent(hotPlace.getName(), hotPlace.getDesc(), hotPlace.getVisitedDate());
+
+        return hotPlaceRepository.update(hotPlaceId, hotPlace);
+    }
+
+    @Override
     public int updateHit(Long hotPlaceId) {
         Optional<HotPlace> findHotPlace = hotPlaceRepository.findById(hotPlaceId);
         if (!findHotPlace.isPresent()) {

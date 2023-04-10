@@ -39,8 +39,10 @@ public class HotPlace {
     }
 
     //== 비즈니스 로직 ==//
-    public void changeName(String name) {
+    public void editContent(String name, String desc, String visitedDate) {
         this.name = name;
+        this.desc = desc;
+        this.visitedDate = visitedDate;
         this.lastModifiedDate = LocalDateTime.now();
     }
 

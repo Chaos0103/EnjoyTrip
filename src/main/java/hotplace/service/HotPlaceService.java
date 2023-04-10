@@ -14,6 +14,8 @@ public interface HotPlaceService {
 
     List<HotPlaceListDto> searchHotPlaces(HotPlaceSearch condition);
 
+    int editHotPlace(Long memberId, Long hotPlaceId, HotPlaceDto hotPlaceDto);
+
     int updateHit(Long hotPlaceId);
 
     int removeHotPlace(Long hotPlaceId, Long memberId);
