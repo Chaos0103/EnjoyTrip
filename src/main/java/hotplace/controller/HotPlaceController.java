@@ -51,6 +51,7 @@ public class HotPlaceController extends HttpServlet {
                 doMvedit(request, response);
                 break;
             case "edit":
+                doEdit(request, response);
                 break;
             case "remove":
                 break;
@@ -136,6 +137,31 @@ public class HotPlaceController extends HttpServlet {
         request.setAttribute("hotPlace", hotPlace);
 
         forward(request, response, "/hotplace/editHotplace.jsp");
+    }
+
+    private void doEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+        if (loginMember == null) {
+            request.setAttribute("msg", "로그인 후 사용해주세요.");
+            forward(request, response, "/account/login.jsp");
+            return;
+        }
+
+        Long hotPlaceId = Long.parseLong(request.getParameter("hotPlaceId"));
+        String name = request.getParameter("name");
+        String desc = request.getParameter("desc");
+        String visitedDate = request.getParameter("visitedDate");
+
+        HotPlaceDto editHotPlace = HotPlaceDto.builder()
+                .name(name)
+                .desc(desc)
+                .visitedDate(visitedDate)
+                .build();
+
+        int result = hotPlaceService.editHotPlace(loginMember.getId(), hotPlaceId, editHotPlace);
+
+        redirect(request, response, "/hotPlace?action=detail&hotPlaceId=" + hotPlaceId);
     }
 
     private void forward(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException {
