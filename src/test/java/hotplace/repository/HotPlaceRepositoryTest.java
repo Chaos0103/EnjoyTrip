@@ -96,9 +96,10 @@ class HotPlaceRepositoryTest {
     void updateHit() {
         //given
         HotPlace hotPlace = hotPlaceRepository.findById(hotPlaceId).get();
+        hotPlace.increaseHit();
 
         //when
-        int result = hotPlaceRepository.updateHit(hotPlaceId, hotPlace.getHit());
+        int result = hotPlaceRepository.updateHit(hotPlaceId, hotPlace);
 
         //then
         assertThat(result).isEqualTo(1);
