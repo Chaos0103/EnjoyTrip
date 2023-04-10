@@ -30,7 +30,7 @@ public class PlanServiceImpl implements PlanService {
         attractionRepository = AttractionJdbcRepository.getAttractionRepository();
     }
 
-    public PlanService getPlanService() {
+    public static PlanService getPlanService() {
         return planService;
     }
 
