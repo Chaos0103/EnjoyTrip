@@ -36,7 +36,19 @@ public class MemberServiceImpl implements MemberService {
             throw new SignUpException();
         }
 
-        return memberRepository.save(memberAddDto);
+        Member member = Member.builder()
+                .loginId(memberAddDto.getLoginId())
+                .loginPw(memberAddDto.getLoginPw())
+                .username(memberAddDto.getUsername())
+                .email(memberAddDto.getEmail())
+                .phone(memberAddDto.getPhone())
+                .birth(memberAddDto.getBirth())
+                .gender(memberAddDto.getGender())
+                .nickname(memberAddDto.getNickname())
+                .authority(memberAddDto.getAuthority())
+                .build();
+
+        return memberRepository.save(member);
     }
 
     @Override
