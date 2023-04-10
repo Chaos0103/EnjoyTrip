@@ -20,7 +20,7 @@ public interface NotionRepository {
 
     int getTotalCount();
 
-    int update(Long notionId, Notion notion);
+    int update(Notion notion);
 
     int remove(Long notionId);
 

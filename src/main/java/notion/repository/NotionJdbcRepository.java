@@ -172,7 +172,7 @@ public class NotionJdbcRepository implements NotionRepository {
     }
 
     @Override
-    public int update(Long notionId, Notion notion) {
+    public int update(Notion notion) {
         int count = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -185,7 +185,7 @@ public class NotionJdbcRepository implements NotionRepository {
             pstmt.setString(2, notion.getContent());
             pstmt.setLong(3, notion.getLastModifiedBy().getId());
             pstmt.setTimestamp(4, Timestamp.valueOf(notion.getLastModifiedDate()));
-            pstmt.setLong(5, notionId);
+            pstmt.setLong(5, notion.getId());
 
             count = pstmt.executeUpdate();
         } catch (SQLException e) {
