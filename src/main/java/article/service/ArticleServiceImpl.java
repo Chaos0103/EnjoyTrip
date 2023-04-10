@@ -2,9 +2,12 @@ package article.service;
 
 
 import article.Article;
+import article.dto.ArticleDetailDto;
 import article.dto.ArticleDto;
 import article.dto.ArticleSearch;
 import article.repository.ArticleJdbcRepository;
+import article.repository.ArticleQueryJdbcRepository;
+import article.repository.ArticleQueryRepository;
 import article.repository.ArticleRepository;
 import common.exception.ArticleException;
 import common.validation.ArticleValidation;
@@ -25,10 +28,12 @@ public class ArticleServiceImpl implements ArticleService {
 
     private static final ArticleService articleService = new ArticleServiceImpl();
     private final ArticleRepository articleRepository;
+    private final ArticleQueryRepository articleQueryRepository;
     private final MemberRepository memberRepository;
 
     public ArticleServiceImpl() {
         articleRepository = ArticleJdbcRepository.getArticleRepository();
+        articleQueryRepository = ArticleQueryJdbcRepository.getArticleQueryRepository();
         memberRepository = MemberJdbcRepository.getMemberRepository();
     }
 
@@ -53,18 +58,12 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleDto searchArticle(Long articleId) {
-        Optional<Article> findArticle = articleRepository.findById(articleId);
+    public ArticleDetailDto searchArticle(Long articleId) {
+        Optional<ArticleDetailDto> findArticle = articleQueryRepository.findDetailById(articleId);
         if (!findArticle.isPresent()) {
             throw new ArticleException(ARTICLE_EXCEPTION);
         }
-        Article article = findArticle.get();
-        return ArticleDto.builder()
-                .title(article.getTitle())
-                .content(article.getContent())
-                .hit(article.getHit())
-                .createdDate(article.getCreatedDate())
-                .build();
+        return findArticle.get();
     }
 
     @Override

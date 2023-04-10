@@ -1,5 +1,6 @@
 package article.controller;
 
+import article.dto.ArticleDetailDto;
 import article.dto.ArticleDto;
 import article.dto.ArticleSearch;
 import article.service.ArticleService;
@@ -156,7 +157,7 @@ public class ArticleController extends HttpServlet {
     private void doDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long articleId = Long.parseLong(request.getParameter("articleId"));
 
-        ArticleDto article = articleService.searchArticle(articleId);
+        ArticleDetailDto article = articleService.searchArticle(articleId);
 
         request.setAttribute("article", article);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/article/viewArticle.jsp");
@@ -166,7 +167,7 @@ public class ArticleController extends HttpServlet {
     private void doMvedit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long articleId = Long.parseLong(request.getParameter("articleId"));
 
-        ArticleDto article = articleService.searchArticle(articleId);
+        ArticleDetailDto article = articleService.searchArticle(articleId);
 
         request.setAttribute("article", article);
         forward(request, response, "/article/editArticle.jsp");

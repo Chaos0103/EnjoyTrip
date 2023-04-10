@@ -1,5 +1,6 @@
 package article.service;
 
+import article.dto.ArticleDetailDto;
 import article.dto.ArticleDto;
 import article.dto.ArticleSearch;
 
@@ -9,7 +10,7 @@ public interface ArticleService {
 
     int addArticle(Long memberId, ArticleDto articleDto);
 
-    ArticleDto searchArticle(Long articleId);
+    ArticleDetailDto searchArticle(Long articleId);
 
     List<ArticleDto> searchArticles(ArticleSearch condition);
 
