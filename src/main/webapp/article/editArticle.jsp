@@ -14,7 +14,8 @@
 <!-- end header -->
 
 <!-- start section -->
-<form method="post" action="${root}/article?action=write">
+<form method="post" action="${root}/article?action=edit">
+  <input type="hidden" name="articleId" value="${article.articleId}">
   <div class='shadow m-lg-auto m-lg-5 m-5 m-auto p-lg-5 container-sm justify-content-center align-content-center'>
     <div class='notion-head m-auto'>
       <div class='notion-title'>
