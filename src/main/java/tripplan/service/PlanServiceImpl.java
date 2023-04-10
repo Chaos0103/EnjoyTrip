@@ -62,7 +62,12 @@ public class PlanServiceImpl implements PlanService {
             throw new PlanException();
         }
 
-        return planRepository.addDetailPlan(tripPlanId, contentId);
+        DetailPlan detailPlan = DetailPlan.builder()
+                .tripPlan(tripPlan)
+                .attractionInfo(findAttractionInfo.get())
+                .build();
+
+        return planRepository.save(detailPlan);
     }
 
     @Override
