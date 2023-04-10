@@ -164,7 +164,12 @@ public class ArticleController extends HttpServlet {
     }
 
     private void doMvedit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Long articleId = Long.parseLong(request.getParameter("articleId"));
 
+        ArticleDto article = articleService.searchArticle(articleId);
+
+        request.setAttribute("article", article);
+        forward(request, response, "/article/editArticle.jsp");
     }
 
     private void doEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
