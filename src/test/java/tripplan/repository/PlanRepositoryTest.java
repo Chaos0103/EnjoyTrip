@@ -1,7 +1,6 @@
 package tripplan.repository;
 
 import member.Member;
-import member.dto.MemberAddDto;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -12,10 +11,10 @@ import tripplan.DetailPlan;
 import tripplan.TripPlan;
 
 import java.util.List;
+import java.util.Optional;
 
 import static member.Authority.CLIENT;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class PlanRepositoryTest {
 
@@ -50,9 +49,13 @@ class PlanRepositoryTest {
     @DisplayName("여행계획 저장")
     void addTripPlan() {
         //given
-
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        TripPlan tripPlan = TripPlan.builder()
+                .title("trip plan title")
+                .member(findMember.get())
+                .build();
         //when
-        int result = planRepository.addTripPlan(memberId, "abcde");
+        int result = planRepository.save(tripPlan);
 
         //then
         assertThat(result).isEqualTo(1);
@@ -62,7 +65,11 @@ class PlanRepositoryTest {
     @DisplayName("세부여행계획 저장")
     void addDetailPlan() {
         //given
-        planRepository.addTripPlan(memberId, "abc");
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        planRepository.save(TripPlan.builder()
+                .title("trip plan title")
+                .member(findMember.get())
+                .build());
         List<TripPlan> findTripPlans = planRepository.findAllByMemberId(memberId);
         TripPlan tripPlan = findTripPlans.get(0);
 
@@ -77,7 +84,11 @@ class PlanRepositoryTest {
     @DisplayName("여행계획 업데이트")
     void updateTripPlan() {
         //given
-        planRepository.addTripPlan(memberId, "abc");
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        planRepository.save(TripPlan.builder()
+                .title("trip plan title")
+                .member(findMember.get())
+                .build());
         List<TripPlan> findTripPlans = planRepository.findAllByMemberId(memberId);
         TripPlan tripPlan = findTripPlans.get(0);
 
@@ -93,7 +104,11 @@ class PlanRepositoryTest {
     @DisplayName("상세여행계획 삭제")
     void removeDetailPlan() {
         //given
-        planRepository.addTripPlan(memberId, "abc");
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        planRepository.save(TripPlan.builder()
+                .title("trip plan title")
+                .member(findMember.get())
+                .build());
         List<TripPlan> findTripPlans = planRepository.findAllByMemberId(memberId);
         TripPlan tripPlan = findTripPlans.get(0);
         planRepository.addDetailPlan(tripPlan.getId(), 125405);
