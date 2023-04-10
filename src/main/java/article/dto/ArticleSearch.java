@@ -5,18 +5,13 @@ import lombok.Data;
 
 @Data
 public class ArticleSearch {
-    private String title;
-    private String content;
-    private String writer;
-    private String hit;
-    private String createdDate;
+
+    private String condition;
+    private int sortCondition;
 
     @Builder
-    public ArticleSearch(String title, String content, String writer, String hit, String createdDate) {
-        this.title = title;
-        this.content = content;
-        this.writer = writer;
-        this.hit = hit;
-        this.createdDate = createdDate;
+    public ArticleSearch(String condition, int sortCondition) {
+        this.condition = condition;
+        this.sortCondition = sortCondition;
     }
 }

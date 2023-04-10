@@ -116,17 +116,8 @@ public class ArticleController extends HttpServlet {
     }
 
     private void doList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String title = request.getParameter("title");
-        String content = request.getParameter("content");
-        String writer = request.getParameter("writer");
-        String hit = request.getParameter("hit");
-        if (hit == null) {
-            hit = "desc";
-        }
-        String createdDate = request.getParameter("createdDate");
-        if (createdDate == null) {
-            createdDate = "desc";
-        }
+        String condition = request.getParameter("condition") == null ? "" : request.getParameter("condition");
+        int sortCondition = Integer.parseInt(request.getParameter("sortCondition") == null ? "1" : request.getParameter("sortCondition"));
 
         int pageNum = 1;
         int amount = 10;
@@ -136,16 +127,12 @@ public class ArticleController extends HttpServlet {
             amount = Integer.parseInt(request.getParameter("amount"));
         }
 
-
-        ArticleSearch condition = ArticleSearch.builder()
-                .title(title)
-                .content(content)
-                .writer(writer)
-                .hit(hit)
-                .createdDate(createdDate)
+        ArticleSearch articleSearch = ArticleSearch.builder()
+                .condition(condition)
+                .sortCondition(sortCondition)
                 .build();
 
-        List<ArticleListDto> articles = articleService.searchArticles(condition, pageNum, amount);
+        List<ArticleListDto> articles = articleService.searchArticles(articleSearch, pageNum, amount);
         int totalCount = articleService.getTotalCount();
         Page page = new Page(pageNum, amount, totalCount);
 
@@ -165,6 +152,7 @@ public class ArticleController extends HttpServlet {
 
         Long articleId = Long.parseLong(request.getParameter("articleId"));
 
+        int result = articleService.increaseHit(articleId);
         ArticleDetailDto article = articleService.searchArticle(articleId);
 
         request.setAttribute("article", article);

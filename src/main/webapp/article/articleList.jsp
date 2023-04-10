@@ -16,6 +16,24 @@
 <%-- start section --%>
 <main class="p-3 mb-3 border-bottom container-sm">
   <div class="container-sm">
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <form class="row g-3" method="get" action="${root}/article?action=list">
+        <input type="hidden" name="action" value="list">
+        <div class="col-auto">
+          <input type="text" class="form-control" id="condition" name="condition" placeholder="작성자, 제목, 내용">
+        </div>
+        <div class="col-auto">
+          <select class="form-select" name="sortCondition">
+            <option value="1" selected>최신등록순</option>
+            <option value="2">보기순</option>
+          </select>
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-secondary mb-3">검색</button>
+          <button type="button" class="btn btn-primary mb-3" onclick="location.href='${root}?action=mvwrite'">글쓰기</button>
+        </div>
+      </form>
+    </div>
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-sm-start ">
       <table class="table m-auto wrapper">
         <thead>
@@ -67,11 +85,6 @@
       </nav>
     </div>
     <%-- 페이징 종료 --%>
-    <c:if test="${not empty userinfo}">
-      <div class='wrapper m-auto mt-5'>
-        <a href='${root}?action=mvwrite' type='button' id='btnAddNotification' class='btn btn-success'>게시물 등록</a>
-      </div>
-    </c:if>
   </div>
 </main>
 <%-- end section --%>

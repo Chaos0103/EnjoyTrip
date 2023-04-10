@@ -73,10 +73,24 @@ public class ArticleQueryJdbcRepository implements ArticleQueryRepository {
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select article_id, title, created_date from article order by created_date desc limit ?, ?";
+            String sql = "select a.article_id, a.title, a.created_date" +
+                    " from article a" +
+                    " join member m" +
+                    " on a.member_id=m.member_id" +
+                    " where m.nickname like ? or a.title like ? or a.content like ?";
+            if (condition.getSortCondition() == 2) {
+                sql += " order by hit desc";
+            } else {
+                sql += " order by created_date desc";
+            }
+            sql += " limit ?, ?";
+
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, (pageNum - 1) * amount);
-            pstmt.setInt(2, amount);
+            pstmt.setString(1, '%' + condition.getCondition() + '%');
+            pstmt.setString(2, '%' + condition.getCondition() + '%');
+            pstmt.setString(3, '%' + condition.getCondition() + '%');
+            pstmt.setInt(4, (pageNum - 1) * amount);
+            pstmt.setInt(5, amount);
 
             rs = pstmt.executeQuery();
             while (rs.next()) {

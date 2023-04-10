@@ -155,7 +155,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, article.getHit());
-            pstmt.setLong(1, article.getId());
+            pstmt.setLong(2, article.getId());
 
             count = pstmt.executeUpdate();
         } catch (SQLException e) {
