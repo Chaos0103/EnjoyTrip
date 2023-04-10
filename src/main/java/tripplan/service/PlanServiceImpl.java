@@ -36,7 +36,13 @@ public class PlanServiceImpl implements PlanService {
         if (!findMember.isPresent()) {
             throw new PlanException();
         }
-        return planRepository.addTripPlan(memberId, title);
+
+        TripPlan tripPlan = TripPlan.builder()
+                .title(title)
+                .member(new Member(memberId))
+                .build();
+
+        return planRepository.save(tripPlan);
     }
 
     @Override
