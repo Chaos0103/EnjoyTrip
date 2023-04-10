@@ -1,6 +1,5 @@
 package article.service;
 
-
 import article.Article;
 import article.dto.ArticleDetailDto;
 import article.dto.ArticleDto;
@@ -21,7 +20,6 @@ import member.repository.MemberRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static common.exception.ExceptionMessage.*;
 
@@ -74,7 +72,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public int getTotalCount() {
-        return articleRepository.findTotalCount();
+        return articleQueryRepository.findTotalCount();
     }
 
     @Override
@@ -101,7 +99,7 @@ public class ArticleServiceImpl implements ArticleService {
             throw new ArticleException(ARTICLE_EXCEPTION);
         }
 
-      article.editArticle(articleDto.getTitle(), articleDto.getContent());
+        article.editArticle(articleDto.getTitle(), articleDto.getContent());
 
         return articleRepository.update(article);
     }
