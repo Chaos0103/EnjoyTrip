@@ -26,17 +26,17 @@ public class ArticleJdbcRepository implements ArticleRepository {
     }
 
     @Override
-    public int save(Long memberId, ArticleDto articleDto) {
+    public int save(Article article) {
         int count = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "insert into article(member_id, title, content) values (?, ?, ?);";
+            String sql = "insert into article(member_id, title, content) values (?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setLong(1, memberId);
-            pstmt.setString(2, articleDto.getTitle());
-            pstmt.setString(3, articleDto.getContent());
+            pstmt.setLong(1, article.getMember().getId());
+            pstmt.setString(2, article.getTitle());
+            pstmt.setString(3, article.getContent());
             count = pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

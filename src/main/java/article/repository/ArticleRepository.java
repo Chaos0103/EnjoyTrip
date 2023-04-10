@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface ArticleRepository {
 
-    int save(Long memberId, ArticleDto articleDto);
+    int save(Article article);
 
     Optional<Article> findById(Long articleId);
 
