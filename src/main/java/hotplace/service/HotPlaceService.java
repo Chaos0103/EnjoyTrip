@@ -10,7 +10,11 @@ public interface HotPlaceService {
 
     int addHotPlace(Long memberId, int contentId, HotPlaceDto hotPlaceDto);
 
-    List<HotPlaceListDto> searchHotPlace(HotPlaceSearch condition);
+    HotPlaceDto searchHotPlace(Long hotPlaceId);
+
+    List<HotPlaceListDto> searchHotPlaces(HotPlaceSearch condition);
+
+    int updateHit(Long hotPlaceId);
 
     int removeHotPlace(Long hotPlaceId, Long memberId);
 }

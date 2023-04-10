@@ -24,7 +24,6 @@ public class HotPlace {
     private AttractionInfo attractionInfo;
 
     @Builder
-
     public HotPlace(Long id, String name, String desc, int hit, String visitedDate, UploadFile uploadFile, LocalDateTime createdDate, LocalDateTime lastModifiedDate, Integer contentTypeId, Member member, AttractionInfo attractionInfo) {
         this.id = id;
         this.name = name;
@@ -37,5 +36,15 @@ public class HotPlace {
         this.contentTypeId = contentTypeId;
         this.member = member;
         this.attractionInfo = attractionInfo;
+    }
+
+    //== 비즈니스 로직 ==//
+    public void changeName(String name) {
+        this.name = name;
+        this.lastModifiedDate = LocalDateTime.now();
+    }
+
+    public void increaseHit() {
+        this.hit += 1;
     }
 }

@@ -68,7 +68,26 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     }
 
     @Override
-    public List<HotPlaceListDto> searchHotPlace(HotPlaceSearch condition) {
+    public HotPlaceDto searchHotPlace(Long hotPlaceId) {
+        Optional<HotPlace> findHotPlace = hotPlaceRepository.findById(hotPlaceId);
+        if (!findHotPlace.isPresent()) {
+            throw new HotPlaceException();
+        }
+
+        HotPlace hotPlace = findHotPlace.get();
+
+        return HotPlaceDto.builder()
+                .id(hotPlace.getId())
+                .name(hotPlace.getName())
+                .desc(hotPlace.getDesc())
+                .hit(hotPlace.getHit())
+                .uploadFile(UploadFile.builder().storeFileName(hotPlace.getUploadFile().getStoreFileName()).build())
+                .createdDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(hotPlace.getCreatedDate()))
+                .build();
+    }
+
+    @Override
+    public List<HotPlaceListDto> searchHotPlaces(HotPlaceSearch condition) {
         List<HotPlace> hotPlaces = hotPlaceRepository.findByCondition(condition);
         FileStore fileStore = new FileStore();
 
@@ -84,6 +103,19 @@ public class HotPlaceServiceImpl implements HotPlaceService {
                         .build()
                 )
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public int updateHit(Long hotPlaceId) {
+        Optional<HotPlace> findHotPlace = hotPlaceRepository.findById(hotPlaceId);
+        if (!findHotPlace.isPresent()) {
+            throw new HotPlaceException();
+        }
+
+        HotPlace hotPlace = findHotPlace.get();
+        hotPlace.increaseHit();
+
+        return hotPlaceRepository.updateHit(hotPlaceId, hotPlace);
     }
 
     @Override
