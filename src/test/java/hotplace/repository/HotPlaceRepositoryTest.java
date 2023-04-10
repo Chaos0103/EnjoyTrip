@@ -78,6 +78,20 @@ class HotPlaceRepositoryTest {
     }
 
     @Test
+    @DisplayName("핫플레이스 업데이트")
+    void update() {
+        //given
+        HotPlace hotPlace = hotPlaceRepository.findById(hotPlaceId).get();
+        hotPlace.changeName("new hot place name");
+
+        //when
+        int result = hotPlaceRepository.update(hotPlaceId, hotPlace);
+
+        //then
+        assertThat(result).isEqualTo(1);
+    }
+
+    @Test
     @DisplayName("핫플레이스 삭제")
     void remove() {
         //given
