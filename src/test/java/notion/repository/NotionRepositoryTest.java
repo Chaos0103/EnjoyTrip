@@ -48,13 +48,15 @@ class NotionRepositoryTest {
     @DisplayName("공지사항 저장")
     void save() {
         //given
-        NotionDto notionDto = NotionDto.builder()
+        Notion notion = Notion.builder()
                 .title("notion title")
                 .content("notion content")
+                .createdBy(member)
+                .lastModifiedBy(member)
                 .build();
 
         //when
-        int count = notionRepository.save(member.getId(), notionDto);
+        int count = notionRepository.save(notion);
 
         //then
         assertThat(count).isEqualTo(1);
@@ -64,7 +66,12 @@ class NotionRepositoryTest {
     @DisplayName("공지사항 수정")
     void update() {
         //given
-        notionRepository.save(member.getId(), new NotionDto(0L,"notion title", "notion content", false, null));
+        notionRepository.save(Notion.builder()
+                .title("notion title")
+                .content("notion content")
+                .createdBy(member)
+                .lastModifiedBy(member)
+                .build());
         Notion notion = notionRepository.findAll().get(0);
         notion.edit("new notion title", "new notion content", member);
 
@@ -79,7 +86,12 @@ class NotionRepositoryTest {
     @DisplayName("공지사항 삭제")
     void remove() {
         //given
-        notionRepository.save(member.getId(), new NotionDto(0L,"notion title", "notion content", false, null));
+        notionRepository.save(Notion.builder()
+                .title("notion title")
+                .content("notion content")
+                .createdBy(member)
+                .lastModifiedBy(member)
+                .build());
         Notion notion = notionRepository.findAll().get(0);
 
         //when

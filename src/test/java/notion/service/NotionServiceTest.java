@@ -5,6 +5,7 @@ import member.Member;
 import member.dto.MemberAddDto;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
+import notion.Notion;
 import notion.dto.NotionDto;
 import notion.repository.NotionJdbcRepository;
 import notion.repository.NotionRepository;
@@ -40,8 +41,8 @@ class NotionServiceTest {
                 .nickname("광주5반")
                 .authority(ADMIN)
                 .build());
-        adminId = memberRepository.findByLoginId("admin").get().getId();
-
+        Member admin = memberRepository.findByLoginId("admin").get();
+        adminId = admin.getId();
         memberRepository.save(Member.builder()
                 .loginId("client")
                 .loginPw("12345678")
@@ -55,7 +56,12 @@ class NotionServiceTest {
                 .build());
         clientId = memberRepository.findByLoginId("client").get().getId();
 
-        notionRepository.save(adminId, new NotionDto(0L, "notion title", "notion content", false, null));
+        notionRepository.save(Notion.builder()
+                .title("notion title")
+                .content("notion content")
+                .createdBy(admin)
+                .lastModifiedBy(admin)
+                .build());
         notionId = notionRepository.findAll().get(0).getId();
     }
 
