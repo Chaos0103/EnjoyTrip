@@ -134,7 +134,7 @@ public class HotPlaceServiceImpl implements HotPlaceService {
         HotPlace hotPlace = findHotPlace.get();
         hotPlace.increaseHit();
 
-        return hotPlaceRepository.updateHit(hotPlaceId, hotPlace);
+        return hotPlaceRepository.updateHit(hotPlace);
     }
 
     @Override
