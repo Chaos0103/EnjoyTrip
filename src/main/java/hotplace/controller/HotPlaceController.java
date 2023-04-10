@@ -48,6 +48,7 @@ public class HotPlaceController extends HttpServlet {
                 doDetail(request, response);
                 break;
             case "mvedit":
+                doMvedit(request, response);
                 break;
             case "edit":
                 break;
@@ -125,6 +126,16 @@ public class HotPlaceController extends HttpServlet {
         request.setAttribute("hotPlace", hotPlace);
 
         forward(request, response, "/hotplace/viewHotplace.jsp");
+    }
+
+    private void doMvedit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Long hotPlaceId = Long.parseLong(request.getParameter("hotPlaceId"));
+
+        HotPlaceDto hotPlace = hotPlaceService.searchHotPlace(hotPlaceId);
+
+        request.setAttribute("hotPlace", hotPlace);
+
+        forward(request, response, "/hotplace/editHotplace.jsp");
     }
 
     private void forward(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException {
