@@ -24,7 +24,7 @@ public class NotionJdbcRepository implements NotionRepository {
     }
 
     @Override
-    public int save(Long memberId, NotionDto notionDto) {
+    public int save(Notion notion) {
         int count = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -33,11 +33,11 @@ public class NotionJdbcRepository implements NotionRepository {
             String sql = "insert into notion(title, content, top, created_by, last_modified_by) values (?, ?, ?, ?, ?);";
 
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, notionDto.getTitle());
-            pstmt.setString(2, notionDto.getContent());
-            pstmt.setBoolean(3, notionDto.isTop());
-            pstmt.setLong(4, memberId);
-            pstmt.setLong(5, memberId);
+            pstmt.setString(1, notion.getTitle());
+            pstmt.setString(2, notion.getContent());
+            pstmt.setBoolean(3, notion.isTop());
+            pstmt.setLong(4, notion.getCreatedBy().getId());
+            pstmt.setLong(5, notion.getLastModifiedBy().getId());
 
             count = pstmt.executeUpdate();
         } catch (SQLException e) {

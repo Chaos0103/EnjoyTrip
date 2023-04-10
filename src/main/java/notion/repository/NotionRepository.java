@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface NotionRepository {
 
-    int save(Long memberId, NotionDto notionDto);
+    int save(Notion notion);
 
     Optional<Notion> findById(Long notionId);
 
