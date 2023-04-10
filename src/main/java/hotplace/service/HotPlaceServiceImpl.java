@@ -121,7 +121,7 @@ public class HotPlaceServiceImpl implements HotPlaceService {
 
         hotPlace.editContent(hotPlace.getName(), hotPlace.getDesc(), hotPlace.getVisitedDate());
 
-        return hotPlaceRepository.update(hotPlaceId, hotPlace);
+        return hotPlaceRepository.update(hotPlace);
     }
 
     @Override
