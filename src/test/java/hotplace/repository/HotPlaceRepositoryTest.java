@@ -1,5 +1,8 @@
 package hotplace.repository;
 
+import attraction.AttractionInfo;
+import attraction.repository.AttractionJdbcRepository;
+import attraction.repository.AttractionRepository;
 import hotplace.HotPlace;
 import hotplace.UploadFile;
 import hotplace.dto.HotPlaceSearch;
@@ -13,6 +16,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static member.Authority.CLIENT;
 import static org.assertj.core.api.Assertions.*;
@@ -21,6 +25,7 @@ class HotPlaceRepositoryTest {
 
     private final HotPlaceRepository hotPlaceRepository = HotPlaceJdbcRepository.getHotPlaceRepository();
     private final MemberRepository memberRepository = MemberJdbcRepository.getMemberRepository();
+    private final AttractionRepository attractionRepository = AttractionJdbcRepository.getAttractionRepository();
     private Long memberId;
     private Long hotPlaceId;
 
@@ -51,8 +56,10 @@ class HotPlaceRepositoryTest {
                                 .build()
                 )
                 .contentTypeId(11)
+                .member(member)
+                .attractionInfo(new AttractionInfo(125405))
                 .build();
-        hotPlaceRepository.save(memberId, 125405, hotPlace);
+        hotPlaceRepository.save(hotPlace);
         List<HotPlace> findHotPlace = hotPlaceRepository.findByCondition(new HotPlaceSearch("", 1));
         hotPlaceId = findHotPlace.get(0).getId();
     }
@@ -67,6 +74,8 @@ class HotPlaceRepositoryTest {
     @DisplayName("핫플레이스 저장")
     void save() {
         //given
+        Optional<Member> fineMember = memberRepository.findById(memberId);
+        Optional<AttractionInfo> findAttractionInfo = attractionRepository.findById(125405);
         HotPlace hotPlace = HotPlace.builder()
                 .name("핫플레이스 이름")
                 .desc("핫플레이스 설명")
@@ -78,10 +87,12 @@ class HotPlaceRepositoryTest {
                                 .build()
                 )
                 .contentTypeId(11)
+                .member(fineMember.get())
+                .attractionInfo(findAttractionInfo.get())
                 .build();
 
         //when
-        int result = hotPlaceRepository.save(memberId, 125405, hotPlace);
+        int result = hotPlaceRepository.save(hotPlace);
 
         //then
         assertThat(result).isEqualTo(1);
