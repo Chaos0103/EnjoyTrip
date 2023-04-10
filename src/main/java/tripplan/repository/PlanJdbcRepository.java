@@ -25,7 +25,7 @@ public class PlanJdbcRepository implements PlanRepository {
     }
 
     @Override
-    public int addTripPlan(Long memberId, String title) {
+    public int save(TripPlan tripPlan) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         int count = 0;
@@ -33,8 +33,8 @@ public class PlanJdbcRepository implements PlanRepository {
             conn = dbConnectionUtil.getConnection();
             String sql = "insert into trip_plan (member_id, title) values (? , ?)";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setLong(1, memberId);
-            pstmt.setString(2, title);
+            pstmt.setLong(1, tripPlan.getMember().getId());
+            pstmt.setString(2, tripPlan.getTitle());
             count = pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
