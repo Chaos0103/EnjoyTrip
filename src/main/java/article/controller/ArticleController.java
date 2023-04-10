@@ -194,7 +194,16 @@ public class ArticleController extends HttpServlet {
     }
 
     private void doRemove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+        if (loginMember == null) {
+            return;
+        }
 
+        Long articleId = Long.parseLong(request.getParameter("articleId"));
+
+        int result = articleService.removeArticle(articleId, loginMember.getId());
+        redirect(request, response, "/article?action=list");
     }
 
     private void forward(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException {
