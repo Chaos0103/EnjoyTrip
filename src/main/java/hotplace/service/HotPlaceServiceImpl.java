@@ -62,9 +62,11 @@ public class HotPlaceServiceImpl implements HotPlaceService {
                                 .storeFileName(hotPlaceDto.getUploadFile().getStoreFileName())
                                 .build()
                 )
+                .member(findMember.get())
+                .attractionInfo(findAttractionInfo.get())
                 .build();
 
-        return hotPlaceRepository.save(memberId, contentId, hotPlace);
+        return hotPlaceRepository.save(hotPlace);
     }
 
     @Override

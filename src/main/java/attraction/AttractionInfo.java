@@ -22,6 +22,10 @@ public class AttractionInfo {
     private Double longitude;
     private String mlevel;
 
+    public AttractionInfo(Integer id) {
+        this.id = id;
+    }
+
     @Builder
     public AttractionInfo(Integer id, Integer contentTypeId, String title, String addr1, String addr2, String zipcode, String tel, String firstImage, String firstImage2, Integer readCount, Sido sido, Gugun gugun, Double latitude, Double longitude, String mlevel) {
         this.id = id;
