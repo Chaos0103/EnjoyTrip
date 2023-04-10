@@ -14,8 +14,6 @@ public interface ArticleRepository {
 
     List<Article> findByMemberId(Long memberId);
 
-    List<Article> findByCondition(ArticleSearch condition);
-
     int findTotalCount();
 
     int update(Article article);

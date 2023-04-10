@@ -1,6 +1,9 @@
 package article.repository;
 
+import article.Article;
 import article.dto.ArticleDetailDto;
+import article.dto.ArticleListDto;
+import article.dto.ArticleSearch;
 import util.DBConnectionUtil;
 
 import java.sql.Connection;
@@ -9,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class ArticleQueryJdbcRepository implements ArticleQueryRepository {
@@ -58,6 +63,34 @@ public class ArticleQueryJdbcRepository implements ArticleQueryRepository {
         }
 
         return Optional.ofNullable(articleDetailDto);
+    }
+
+    @Override
+    public List<ArticleListDto> findListByCondition(ArticleSearch condition) {
+        List<ArticleListDto> articleListDtos = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select article_id, title, created_date from article";
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                ArticleListDto articleListDto = ArticleListDto.builder()
+                        .articleId(rs.getLong("article_id"))
+                        .title(rs.getString("title"))
+                        .createdDate(dateFormat(rs.getTimestamp("created_date").toLocalDateTime()))
+                        .build();
+                articleListDtos.add(articleListDto);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+
+        return articleListDtos;
     }
 
     private String dateFormat(LocalDateTime dateTime) {
