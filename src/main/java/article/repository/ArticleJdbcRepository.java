@@ -164,7 +164,28 @@ public class ArticleJdbcRepository implements ArticleRepository {
         } finally {
             dbConnectionUtil.close(pstmt, conn);
         }
+        return count;
+    }
 
+    @Override
+    public int updateHit(Article article) {
+        int count = 0;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "update article set hit=? where article_id=?;";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, article.getHit());
+            pstmt.setLong(1, article.getId());
+
+            count = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(pstmt, conn);
+        }
         return count;
     }
 

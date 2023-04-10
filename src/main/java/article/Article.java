@@ -38,4 +38,8 @@ public class Article {
         this.content = content;
         this.lastModifiedDate = LocalDateTime.now();
     }
+
+    public void increaseHit() {
+        this.hit += 1;
+    }
 }

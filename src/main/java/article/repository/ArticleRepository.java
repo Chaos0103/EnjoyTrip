@@ -20,6 +20,8 @@ public interface ArticleRepository {
 
     int update(Article article);
 
+    int updateHit(Article article);
+
     int remove(Long articleId);
 
     void clear();
