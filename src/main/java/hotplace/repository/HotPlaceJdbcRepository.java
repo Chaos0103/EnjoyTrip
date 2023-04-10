@@ -29,17 +29,17 @@ public class HotPlaceJdbcRepository implements HotPlaceRepository {
     }
 
     @Override
-    public int save(Long memberId, int contentId, HotPlace hotPlace) {
+    public int save(HotPlace hotPlace) {
         int count = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "insert into hot_place(member_id, content_id, content_type_id, name, `desc`, visited_date, upload_file_name, store_file_name) values (?, ?, ?, ?, ?, ?, ?, ?);";
+            String sql = "insert into hot_place(member_id, content_id, content_type_id, name, `desc`, visited_date, upload_file_name, store_file_name) values (?, ?, ?, ?, ?, ?, ?, ?)";
 
             pstmt = conn.prepareStatement(sql);
-            pstmt.setLong(1, memberId);
-            pstmt.setInt(2, contentId);
+            pstmt.setLong(1, hotPlace.getMember().getId());
+            pstmt.setInt(2, hotPlace.getAttractionInfo().getId());
             pstmt.setInt(3, hotPlace.getContentTypeId());
             pstmt.setString(4, hotPlace.getName());
             pstmt.setString(5, hotPlace.getDesc());

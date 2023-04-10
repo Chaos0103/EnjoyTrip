@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface HotPlaceRepository {
 
-    int save(Long memberId, int contentId, HotPlace hotPlace);
+    int save(HotPlace hotPlace);
 
     Optional<HotPlace> findById(Long hotPlaceId);
 
