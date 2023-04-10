@@ -9,10 +9,14 @@ import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
 import tripplan.DetailPlan;
 import tripplan.TripPlan;
+import tripplan.dto.PlanDto;
+import tripplan.dto.PlanSearch;
 import tripplan.repository.PlanJdbcRepository;
 import tripplan.repository.PlanRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class PlanServiceImpl implements PlanService {
     private static final PlanService planService = new PlanServiceImpl();
@@ -26,7 +30,7 @@ public class PlanServiceImpl implements PlanService {
         attractionRepository = AttractionJdbcRepository.getAttractionRepository();
     }
 
-    public PlanService getPlanService() {
+    public static PlanService getPlanService() {
         return planService;
     }
 
@@ -71,6 +75,19 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
+    public List<PlanDto> searchPlans(PlanSearch condition) {
+        List<TripPlan> findTripPlans = planRepository.findByCondition(condition);
+        return findTripPlans.stream()
+                .map(tripPlan -> PlanDto.builder()
+                        .id(tripPlan.getId())
+                        .title(tripPlan.getTitle())
+                        .member(tripPlan.getMember())
+                        .createdDate(tripPlan.getCreatedDate())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public int updateTripPlan(Long memberId, Long tripPlanId, String title) {
         Optional<TripPlan> findTripPlan = planRepository.findById(tripPlanId);
         if (!findTripPlan.isPresent()) {
@@ -90,7 +107,7 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public int removeTripPlan(Long memberId, Long tripPlanId) {
         Optional<TripPlan> findTripPlan = planRepository.findById(tripPlanId);
-        if(!findTripPlan.isPresent()) {
+        if (!findTripPlan.isPresent()) {
             throw new PlanException();
         }
 

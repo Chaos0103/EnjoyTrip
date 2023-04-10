@@ -3,6 +3,7 @@ package tripplan.repository;
 import attraction.AttractionInfo;
 import member.Member;
 import tripplan.DetailPlan;
+import tripplan.dto.PlanSearch;
 import tripplan.TripPlan;
 import util.DBConnectionUtil;
 
@@ -161,6 +162,33 @@ public class PlanJdbcRepository implements PlanRepository {
         return detailPlans;
     }
 
+    @Override
+    public List<TripPlan> findByCondition(PlanSearch condition) {
+        List<TripPlan> plans = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from trip_plan tp " +
+                    "join member m on tp.member_id = m.member_id " +
+                    "where tp.title like ? or m.nickname like ? " +
+                    "order by tp.created_date desc";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "%" + condition.getTitle() + "%");
+            pstmt.setString(2, "%" + condition.getMember().getNickname() + "%");
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                plans.add(createJoinTripPlan(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return plans;
+    }
+
 
     @Override
     public int updateTripPlan(Long tripPlanId, TripPlan tripPlan) {
@@ -246,6 +274,20 @@ public class PlanJdbcRepository implements PlanRepository {
                 .id(rs.getLong("trip_plan_id"))
                 .member(Member.builder()
                         .id(rs.getLong("member_id"))
+                        .build()
+                )
+                .title(rs.getString("title"))
+                .createdDate(rs.getTimestamp("created_date").toLocalDateTime())
+                .lastModifiedDate(rs.getTimestamp("last_modified_date").toLocalDateTime())
+                .build();
+    }
+
+    private TripPlan createJoinTripPlan(ResultSet rs) throws SQLException {
+        return TripPlan.builder()
+                .id(rs.getLong("trip_plan_id"))
+                .member(Member.builder()
+                        .id(rs.getLong("member_id"))
+                        .nickname(rs.getString("nickname"))
                         .build()
                 )
                 .title(rs.getString("title"))
