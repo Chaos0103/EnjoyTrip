@@ -1,7 +1,6 @@
 package article.repository;
 
 import article.Article;
-import article.dto.ArticleDto;
 import article.dto.ArticleSearch;
 import member.Member;
 import util.DBConnectionUtil;
@@ -145,7 +144,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
     }
 
     @Override
-    public int update(Long articleId, ArticleDto articleDto) {
+    public int update(Article article) {
         int count = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -154,10 +153,10 @@ public class ArticleJdbcRepository implements ArticleRepository {
             String sql = "update article set title=?, content=?, last_modified_date=? where article_id=?;";
 
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, articleDto.getTitle());
-            pstmt.setString(2, articleDto.getContent());
+            pstmt.setString(1, article.getTitle());
+            pstmt.setString(2, article.getContent());
             pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-            pstmt.setLong(4, articleId);
+            pstmt.setLong(4, article.getId());
 
             count = pstmt.executeUpdate();
         } catch (SQLException e) {

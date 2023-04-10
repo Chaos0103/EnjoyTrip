@@ -85,7 +85,7 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> findArticles = articleRepository.findByCondition(condition);
         return findArticles.stream()
                 .map(article -> ArticleDto.builder()
-                        .id(article.getArticleId())
+                        .id(article.getId())
                         .title(article.getTitle())
                         .content(article.getContent())
                         .hit(article.getHit())
@@ -124,7 +124,9 @@ public class ArticleServiceImpl implements ArticleService {
             throw new ArticleException(ARTICLE_EXCEPTION);
         }
 
-        return articleRepository.update(articleId, articleDto);
+      article.editArticle(articleDto.getTitle(), articleDto.getContent());
+
+        return articleRepository.update(article);
     }
 
     @Override

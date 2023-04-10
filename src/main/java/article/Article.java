@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Article {
 
-    private Long articleId;
+    private Long id;
     private String title;
     private String content;
     private int hit;
@@ -22,13 +22,20 @@ public class Article {
     private Member member;
 
     @Builder
-    public Article(Long articleId, String title, String content, int hit, LocalDateTime createdDate, LocalDateTime lastModifiedDate, Member member) {
-        this.articleId = articleId;
+    public Article(Long id, String title, String content, int hit, LocalDateTime createdDate, LocalDateTime lastModifiedDate, Member member) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.hit = hit;
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;
         this.member = member;
+    }
+
+    //== 비즈니스 로직 ==//
+    public void editArticle(String title, String content) {
+        this.title = title;
+        this.content = content;
+        this.lastModifiedDate = LocalDateTime.now();
     }
 }

@@ -1,7 +1,6 @@
 package article.repository;
 
 import article.Article;
-import article.dto.ArticleDto;
 import article.dto.ArticleSearch;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public interface ArticleRepository {
 
     int findTotalCount();
 
-    int update(Long articleId, ArticleDto articleDto);
+    int update(Article article);
 
     int remove(Long articleId);
 
