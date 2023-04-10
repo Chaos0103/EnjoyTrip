@@ -25,7 +25,7 @@ public class MemberJdbcRepository implements MemberRepository {
     }
 
     @Override
-    public int save(MemberAddDto memberAddDto) {
+    public int save(Member member) {
         int count = 0;
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -35,16 +35,16 @@ public class MemberJdbcRepository implements MemberRepository {
                     " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, memberAddDto.getLoginId());
-            pstmt.setString(2, memberAddDto.getLoginPw());
-            pstmt.setString(3, memberAddDto.getUsername());
-            pstmt.setString(4, memberAddDto.getEmail());
-            pstmt.setString(5, memberAddDto.getPhone());
-            pstmt.setString(6, memberAddDto.getBirth());
-            pstmt.setString(7, memberAddDto.getGender());
-            pstmt.setString(8, memberAddDto.getNickname());
+            pstmt.setString(1, member.getLoginId());
+            pstmt.setString(2, member.getLoginPw());
+            pstmt.setString(3, member.getUsername());
+            pstmt.setString(4, member.getEmail());
+            pstmt.setString(5, member.getPhone());
+            pstmt.setString(6, member.getBirth());
+            pstmt.setString(7, member.getGender());
+            pstmt.setString(8, member.getNickname());
             pstmt.setTimestamp(9, Timestamp.valueOf(LocalDateTime.now().minusDays(60)));
-            pstmt.setString(10, memberAddDto.getAuthority().toString());
+            pstmt.setString(10, member.getAuthority().toString());
 
             count = pstmt.executeUpdate();
         } catch (SQLException e) {
