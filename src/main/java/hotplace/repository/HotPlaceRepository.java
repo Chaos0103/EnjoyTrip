@@ -14,5 +14,9 @@ public interface HotPlaceRepository {
 
     List<HotPlace> findByCondition(HotPlaceSearch condition);
 
+    int update(Long hotPlaceId, HotPlace hotPlace);
+
+    int updateHit(Long hotPlaceId, int hit);
+
     int remove(Long hotPlaceId);
 }

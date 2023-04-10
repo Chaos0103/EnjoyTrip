@@ -7,10 +7,7 @@ import hotplace.dto.HotPlaceSearch;
 import member.Member;
 import util.DBConnectionUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -121,6 +118,53 @@ public class HotPlaceJdbcRepository implements HotPlaceRepository {
             dbConnectionUtil.close(rs, pstmt, conn);
         }
         return hotPlaces;
+    }
+
+    @Override
+    public int update(Long hotPlaceId, HotPlace hotPlace) {
+        int count = 0;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "update hot_place set name=?, `desc`=?, visited_date=?, last_modified_date=? where hot_place_id=?";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, hotPlace.getName());
+            pstmt.setString(2, hotPlace.getDesc());
+            pstmt.setString(3, hotPlace.getVisitedDate());
+            pstmt.setTimestamp(4, Timestamp.valueOf(hotPlace.getLastModifiedDate()));
+            pstmt.setLong(5, hotPlaceId);
+
+            count = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(pstmt, conn);
+        }
+        return count;
+    }
+
+    @Override
+    public int updateHit(Long hotPlaceId, int hit) {
+        int count = 0;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "update hot_place set hit=? where hot_place_id=?";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, hit + 1);
+            pstmt.setLong(2, hotPlaceId);
+
+            count = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(pstmt, conn);
+        }
+        return count;
     }
 
     @Override
