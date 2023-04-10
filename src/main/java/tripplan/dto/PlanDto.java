@@ -1,4 +1,4 @@
-package tripplan;
+package tripplan.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -7,15 +7,18 @@ import member.Member;
 import java.time.LocalDateTime;
 
 @Data
-public class PlanSearch {
-    private Member member;
+public class PlanDto {
+
+    private Long id;
     private String title;
     private LocalDateTime createdDate;
+    private Member member;
 
     @Builder
-    public PlanSearch(Member member, String title, LocalDateTime createdDate) {
-        this.member = member;
+    public PlanDto(Long id, String title, LocalDateTime createdDate, Member member) {
+        this.id = id;
         this.title = title;
         this.createdDate = createdDate;
+        this.member = member;
     }
 }

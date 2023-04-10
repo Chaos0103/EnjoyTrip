@@ -3,7 +3,7 @@ package tripplan.repository;
 import attraction.AttractionInfo;
 import member.Member;
 import tripplan.DetailPlan;
-import tripplan.PlanSearch;
+import tripplan.dto.PlanSearch;
 import tripplan.TripPlan;
 import util.DBConnectionUtil;
 
@@ -179,7 +179,7 @@ public class PlanJdbcRepository implements PlanRepository {
             pstmt.setString(2, "%" + condition.getMember().getNickname() + "%");
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                plans.add(createTripPlan(rs));
+                plans.add(createJoinTripPlan(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -274,6 +274,20 @@ public class PlanJdbcRepository implements PlanRepository {
                 .id(rs.getLong("trip_plan_id"))
                 .member(Member.builder()
                         .id(rs.getLong("member_id"))
+                        .build()
+                )
+                .title(rs.getString("title"))
+                .createdDate(rs.getTimestamp("created_date").toLocalDateTime())
+                .lastModifiedDate(rs.getTimestamp("last_modified_date").toLocalDateTime())
+                .build();
+    }
+
+    private TripPlan createJoinTripPlan(ResultSet rs) throws SQLException {
+        return TripPlan.builder()
+                .id(rs.getLong("trip_plan_id"))
+                .member(Member.builder()
+                        .id(rs.getLong("member_id"))
+                        .nickname(rs.getString("nickname"))
                         .build()
                 )
                 .title(rs.getString("title"))

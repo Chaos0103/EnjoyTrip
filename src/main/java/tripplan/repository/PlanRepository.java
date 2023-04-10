@@ -1,9 +1,7 @@
 package tripplan.repository;
 
-import article.Article;
-import article.dto.ArticleSearch;
 import tripplan.DetailPlan;
-import tripplan.PlanSearch;
+import tripplan.dto.PlanSearch;
 import tripplan.TripPlan;
 
 import java.util.List;
