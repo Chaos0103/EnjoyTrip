@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class HotPlaceListDto {
 
-    private Long id;
+    private Long hotPlaceId;
     private String name;
     private String desc;
     private int hit;
@@ -16,8 +16,8 @@ public class HotPlaceListDto {
     private String createdDate;
 
     @Builder
-    public HotPlaceListDto(Long id, String name, String desc, int hit, String storeFileName, String nickname, String createdDate) {
-        this.id = id;
+    public HotPlaceListDto(Long hotPlaceId, String name, String desc, int hit, String storeFileName, String nickname, String createdDate) {
+        this.hotPlaceId = hotPlaceId;
         this.name = name;
         this.desc = desc;
         this.hit = hit;

@@ -60,7 +60,7 @@ class HotPlaceRepositoryTest {
                 .attractionInfo(new AttractionInfo(125405))
                 .build();
         hotPlaceRepository.save(hotPlace);
-        List<HotPlace> findHotPlace = hotPlaceRepository.findByCondition(new HotPlaceSearch("", 1));
+        List<HotPlace> findHotPlace = hotPlaceRepository.findAll();
         hotPlaceId = findHotPlace.get(0).getId();
     }
 

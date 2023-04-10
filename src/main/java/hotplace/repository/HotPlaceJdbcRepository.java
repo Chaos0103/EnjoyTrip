@@ -3,7 +3,6 @@ package hotplace.repository;
 import attraction.AttractionInfo;
 import hotplace.HotPlace;
 import hotplace.UploadFile;
-import hotplace.dto.HotPlaceSearch;
 import member.Member;
 import util.DBConnectionUtil;
 
@@ -82,35 +81,20 @@ public class HotPlaceJdbcRepository implements HotPlaceRepository {
     }
 
     @Override
-    public List<HotPlace> findByCondition(HotPlaceSearch condition) {
+    public List<HotPlace> findAll() {
         List<HotPlace> hotPlaces = new ArrayList<>();
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from hot_place hp" +
-                    " join member m" +
-                    " on hp.member_id = m.member_id" +
-                    " where m.nickname like ?" +
-                    " or hp.name like ?" +
-                    " or hp.desc like ?";
+            String sql = "select * from hot_place";
 
-            if (condition.getSortCondition() == 2) {
-                sql += " order by hp.hit desc";
-            } else {
-                sql += " order by hp.created_date desc";
-            }
-
-            //작성자, 제목, 내용
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, '%' + condition.getName() + '%');
-            pstmt.setString(2, '%' + condition.getName() + '%');
-            pstmt.setString(3, '%' + condition.getName() + '%');
 
             rs = pstmt.executeQuery();
-            while (rs.next()) {
-                hotPlaces.add(createJoinHotPlace(rs));
+            if (rs.next()) {
+                hotPlaces.add(createHotplace(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -222,14 +206,8 @@ public class HotPlaceJdbcRepository implements HotPlaceRepository {
                 .createdDate(rs.getTimestamp("created_date").toLocalDateTime())
                 .lastModifiedDate(rs.getTimestamp("last_modified_date").toLocalDateTime())
                 .contentTypeId(rs.getInt("content_type_id"))
-                .member(Member.builder()
-                        .id(rs.getLong("member_id"))
-                        .build())
-                .attractionInfo(
-                        AttractionInfo.builder()
-                                .id(rs.getInt("content_id"))
-                                .build()
-                )
+                .member(new Member(rs.getLong("member_id")))
+                .attractionInfo(new AttractionInfo(rs.getInt("content_id")))
                 .build();
     }
 

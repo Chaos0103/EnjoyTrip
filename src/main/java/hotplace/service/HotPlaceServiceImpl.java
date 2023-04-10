@@ -11,6 +11,8 @@ import hotplace.dto.HotPlaceDto;
 import hotplace.dto.HotPlaceListDto;
 import hotplace.dto.HotPlaceSearch;
 import hotplace.repository.HotPlaceJdbcRepository;
+import hotplace.repository.HotPlaceQueryJdbcRepository;
+import hotplace.repository.HotPlaceQueryRepository;
 import hotplace.repository.HotPlaceRepository;
 import member.Member;
 import member.repository.MemberJdbcRepository;
@@ -26,11 +28,13 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     private static final HotPlaceService hotPlaceService = new HotPlaceServiceImpl();
 
     private final HotPlaceRepository hotPlaceRepository;
+    private final HotPlaceQueryRepository hotPlaceQueryRepository;
     private final MemberRepository memberRepository;
     private final AttractionRepository attractionRepository;
 
     private HotPlaceServiceImpl() {
         hotPlaceRepository = HotPlaceJdbcRepository.getHotPlaceRepository();
+        hotPlaceQueryRepository = HotPlaceQueryJdbcRepository.getHotPlaceQueryRepository();
         memberRepository = MemberJdbcRepository.getMemberRepository();
         attractionRepository = AttractionJdbcRepository.getAttractionRepository();
     }
@@ -90,7 +94,7 @@ public class HotPlaceServiceImpl implements HotPlaceService {
 
     @Override
     public List<HotPlaceListDto> searchHotPlaces(HotPlaceSearch condition) {
-        List<HotPlace> hotPlaces = hotPlaceRepository.findByCondition(condition);
+        List<HotPlace> hotPlaces = hotPlaceQueryRepository.findByCondition(condition);
         FileStore fileStore = new FileStore();
 
         return hotPlaces.stream()
