@@ -76,7 +76,7 @@ class NotionRepositoryTest {
         notion.edit("new notion title", "new notion content", member);
 
         //when
-        int count = notionRepository.update(notion.getId(), notion);
+        int count = notionRepository.update(notion);
 
         //then
         assertThat(count).isEqualTo(1);
