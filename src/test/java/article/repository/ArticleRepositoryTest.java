@@ -3,7 +3,6 @@ package article.repository;
 import article.Article;
 import article.dto.ArticleDto;
 import member.Member;
-import member.dto.MemberAddDto;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -64,10 +63,10 @@ class ArticleRepositoryTest {
         articleRepository.save(Article.builder().title("beforeEach title").content("beforeEach content").member(member).build());
         List<Article> articles = articleRepository.findByMemberId(member.getId());
         Article article = articles.get(0);
-        ArticleDto articleDto = ArticleDto.builder().title("beforeEach title").content("beforeEach content").build();
+        article.editArticle("new title", "new content");
 
         //when
-        int count = articleRepository.update(article.getArticleId(), articleDto);
+        int count = articleRepository.update(article);
 
         //then
         assertThat(count).isEqualTo(1);
@@ -83,7 +82,7 @@ class ArticleRepositoryTest {
         Article article = articles.get(0);
 
         //when
-        int count = articleRepository.remove(article.getArticleId());
+        int count = articleRepository.remove(article.getId());
 
         //then
         assertThat(count).isEqualTo(1);

@@ -52,7 +52,7 @@ class ArticleServiceTest {
                 .member(findMember)
                 .build();
         articleRepository.save(article);
-        articleId = articleRepository.findByMemberId(memberId).get(0).getArticleId();
+        articleId = articleRepository.findByMemberId(memberId).get(0).getId();
     }
 
     @AfterEach
