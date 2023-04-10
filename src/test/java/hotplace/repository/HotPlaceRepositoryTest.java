@@ -120,7 +120,7 @@ class HotPlaceRepositoryTest {
         hotPlace.increaseHit();
 
         //when
-        int result = hotPlaceRepository.updateHit(hotPlaceId, hotPlace);
+        int result = hotPlaceRepository.updateHit(hotPlace);
 
         //then
         assertThat(result).isEqualTo(1);
