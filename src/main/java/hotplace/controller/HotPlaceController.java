@@ -54,6 +54,7 @@ public class HotPlaceController extends HttpServlet {
                 doEdit(request, response);
                 break;
             case "remove":
+                doRemove(request, response);
                 break;
             default:
                 break;
@@ -162,6 +163,22 @@ public class HotPlaceController extends HttpServlet {
         int result = hotPlaceService.editHotPlace(loginMember.getId(), hotPlaceId, editHotPlace);
 
         redirect(request, response, "/hotPlace?action=detail&hotPlaceId=" + hotPlaceId);
+    }
+
+    private void doRemove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+        if (loginMember == null) {
+            request.setAttribute("msg", "로그인 후 사용해주세요.");
+            forward(request, response, "/account/login.jsp");
+            return;
+        }
+
+        Long hotPlaceId = Long.parseLong(request.getParameter("hotPlaceId"));
+
+        int result = hotPlaceService.removeHotPlace(hotPlaceId, loginMember.getId());
+
+        redirect(request, response, "/hotPlace?action=list");
     }
 
     private void forward(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException {
