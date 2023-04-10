@@ -82,7 +82,7 @@ class HotPlaceRepositoryTest {
     void update() {
         //given
         HotPlace hotPlace = hotPlaceRepository.findById(hotPlaceId).get();
-        hotPlace.changeName("new hot place name");
+        hotPlace.editContent("new hot place name", "new hot place desc", "2023-01-01");
 
         //when
         int result = hotPlaceRepository.update(hotPlaceId, hotPlace);
