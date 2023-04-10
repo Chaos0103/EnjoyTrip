@@ -92,6 +92,19 @@ class HotPlaceRepositoryTest {
     }
 
     @Test
+    @DisplayName("핫플레이스 조회수 증가")
+    void updateHit() {
+        //given
+        HotPlace hotPlace = hotPlaceRepository.findById(hotPlaceId).get();
+
+        //when
+        int result = hotPlaceRepository.updateHit(hotPlaceId, hotPlace.getHit());
+
+        //then
+        assertThat(result).isEqualTo(1);
+    }
+
+    @Test
     @DisplayName("핫플레이스 삭제")
     void remove() {
         //given
