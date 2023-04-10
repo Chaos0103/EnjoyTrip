@@ -21,6 +21,10 @@ public class Article {
 
     private Member member;
 
+    public Article(Long id) {
+        this.id = id;
+    }
+
     @Builder
     public Article(Long id, String title, String content, int hit, LocalDateTime createdDate, LocalDateTime lastModifiedDate, Member member) {
         this.id = id;
