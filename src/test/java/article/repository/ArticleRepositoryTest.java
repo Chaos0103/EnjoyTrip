@@ -61,7 +61,7 @@ class ArticleRepositoryTest {
         //given
         Member member = memberRepository.findByLoginId("ssafy").get();
         articleRepository.save(Article.builder().title("beforeEach title").content("beforeEach content").member(member).build());
-        List<Article> articles = articleRepository.findByMemberId(member.getId());
+        List<Article> articles = articleRepository.findAll();
         Article article = articles.get(0);
         article.editArticle("new title", "new content");
 
@@ -78,7 +78,7 @@ class ArticleRepositoryTest {
         //given
         Member member = memberRepository.findByLoginId("ssafy").get();
         articleRepository.save(Article.builder().title("beforeEach title").content("beforeEach content").member(member).build());
-        List<Article> articles = articleRepository.findByMemberId(member.getId());
+        List<Article> articles = articleRepository.findAll();
         Article article = articles.get(0);
 
         //when
