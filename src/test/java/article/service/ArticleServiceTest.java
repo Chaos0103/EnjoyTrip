@@ -84,7 +84,7 @@ class ArticleServiceTest {
         //then
         assertThatThrownBy(() -> articleService.addArticle(0L, articleDto))
                 .isInstanceOf(ArticleException.class)
-                .hasMessageContaining(ARTICLE_EXCEPTION);
+                .hasMessageContaining(ARTICLE_MEMBER_DISCREPANCY);
     }
 
     @Test

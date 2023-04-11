@@ -17,6 +17,8 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
+import static common.Message.*;
+
 @WebServlet("/hotPlace")
 @MultipartConfig(
         maxFileSize = 1024 * 1024 * 5,
@@ -84,6 +86,13 @@ public class HotPlaceController extends HttpServlet {
     }
 
     private void doMvwrite(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+        if (loginMember == null) {
+            request.setAttribute("msg", REQUEST_LOGIN);
+            forward(request, response, "/account/login.jsp");
+            return;
+        }
         forward(request, response, "/hotplace/addHotplace.jsp");
     }
 
@@ -91,7 +100,7 @@ public class HotPlaceController extends HttpServlet {
         HttpSession session = request.getSession();
         LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
         if (loginMember == null) {
-            request.setAttribute("msg", "로그인 후 사용해주세요.");
+            request.setAttribute("msg", EXPIRE_SESSION);
             forward(request, response, "/account/login.jsp");
             return;
         }
@@ -121,6 +130,14 @@ public class HotPlaceController extends HttpServlet {
     }
 
     private void doDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+        if (loginMember == null) {
+            request.setAttribute("msg", REQUEST_LOGIN);
+            forward(request, response, "/account/login.jsp");
+            return;
+        }
+
         Long hotPlaceId = Long.parseLong(request.getParameter("hotPlaceId"));
 
         HotPlaceDto hotPlace = hotPlaceService.searchHotPlace(hotPlaceId);
@@ -131,6 +148,14 @@ public class HotPlaceController extends HttpServlet {
     }
 
     private void doMvedit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+        if (loginMember == null) {
+            request.setAttribute("msg", REQUEST_LOGIN);
+            forward(request, response, "/account/login.jsp");
+            return;
+        }
+
         Long hotPlaceId = Long.parseLong(request.getParameter("hotPlaceId"));
 
         HotPlaceDto hotPlace = hotPlaceService.searchHotPlace(hotPlaceId);
@@ -144,7 +169,7 @@ public class HotPlaceController extends HttpServlet {
         HttpSession session = request.getSession();
         LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
         if (loginMember == null) {
-            request.setAttribute("msg", "로그인 후 사용해주세요.");
+            request.setAttribute("msg", EXPIRE_SESSION);
             forward(request, response, "/account/login.jsp");
             return;
         }
