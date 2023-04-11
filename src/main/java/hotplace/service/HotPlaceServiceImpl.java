@@ -90,6 +90,11 @@ public class HotPlaceServiceImpl implements HotPlaceService {
         return hotPlaceQueryRepository.findByMemberId(memberId);
     }
 
+    @Override
+    public int doFavorite(Long memberId, Long hotPlaceId) {
+        return hotPlaceQueryRepository.doFavorite(memberId, hotPlaceId);
+    }
+
 
     @Override
     public int editHotPlace(Long memberId, Long hotPlaceId, HotPlaceDto hotPlaceDto) {
@@ -103,7 +108,7 @@ public class HotPlaceServiceImpl implements HotPlaceService {
             throw new HotPlaceException();
         }
 
-        hotPlace.editContent(hotPlace.getName(), hotPlace.getDesc(), hotPlace.getVisitedDate());
+        hotPlace.editContent(hotPlaceDto.getName(), hotPlaceDto.getDesc(), hotPlaceDto.getVisitedDate());
 
         return hotPlaceRepository.update(hotPlace);
     }

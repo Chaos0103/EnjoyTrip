@@ -115,6 +115,32 @@ public class HotPlaceQueryJdbcRepository implements HotPlaceQueryRepository {
         return hotPlaces;
     }
 
+    @Override
+    public int doFavorite(Long memberId, Long hotPlaceId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        int result = 0;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "insert into favorite(member_id, hotplace_id)" +
+                    " values ( ?, ? )";
+
+
+            //작성자, 제목, 내용
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, memberId);
+            pstmt.setLong(2, hotPlaceId);
+
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return result;
+    }
+
 
     @Override
     public List<HotPlaceListDto> findByCondition(HotPlaceSearch condition) {

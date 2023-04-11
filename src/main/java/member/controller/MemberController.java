@@ -62,6 +62,9 @@ public class MemberController extends HttpServlet {
                 path = mvMyArticle(request, response);
                 forward(request, response, path);
                 break;
+            case "favorite":
+                path = doFavorite(request, response);
+                forward(request, response, path);
             case "myHotplace":
                 path = mvMyHotplace(request, response);
                 forward(request, response, path);
@@ -123,6 +126,16 @@ public class MemberController extends HttpServlet {
 
         request.setAttribute("hotPlaces", hotPlaces);
         return "/member/mypage/myHotplace.jsp";
+    }
+
+    public String doFavorite(HttpServletRequest request, HttpServletResponse response){
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+        Long memberId = loginMember.getId();
+        List<HotPlaceListDto> myFavorite = hotPlaceService.doFavorite(memberId);
+
+        request.setAttribute("myFavorite", myFavorite);
+        return "/member/mypage/myFavorite.jsp";
     }
 
     private String mvMyArticle(HttpServletRequest request, HttpServletResponse response){

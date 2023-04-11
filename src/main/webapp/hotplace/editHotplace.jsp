@@ -43,7 +43,7 @@
       </div>
       <div class="mb-3">
         <label for="desc" class="form-label">핫플레이스 설명</label>
-        <textarea class="form-control" id="desc" rows="10">${hotPlace.desc}</textarea>
+        <textarea class="form-control" id="desc" name = "desc" rows="10">${hotPlace.desc}</textarea>
       </div>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
         <button class="btn btn-primary" type="submit">수정</button>
