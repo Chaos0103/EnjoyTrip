@@ -17,7 +17,7 @@ public interface HotPlaceService {
 
     List<HotPlaceListDto> searchHotPlaces(Long memberId);
 
-    List<HotPlaceListDto> doFavorite(Long memberId);
+    int doFavorite(Long memberId, Long hotPlaceId);
 
     int editHotPlace(Long memberId, Long hotPlaceId, HotPlaceDto hotPlaceDto);
 
