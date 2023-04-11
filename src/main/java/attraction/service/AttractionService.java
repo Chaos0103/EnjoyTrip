@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface AttractionService {
 
+    AttractionDto searchAttraction(int contentId);
+
     List<AttractionDto> searchAttraction(AttractionSearch condition);
 
     List<AttractionDto> searchAttraction(String title);

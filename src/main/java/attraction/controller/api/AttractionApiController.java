@@ -44,7 +44,28 @@ public class AttractionApiController extends HttpServlet {
             case "hotplace":
                 doSearchHotPlace(request, response);
                 break;
+            case "tripPlan":
+                doSearchAttraction(request, response);
+                break;
         }
+    }
+
+    private void doSearchAttraction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int contentId = Integer.parseInt(request.getParameter("contentId"));
+        AttractionDto attraction = attractionService.searchAttraction(contentId);
+        System.out.println("contentId = " + contentId);
+        JSONObject json = new JSONObject();
+        JSONArray array = new JSONArray();
+        JSONObject temp = new JSONObject();
+        temp.put("contentId", attraction.getId());
+        temp.put("title", attraction.getTitle());
+        temp.put("latitude", attraction.getLatitude());
+        temp.put("longitude", attraction.getLongitude());
+        array.add(temp);
+        json.put("data", array);
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.getWriter().println(json);
     }
 
     private void doGugun(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

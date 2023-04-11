@@ -7,6 +7,7 @@ import attraction.repository.AttractionJdbcRepository;
 import attraction.repository.AttractionRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class AttractionServiceImpl implements AttractionService {
@@ -20,6 +21,22 @@ public class AttractionServiceImpl implements AttractionService {
 
     public static AttractionService getAttractionService() {
         return attractionService;
+    }
+
+    @Override
+    public AttractionDto searchAttraction(int contentId) {
+        Optional<AttractionInfo> findAttractionInfo = attractionRepository.findById(contentId);
+        if (!findAttractionInfo.isPresent()) {
+            throw new RuntimeException();
+        }
+        AttractionInfo attractionInfo = findAttractionInfo.get();
+
+        return AttractionDto.builder()
+                .id(attractionInfo.getId())
+                .title(attractionInfo.getTitle())
+                .latitude(attractionInfo.getLatitude())
+                .longitude(attractionInfo.getLongitude())
+                .build();
     }
 
     @Override
