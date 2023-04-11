@@ -110,6 +110,47 @@ public class ArticleQueryJdbcRepository implements ArticleQueryRepository {
     }
 
     @Override
+    public List<ArticleListDto> findListByMemberId(Long memberId, int pageNum, int amount) {
+        List<ArticleListDto> articleListDtos = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select a.article_id, a.title, a.created_date" +
+                    " from article a" +
+                    " join member m" +
+                    " on a.member_id=m.member_id" +
+                    " where a.member_id = ? " +
+                    "order by created_date desc";
+
+            sql += " limit ?, ?";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, memberId);
+            pstmt.setInt(2, (pageNum - 1) * amount);
+            pstmt.setInt(3, amount);
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                ArticleListDto articleListDto = ArticleListDto.builder()
+                        .articleId(rs.getLong("article_id"))
+                        .title(rs.getString("title"))
+                        .createdDate(dateFormat(rs.getTimestamp("created_date").toLocalDateTime()))
+                        .build();
+                articleListDtos.add(articleListDto);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+
+        return articleListDtos;
+    }
+
+
+    @Override
     public int findTotalCount() {
         int result = 0;
         Connection conn = null;

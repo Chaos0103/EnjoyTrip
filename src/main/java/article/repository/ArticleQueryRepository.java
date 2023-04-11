@@ -13,5 +13,7 @@ public interface ArticleQueryRepository {
 
     List<ArticleListDto> findListByCondition(ArticleSearch condition, int pageNum, int amount);
 
+    List<ArticleListDto> findListByMemberId(Long memberId, int pageNum, int amount);
+
     int findTotalCount();
 }
