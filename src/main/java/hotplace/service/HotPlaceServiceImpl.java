@@ -86,6 +86,12 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     }
 
     @Override
+    public List<HotPlaceListDto> searchHotPlaces(Long memberId) {
+        return hotPlaceQueryRepository.findByMemberId(memberId);
+    }
+
+
+    @Override
     public int editHotPlace(Long memberId, Long hotPlaceId, HotPlaceDto hotPlaceDto) {
         Optional<HotPlace> findHotPlace = hotPlaceRepository.findById(hotPlaceId);
         if (!findHotPlace.isPresent()) {
