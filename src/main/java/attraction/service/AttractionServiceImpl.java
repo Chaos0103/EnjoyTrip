@@ -74,4 +74,11 @@ public class AttractionServiceImpl implements AttractionService {
                 )
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<AttractionInfo> searchAttraction(List<Integer> contentIds) {
+        List<AttractionInfo> findAttractionInfos = attractionRepository.findByContentIds(contentIds);
+        System.out.println("findAttractionInfos.toString() = " + findAttractionInfos.toString());
+        return findAttractionInfos;
+    }
 }

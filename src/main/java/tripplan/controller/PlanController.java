@@ -1,5 +1,8 @@
 package tripplan.controller;
 
+import attraction.AttractionInfo;
+import attraction.service.AttractionService;
+import attraction.service.AttractionServiceImpl;
 import common.Page;
 import member.dto.LoginMember;
 import tripplan.dto.DetailPlanDto;
@@ -17,16 +20,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/tripPlan")
 public class PlanController extends HttpServlet {
 
     private PlanService planService;
+    private AttractionService attractionService;
 
     @Override
     public void init() throws ServletException {
         planService = PlanServiceImpl.getPlanService();
+        attractionService = AttractionServiceImpl.getAttractionService();
     }
 
     @Override
@@ -67,15 +73,25 @@ public class PlanController extends HttpServlet {
     private void doCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
-        String[] contentList = request.getParameter("contentList").split(",");
         String title = request.getParameter("planTitle");
+        String[] contentList = request.getParameter("contentList").split(",");
+        List<Integer> contentIdList = new ArrayList<>();
+        for (String contentId : contentList) {
+            contentIdList.add(Integer.parseInt(contentId));
+        }
 
         planService.addTripPlan(loginMember.getId(), title);
         Long tripPlanId = planService.getTripPlanId(loginMember.getId());
 
-        for (String contentId : contentList) {
-            planService.addDetailPlan(loginMember.getId(), tripPlanId, Integer.parseInt(contentId));
+        List<AttractionInfo> attractionInfos = attractionService.searchAttraction(contentIdList);
+        for (AttractionInfo attractionInfo : attractionInfos) {
+            System.out.println("attractionInfo.getId() = " + attractionInfo.getId());
+            planService.addDetailPlan(loginMember.getId(), tripPlanId, attractionInfo.getId());
         }
+
+//        for (String contentId : contentList) {
+////            planService.addDetailPlan(loginMember.getId(), tripPlanId, Integer.parseInt(contentId));
+//        }
 
         redirect(request, response, "/tripPlan?action=detail&tripPlanId=" + tripPlanId);
     }

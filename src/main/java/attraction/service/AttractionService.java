@@ -1,5 +1,6 @@
 package attraction.service;
 
+import attraction.AttractionInfo;
 import attraction.dto.AttractionDto;
 import attraction.dto.AttractionSearch;
 
@@ -12,4 +13,6 @@ public interface AttractionService {
     List<AttractionDto> searchAttraction(AttractionSearch condition);
 
     List<AttractionDto> searchAttraction(String title);
+
+    List<AttractionInfo> searchAttraction(List<Integer> contentIds);
 }

@@ -64,17 +64,8 @@
                     <th>여행 리스트</th>
 
                 </tr>
-                <tr>
-                    <td>서울역</td>
-                </tr>
-                <tr>
-                    <td>경포대</td>
-                </tr>
-                <tr>
-                    <td>해운대해수욕장</td>
-                </tr>
             </table>
-                    <button id="createPlan" type='submit' class='btn btn-success' >등록하기</button>
+                    <button id="createPlan" type='submit' class='btn btn-success' >최적의 경로로 등록하기</button>
                 </form>
             </div>
         </div>

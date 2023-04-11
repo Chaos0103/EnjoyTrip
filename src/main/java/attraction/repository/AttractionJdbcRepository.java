@@ -116,11 +116,11 @@ public class AttractionJdbcRepository  implements AttractionRepository {
             StringBuilder sb = new StringBuilder();
             sb.append("(");
             for (int contentId : contentIds) {
-                sb.append(contentId).append(",");
+                sb.append("?").append(",");
             }
             sb.setCharAt(sb.length() - 1, ')');
             sql += sb;
-
+            System.out.println("sql = " + sql);
             pstmt = conn.prepareStatement(sql);
             for (int i = 0; i < contentIds.size(); i++) {
                 pstmt.setInt(i + 1, contentIds.get(i));
