@@ -204,6 +204,33 @@ public class PlanJdbcRepository implements PlanRepository {
     }
 
     @Override
+    public Long findByMemberId(Long memberId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Long tripPlan = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select trip_plan_id" +
+                    " from trip_plan" +
+                    " where member_id = ?" +
+                    "order by created_date desc ";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, memberId);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                tripPlan = rs.getLong("trip_plan_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return tripPlan;
+    }
+
+    @Override
     public int findTotalCount() {
         int result = 0;
         Connection conn = null;
