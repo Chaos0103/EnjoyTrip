@@ -30,7 +30,10 @@
 ## ⚒️ 화면 구성
 
 ### 메인 화면
+- 홈페이지 메인 화면 입니다. 
+- 메인페이지 하단에서 실시간 트래픽을 백트래킹 알고리즘을 통해 분석하여 나이, 연령대 별 가장 인기있는 여행지를 보여줍니다. 
 ![main.png](display%2Fmain.png)
+![main2.PNG](display%2Fmain2.PNG)
 
 ### 회원관리
 #### 로그인
@@ -59,8 +62,11 @@
 #### 마이페이지 조회
 - 마이페이지 화면입니다.
 - 로그인 한 유저가 본인의 정보를 확인할 수 있습니다.
-![myinfo.png](display%2Fmyinfo.png)
-
+![mypage1.PNG](display%2Fmypage1.PNG)
+- 마이페이지에서 게시물 관련 메뉴를 클릭하면 사용자가 작성하거나 좋아요를 누른 게시물만 확인할 수 있습니다.
+![hotplace.png](display%2Fhotplace.png) 
+![myarticle.PNG](display%2Fmyarticle.PNG)
+ 
 #### 회원정보 수정
 - 마이페이지 화면에서 사이드바를 클릭하면 각 정보를 수정할 수 있습니다.
 - 비밀번호가 일치하지 않거나 유효한 값이 아니면 경고창을 띄웁니다.
@@ -101,6 +107,16 @@
 ![view_notion.png](display%2Fview_notion.png)
 - 관리자는 수정과 삭제 등록을 할 수 있지만 일반 사용자는 읽기만 가능합니다.
 
+#### 핫플레이스
+- 핫플레이스 목록을 확인할 수 있는 페이지입니다.
+![hotplace2.png](display%2Fhotplace2.png)
+- 사용자는 관광지 목록에서 방문했던 핫플레이스 등록을 할 수 있습니다.
+![hotplaceMake.PNG](display%2FhotplaceMake.PNG)
+
+#### 여행계획
+![plan1.PNG](display%2Fplan1.PNG)
+
+
 ### 페이지 준비중 화면
 - 아직 구현되지 않은 페이지에 접근할 경우 준비중 화면이 출력됩니다.
 ![ready.png](display%2Fready.png)
@@ -134,160 +150,303 @@
 ## 📁 폴더 구조
 
 ```
-├── java
-│     ├── article
-│     │     ├── Article.java
-│     │     ├── controller
-│     │     │     └── ArticleController.java
-│     │     ├── dto
-│     │     │     ├── ArticleDto.java
-│     │     │     └── ArticleSearch.java
-│     │     ├── repository
-│     │     │     ├── ArticleJdbcRepository.java
-│     │     │     └── ArticleRepository.java
-│     │     └── service
-│     │         ├── ArticleService.java
-│     │         └── ArticleServiceImpl.java
-│     ├── attraction
-│     │     ├── AttractionDescription.java
-│     │     ├── AttractionDetail.java
-│     │     ├── AttractionInfo.java
-│     │     ├── Gugun.java
-│     │     ├── Sido.java
-│     │     ├── controller
-│     │     │     ├── AttractionController.java
-│     │     │     └── api
-│     │     │         └── AttractionApiController.java
-│     │     ├── dto
-│     │     │     ├── AttractionDto.java
-│     │     │     ├── AttractionSearch.java
-│     │     │     ├── GugunDto.java
-│     │     │     └── SidoDto.java
-│     │     ├── repository
-│     │     │     ├── AttractionJdbcRepository.java
-│     │     │     ├── AttractionRepository.java
-│     │     │     ├── GugunJdbcRepository.java
-│     │     │     ├── GugunRepository.java
-│     │     │     ├── SidoJdbcRepository.java
-│     │     │     └── SidoRepository.java
-│     │     └── service
-│     │         ├── AttractionService.java
-│     │         ├── AttractionServiceImpl.java
-│     │         ├── GugunService.java
-│     │         ├── GugunServiceImpl.java
-│     │         ├── SidoService.java
-│     │         └── SidoServiceImpl.java
-│     ├── common
-│     │     ├── Page.java
-│     │     ├── exception
-│     │     │     ├── AccountException.java
-│     │     │     ├── ArticleException.java
-│     │     │     ├── ExceptionMessage.java
-│     │     │     ├── InformationChangeException.java
-│     │     │     ├── LoginException.java
-│     │     │     ├── NotionException.java
-│     │     │     ├── SignUpException.java
-│     │     │     └── WithdrawalException.java
-│     │     └── validation
-│     │         ├── ArticleValidation.java
-│     │         ├── MemberUpdateValidation.java
-│     │         ├── NotionValidation.java
-│     │         ├── SignUpValidation.java
-│     │         ├── ValidationMessage.java
-│     │         ├── dto
-│     │         │     ├── ArticleRequest.java
-│     │         │     ├── InvalidResponse.java
-│     │         │     ├── MemberRequest.java
-│     │         │     └── NotionRequest.java
-│     │         └── validator
-│     │             ├── ArticleValidator.java
-│     │             ├── MemberValidator.java
-│     │             ├── NotionValidator.java
-│     │             ├── article
-│     │             │     ├── ContentValidator.java
-│     │             │     └── TitleValidator.java
-│     │             ├── member
-│     │             │     ├── BirthValidator.java
-│     │             │     ├── EmailValidator.java
-│     │             │     ├── GenderValidator.java
-│     │             │     ├── LoginIdValidator.java
-│     │             │     ├── LoginPwValidator.java
-│     │             │     ├── NicknameValidator.java
-│     │             │     ├── PhoneValidator.java
-│     │             │     └── UsernameValidator.java
-│     │             └── notion
-│     │                 ├── ContentValidator.java
-│     │                 └── TitleValidator.java
-│     ├── hotplace
-│     ├── member
-│     │     ├── Authority.java
-│     │     ├── Member.java
-│     │     ├── controller
-│     │     │     ├── AccountController.java
-│     │     │     └── MemberController.java
-│     │     ├── dto
-│     │     │     ├── LoginMember.java
-│     │     │     ├── MemberAddDto.java
-│     │     │     └── MemberDto.java
-│     │     ├── repository
-│     │     │     ├── MemberJdbcRepository.java
-│     │     │     └── MemberRepository.java
-│     │     └── service
-│     │         ├── AccountService.java
-│     │         ├── AccountServiceImpl.java
-│     │         ├── MemberService.java
-│     │         └── MemberServiceImpl.java
-│     ├── notion
-│     │     ├── Notion.java
-│     │     ├── controller
-│     │     │     └── NotionController.java
-│     │     ├── dto
-│     │     │     └── NotionDto.java
-│     │     ├── repository
-│     │     │     ├── NotionJdbcRepository.java
-│     │     │     └── NotionRepository.java
-│     │     └── service
-│     │         ├── NotionService.java
-│     │         └── NotionServiceImpl.java
-│     └── util
-│         ├── ConnectionConst.java
-│         └── DBConnectionUtil.java
-└── webapp
-    ├── WEB-INF
-    ├── account
-    │     └── login.jsp
-    ├── assets
-    │     ├── css
-    │     │     ├── common.member.css
-    │     │     ├── login.css
-    │     │     └── mypage.css
-    │     ├── img
-    │     │     ├── logo.png
-    │     │     ├── no-img.jpg
-    │     │     ├── panel_01.png
-    │     │     ├── panel_02.png
-    │     │     ├── panel_03.png
-    │     │     └── ready.jpeg
-    │     └── js
-    │         └── requestApi.js
-    ├── attraction
-    │     └── attractionList.jsp
-    ├── common
-    │     ├── footer.jsp
-    │     ├── head.jsp
-    │     └── header.jsp
-    ├── error
-    │     └── ready.jsp
-    ├── index.jsp
-    ├── member
-    │     ├── addMember.jsp
-    │     ├── mypage
-    │     │     ├── myInfo.jsp
-    │     │     └── mypageNav.jsp
-    │     └── mypage.jsp
-    └── notion
-        ├── addNotion.jsp
-        ├── editNotion.jsp
-        ├── notionList.jsp
-        └── viewNotion.jsp
+├── config
+│   └── dbresource.properties
+├── main
+│   ├── java
+│   │   ├── algorithm
+│   │   │   └── ShortestPath.java
+│   │   ├── article
+│   │   │   ├── Article.java
+│   │   │   ├── controller
+│   │   │   │   └── ArticleController.java
+│   │   │   ├── dto
+│   │   │   │   ├── ArticleDetailDto.java
+│   │   │   │   ├── ArticleDto.java
+│   │   │   │   ├── ArticleListDto.java
+│   │   │   │   └── ArticleSearch.java
+│   │   │   ├── repository
+│   │   │   │   ├── ArticleJdbcRepository.java
+│   │   │   │   ├── ArticleQueryJdbcRepository.java
+│   │   │   │   ├── ArticleQueryRepository.java
+│   │   │   │   └── ArticleRepository.java
+│   │   │   └── service
+│   │   │       ├── ArticleService.java
+│   │   │       └── ArticleServiceImpl.java
+│   │   ├── attraction
+│   │   │   ├── AttractionDescription.java
+│   │   │   ├── AttractionDetail.java
+│   │   │   ├── AttractionInfo.java
+│   │   │   ├── Gugun.java
+│   │   │   ├── Sido.java
+│   │   │   ├── controller
+│   │   │   │   ├── AttractionController.java
+│   │   │   │   └── api
+│   │   │   │       └── AttractionApiController.java
+│   │   │   ├── dto
+│   │   │   │   ├── AttractionDto.java
+│   │   │   │   ├── AttractionSearch.java
+│   │   │   │   ├── GugunDto.java
+│   │   │   │   └── SidoDto.java
+│   │   │   ├── repository
+│   │   │   │   ├── AttractionJdbcRepository.java
+│   │   │   │   ├── AttractionRepository.java
+│   │   │   │   ├── GugunJdbcRepository.java
+│   │   │   │   ├── GugunRepository.java
+│   │   │   │   ├── SidoJdbcRepository.java
+│   │   │   │   └── SidoRepository.java
+│   │   │   └── service
+│   │   │       ├── AttractionService.java
+│   │   │       ├── AttractionServiceImpl.java
+│   │   │       ├── GugunService.java
+│   │   │       ├── GugunServiceImpl.java
+│   │   │       ├── SidoService.java
+│   │   │       └── SidoServiceImpl.java
+│   │   ├── common
+│   │   │   ├── FileStore.java
+│   │   │   ├── IndexController.java
+│   │   │   ├── Message.java
+│   │   │   ├── Page.java
+│   │   │   ├── exception
+│   │   │   │   ├── AccountException.java
+│   │   │   │   ├── ArticleException.java
+│   │   │   │   ├── ExceptionMessage.java
+│   │   │   │   ├── HotPlaceException.java
+│   │   │   │   ├── InformationChangeException.java
+│   │   │   │   ├── LoginException.java
+│   │   │   │   ├── NotionException.java
+│   │   │   │   ├── PlanException.java
+│   │   │   │   ├── SignUpException.java
+│   │   │   │   └── WithdrawalException.java
+│   │   │   └── validation
+│   │   │       ├── ArticleValidation.java
+│   │   │       ├── HotPlaceValidation.java
+│   │   │       ├── MemberUpdateValidation.java
+│   │   │       ├── NotionValidation.java
+│   │   │       ├── SignUpValidation.java
+│   │   │       ├── ValidationMessage.java
+│   │   │       ├── dto
+│   │   │       │   ├── ArticleRequest.java
+│   │   │       │   ├── HotPlaceRequest.java
+│   │   │       │   ├── InvalidResponse.java
+│   │   │       │   ├── MemberRequest.java
+│   │   │       │   └── NotionRequest.java
+│   │   │       └── validator
+│   │   │           ├── ArticleValidator.java
+│   │   │           ├── HotPlaceValidator.java
+│   │   │           ├── MemberValidator.java
+│   │   │           ├── NotionValidator.java
+│   │   │           ├── article
+│   │   │           │   ├── ContentValidator.java
+│   │   │           │   └── TitleValidator.java
+│   │   │           ├── hotplace
+│   │   │           │   ├── DescValidator.java
+│   │   │           │   ├── NameValidator.java
+│   │   │           │   └── VisitedDateValidator.java
+│   │   │           ├── member
+│   │   │           │   ├── BirthValidator.java
+│   │   │           │   ├── EmailValidator.java
+│   │   │           │   ├── GenderValidator.java
+│   │   │           │   ├── LoginIdValidator.java
+│   │   │           │   ├── LoginPwValidator.java
+│   │   │           │   ├── NicknameValidator.java
+│   │   │           │   ├── PhoneValidator.java
+│   │   │           │   └── UsernameValidator.java
+│   │   │           └── notion
+│   │   │               ├── ContentValidator.java
+│   │   │               └── TitleValidator.java
+│   │   ├── hotplace
+│   │   │   ├── HotPlace.java
+│   │   │   ├── UploadFile.java
+│   │   │   ├── controller
+│   │   │   │   └── HotPlaceController.java
+│   │   │   ├── dto
+│   │   │   │   ├── HotPlaceDetailDto.java
+│   │   │   │   ├── HotPlaceDto.java
+│   │   │   │   ├── HotPlaceListDto.java
+│   │   │   │   └── HotPlaceSearch.java
+│   │   │   ├── repository
+│   │   │   │   ├── HotPlaceJdbcRepository.java
+│   │   │   │   ├── HotPlaceQueryJdbcRepository.java
+│   │   │   │   ├── HotPlaceQueryRepository.java
+│   │   │   │   └── HotPlaceRepository.java
+│   │   │   └── service
+│   │   │       ├── HotPlaceService.java
+│   │   │       └── HotPlaceServiceImpl.java
+│   │   ├── member
+│   │   │   ├── Authority.java
+│   │   │   ├── Login.java
+│   │   │   ├── Member.java
+│   │   │   ├── controller
+│   │   │   │   ├── AccountController.java
+│   │   │   │   └── MemberController.java
+│   │   │   ├── dto
+│   │   │   │   ├── LoginMember.java
+│   │   │   │   ├── MemberAddDto.java
+│   │   │   │   └── MemberDto.java
+│   │   │   ├── repository
+│   │   │   │   ├── LoginJdbcRepository.java
+│   │   │   │   ├── LoginRepository.java
+│   │   │   │   ├── MemberJdbcRepository.java
+│   │   │   │   └── MemberRepository.java
+│   │   │   └── service
+│   │   │       ├── AccountService.java
+│   │   │       ├── AccountServiceImpl.java
+│   │   │       ├── MemberService.java
+│   │   │       └── MemberServiceImpl.java
+│   │   ├── notion
+│   │   │   ├── Notion.java
+│   │   │   ├── controller
+│   │   │   │   └── NotionController.java
+│   │   │   ├── dto
+│   │   │   │   └── NotionDto.java
+│   │   │   ├── repository
+│   │   │   │   ├── NotionJdbcRepository.java
+│   │   │   │   └── NotionRepository.java
+│   │   │   └── service
+│   │   │       ├── NotionService.java
+│   │   │       └── NotionServiceImpl.java
+│   │   ├── trend
+│   │   │   ├── Trend.java
+│   │   │   ├── dto
+│   │   │   │   └── TrendViewDto.java
+│   │   │   ├── repository
+│   │   │   │   ├── TrendJdbcRepository.java
+│   │   │   │   └── TrendRepository.java
+│   │   │   └── service
+│   │   │       ├── TrendService.java
+│   │   │       └── TrendServiceImpl.java
+│   │   ├── tripplan
+│   │   │   ├── DetailPlan.java
+│   │   │   ├── TripPlan.java
+│   │   │   ├── controller
+│   │   │   │   └── PlanController.java
+│   │   │   ├── dto
+│   │   │   │   ├── DetailPlanDto.java
+│   │   │   │   ├── PlanDto.java
+│   │   │   │   ├── PlanListDto.java
+│   │   │   │   ├── PlanSearch.java
+│   │   │   │   └── TripPlanDto.java
+│   │   │   ├── repository
+│   │   │   │   ├── PlanJdbcRepository.java
+│   │   │   │   └── PlanRepository.java
+│   │   │   └── service
+│   │   │       ├── PlanService.java
+│   │   │       └── PlanServiceImpl.java
+│   │   └── util
+│   │       ├── ConnectionConst.java
+│   │       └── DBConnectionUtil.java
+│   └── webapp
+│       ├── account
+│       │   ├── findPwResult.jsp
+│       │   └── login.jsp
+│       ├── article
+│       │   ├── addArticle.jsp
+│       │   ├── articleList.jsp
+│       │   ├── editArticle.jsp
+│       │   └── viewArticle.jsp
+│       ├── assets
+│       │   ├── css
+│       │   │   ├── common.member.css
+│       │   │   ├── kakaomap.css
+│       │   │   ├── login.css
+│       │   │   ├── mypage.css
+│       │   │   ├── register.css
+│       │   │   └── travelplan.css
+│       │   ├── img
+│       │   │   ├── error.png
+│       │   │   ├── logo.png
+│       │   │   ├── no-img.jpg
+│       │   │   ├── panel_01.png
+│       │   │   ├── panel_02.png
+│       │   │   ├── panel_03.png
+│       │   │   ├── ready.jpeg
+│       │   │   └── thumbnail.png
+│       │   ├── js
+│       │   │   ├── requestApi.js
+│       │   │   └── travelplan.js
+│       │   └── store
+│       ├── attraction
+│       │   └── attractionList.jsp
+│       ├── common
+│       │   ├── footer.jsp
+│       │   ├── head.jsp
+│       │   └── header.jsp
+│       ├── error
+│       │   ├── error.jsp
+│       │   └── ready.jsp
+│       ├── hotplace
+│       │   ├── addHotplace.jsp
+│       │   ├── editHotplace.jsp
+│       │   ├── hotplaceList.jsp
+│       │   └── viewHotplace.jsp
+│       ├── index.jsp
+│       ├── member
+│       │   ├── addMember.jsp
+│       │   ├── mypage
+│       │   │   ├── myArticle.jsp
+│       │   │   ├── myFavorite.jsp
+│       │   │   ├── myHotplace.jsp
+│       │   │   ├── myInfo.jsp
+│       │   │   ├── mypageChangeEmail.jsp
+│       │   │   ├── mypageChangeNickname.jsp
+│       │   │   ├── mypageChangePw.jsp
+│       │   │   ├── mypageChangeTel.jsp
+│       │   │   ├── mypageDelete.jsp
+│       │   │   └── mypageNav.jsp
+│       │   └── mypage.jsp
+│       ├── notion
+│       │   ├── addNotion.jsp
+│       │   ├── editNotion.jsp
+│       │   ├── notionList.jsp
+│       │   └── viewNotion.jsp
+│       └── tripplan
+│           ├── createPlan.jsp
+│           ├── tripList.jsp
+│           └── viewPlan.jsp
+└── test
+    └── java
+        ├── article
+        │   ├── repository
+        │   │   └── ArticleRepositoryTest.java
+        │   └── service
+        │       └── ArticleServiceTest.java
+        ├── common
+        │   └── validation
+        │       └── validator
+        │           ├── article
+        │           │   ├── ContentValidatorTest.java
+        │           │   └── TitleValidatorTest.java
+        │           ├── hotplace
+        │           │   ├── DescValidatorTest.java
+        │           │   ├── NameValidatorTest.java
+        │           │   └── VisitedDateValidatorTest.java
+        │           ├── member
+        │           │   ├── BirthValidatorTest.java
+        │           │   ├── EmailValidatorTest.java
+        │           │   ├── GenderValidatorTest.java
+        │           │   ├── LoginIdValidatorTest.java
+        │           │   ├── LoginPwValidatorTest.java
+        │           │   ├── NicknameValidatorTest.java
+        │           │   └── UsernameValidatorTest.java
+        │           └── notion
+        │               ├── ContentValidatorTest.java
+        │               └── TitleValidatorTest.java
+        ├── hotplace
+        │   └── repository
+        │       └── HotPlaceRepositoryTest.java
+        ├── member
+        │   ├── repository
+        │   │   └── MemberRepositoryTest.java
+        │   └── service
+        │       ├── AccountServiceTest.java
+        │       └── MemberServiceTest.java
+        ├── notion
+        │   ├── repository
+        │   │   └── NotionRepositoryTest.java
+        │   └── service
+        │       └── NotionServiceTest.java
+        └── tripplan
+            └── repository
+                └── PlanRepositoryTest.java
 ```
