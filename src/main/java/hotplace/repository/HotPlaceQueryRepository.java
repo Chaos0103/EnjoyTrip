@@ -13,4 +13,6 @@ public interface HotPlaceQueryRepository {
 
     List<HotPlaceListDto> findByCondition(HotPlaceSearch condition);
 
+    List<HotPlaceListDto> findByMemberId(Long memberId);
+
 }

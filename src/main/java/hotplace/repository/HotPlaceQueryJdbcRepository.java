@@ -75,6 +75,48 @@ public class HotPlaceQueryJdbcRepository implements HotPlaceQueryRepository {
     }
 
     @Override
+    public List<HotPlaceListDto> findByMemberId(Long memberId) {
+        List<HotPlaceListDto> hotPlaces = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select hp.hot_place_id, hp.name, hp.desc, hp.hit, hp.store_file_name, m.nickname, hp.created_date" +
+                    " from hot_place hp" +
+                    " join member m" +
+                    " on hp.member_id = m.member_id" +
+                    " where m.member_id = ?" +
+                    " order by hp.created_date desc";
+
+
+            //작성자, 제목, 내용
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, memberId);
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                HotPlaceListDto hotPlaceListDto = HotPlaceListDto.builder()
+                        .hotPlaceId(rs.getLong("hot_place_id"))
+                        .name(rs.getString("name"))
+                        .desc(rs.getString("desc"))
+                        .hit(rs.getInt("hit"))
+                        .storeFileName(rs.getString("store_file_name"))
+                        .nickname(rs.getString("nickname"))
+                        .createdDate(dateFormat(rs.getTimestamp("created_date").toLocalDateTime()))
+                        .build();
+                hotPlaces.add(hotPlaceListDto);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return hotPlaces;
+    }
+
+
+    @Override
     public List<HotPlaceListDto> findByCondition(HotPlaceSearch condition) {
         List<HotPlaceListDto> hotPlaces = new ArrayList<>();
         Connection conn = null;
