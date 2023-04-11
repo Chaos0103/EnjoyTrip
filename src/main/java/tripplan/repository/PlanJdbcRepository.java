@@ -191,7 +191,7 @@ public class PlanJdbcRepository implements PlanRepository {
                         .tripPlanId(rs.getLong("trip_plan_id"))
                         .title(rs.getString("title"))
                         .nickname(rs.getString("nickname"))
-                        .createDate(dateFormat(rs.getTimestamp("created_date").toLocalDateTime()))
+                        .createdDate(dateFormat(rs.getTimestamp("created_date").toLocalDateTime()))
                         .build();
                 planListDtos.add(planListDto);
             }

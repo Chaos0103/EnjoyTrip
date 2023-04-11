@@ -8,13 +8,13 @@ public class PlanListDto {
     private Long tripPlanId;
     private String title;
     private String nickname;
-    private String createDate;
+    private String createdDate;
 
     @Builder
-    public PlanListDto(Long tripPlanId, String title, String nickname, String createDate) {
+    public PlanListDto(Long tripPlanId, String title, String nickname, String createdDate) {
         this.tripPlanId = tripPlanId;
         this.title = title;
         this.nickname = nickname;
-        this.createDate = createDate;
+        this.createdDate = createdDate;
     }
 }
