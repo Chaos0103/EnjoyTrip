@@ -1,6 +1,7 @@
 package tripplan.controller;
 
 import common.Page;
+import member.dto.LoginMember;
 import tripplan.dto.PlanListDto;
 import tripplan.dto.PlanSearch;
 import tripplan.service.PlanService;
@@ -12,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -33,14 +35,16 @@ public class PlanController extends HttpServlet {
                 doMvCreate(request, response);
                 break;
             case "create":
+                doCreate(request, response);
                 break;
             case "list":
                 doList(request, response);
                 break;
             case "detail":
+                doDetail(request,response);
                 break;
-            case "mvadd":
-                break;
+//            case "mvadd":
+//                break;
             case "add":
                 break;
             case "deletePlan":
@@ -48,6 +52,28 @@ public class PlanController extends HttpServlet {
             case "remove":
                 break;
         }
+    }
+
+    private void doDetail(HttpServletRequest request, HttpServletResponse response) {
+
+    }
+
+    private void doCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+        String[] contentList = request.getParameter("contentList").split(",");
+        String title = request.getParameter("planTitle");
+
+        planService.addTripPlan(loginMember.getId(), title);
+        Long tripPlanId = planService.getTripPlanId(loginMember.getId());
+        System.out.println(tripPlanId);
+
+        for (String content : contentList) {
+            planService.addDetailPlan(loginMember.getId(), tripPlanId, Integer.parseInt(content));
+        }
+
+        System.out.println(contentList);
+        redirect(request,response,"/tripplan?action=detail&tripPlanId="+tripPlanId);
     }
 
     private void doList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -80,7 +106,15 @@ public class PlanController extends HttpServlet {
         doGet(request, response);
     }
 
-    private void doMvCreate(HttpServletRequest request, HttpServletResponse response) {
+    private void doMvCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+        if (loginMember == null) {
+            request.setAttribute("msg", "로그인 후 이용해주세요.");
+            forward(request, response, "/account/login.jsp");
+            return;
+        }
+        forward(request, response, "/tripplan/createPlan.jsp");
     }
 
     private void forward(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException {
