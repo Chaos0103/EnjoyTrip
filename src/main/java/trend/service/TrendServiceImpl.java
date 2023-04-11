@@ -7,6 +7,7 @@ import member.Member;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
 import trend.Trend;
+import trend.dto.TrendViewDto;
 import trend.repository.TrendJdbcRepository;
 import trend.repository.TrendRepository;
 
@@ -82,6 +83,31 @@ public class TrendServiceImpl implements TrendService {
         }
 
         return trendRepository.update(trend);
+    }
+
+    @Override
+    public TrendViewDto popularByTeenage() {
+        return trendRepository.findPopularByTeenage();
+    }
+
+    @Override
+    public TrendViewDto popularByTwenty() {
+        return trendRepository.findPopularByTwenty();
+    }
+
+    @Override
+    public TrendViewDto popularByThirty() {
+        return trendRepository.findPopularByThirty();
+    }
+
+    @Override
+    public TrendViewDto popularByMale() {
+        return trendRepository.findPopularByMale();
+    }
+
+    @Override
+    public TrendViewDto popularByFemale() {
+        return trendRepository.findPopularByFemale();
     }
 
     private boolean isOld(String gender) {
