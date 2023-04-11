@@ -65,6 +65,11 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public List<ArticleListDto> searchMyArticles(Long memberId, int pageNum, int amount) {
+        return articleQueryRepository.findListByMemberId(memberId, pageNum, amount);
+    }
+
+    @Override
     public int getTotalCount() {
         return articleQueryRepository.findTotalCount();
     }

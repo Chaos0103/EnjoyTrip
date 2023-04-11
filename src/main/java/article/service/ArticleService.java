@@ -15,6 +15,8 @@ public interface ArticleService {
 
     List<ArticleListDto> searchArticles(ArticleSearch condition, int pageNum, int amount);
 
+    List<ArticleListDto> searchMyArticles(Long memberId, int pageNum, int amount);
+
     int getTotalCount();
 
     int editArticle(Long articleId, Long memberId, ArticleDto articleDto);
