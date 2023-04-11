@@ -1,11 +1,14 @@
 package trend.repository;
 
+import attraction.AttractionInfo;
 import trend.Trend;
 import util.DBConnectionUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class TrendJdbcRepository implements TrendRepository {
 
@@ -39,6 +42,38 @@ public class TrendJdbcRepository implements TrendRepository {
             dbConnectionUtil.close(pstmt, conn);
         }
         return count;
+    }
+
+    @Override
+    public Optional<Trend> findByContentId(int contentId) {
+        Trend trend = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "";
+
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                trend = Trend.builder()
+                        .id(rs.getLong("trend_id"))
+                        .teenage(rs.getInt("teenage"))
+                        .twenty(rs.getInt("twenty"))
+                        .thirty(rs.getInt("thirty"))
+                        .male(rs.getInt("male"))
+                        .female(rs.getInt("female"))
+                        .content(new AttractionInfo(rs.getInt("content_id")))
+                        .build();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return Optional.ofNullable(trend);
     }
 
     @Override
