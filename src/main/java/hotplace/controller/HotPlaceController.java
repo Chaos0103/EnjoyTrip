@@ -142,6 +142,7 @@ public class HotPlaceController extends HttpServlet {
         Long hotPlaceId = Long.parseLong(request.getParameter("hotPlaceId"));
 
         HotPlaceDetailDto hotPlace = hotPlaceService.searchHotPlace(hotPlaceId);
+        hotPlaceService.updateHit(hotPlaceId);
 
         request.setAttribute("hotPlace", hotPlace);
 
