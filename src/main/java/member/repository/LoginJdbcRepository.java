@@ -1,6 +1,9 @@
 package member.repository;
 
+import member.Member;
 import util.DBConnectionUtil;
+
+import java.util.Optional;
 
 public class LoginJdbcRepository implements LoginRepository {
 
@@ -13,5 +16,20 @@ public class LoginJdbcRepository implements LoginRepository {
 
     public static LoginRepository getLoginRepository() {
         return loginRepository;
+    }
+
+    @Override
+    public int save() {
+        return 0;
+    }
+
+    @Override
+    public Optional<Member> findById() {
+        return Optional.empty();
+    }
+
+    @Override
+    public int remove() {
+        return 0;
     }
 }
