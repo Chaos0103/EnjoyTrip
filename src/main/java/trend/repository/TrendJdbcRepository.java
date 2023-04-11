@@ -85,7 +85,7 @@ public class TrendJdbcRepository implements TrendRepository {
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from trend t join attraction_info a on t.content_id=a.content_id order by teenage desc limit 1, 1";
+            String sql = "select * from trend t join attraction_info a on t.content_id=a.content_id order by teenage desc limit 0, 1";
 
             pstmt = conn.prepareStatement(sql);
 
@@ -114,7 +114,7 @@ public class TrendJdbcRepository implements TrendRepository {
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from trend t join attraction_info a on t.content_id=a.content_id order by twenty desc limit 1, 1";
+            String sql = "select * from trend t join attraction_info a on t.content_id=a.content_id order by twenty desc limit 0, 1";
 
             pstmt = conn.prepareStatement(sql);
 
@@ -143,7 +143,7 @@ public class TrendJdbcRepository implements TrendRepository {
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from trend t join attraction_info a on t.content_id=a.content_id order by thirty desc limit 1, 1";
+            String sql = "select * from trend t join attraction_info a on t.content_id=a.content_id order by thirty desc limit 0, 1";
 
             pstmt = conn.prepareStatement(sql);
 
@@ -172,7 +172,7 @@ public class TrendJdbcRepository implements TrendRepository {
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from trend t join attraction_info a on t.content_id=a.content_id order by male desc limit 1, 1";
+            String sql = "select * from trend t join attraction_info a on t.content_id=a.content_id order by male desc limit 0, 1";
 
             pstmt = conn.prepareStatement(sql);
 
@@ -201,7 +201,7 @@ public class TrendJdbcRepository implements TrendRepository {
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from trend t join attraction_info a on t.content_id=a.content_id order by female desc limit 1, 1";
+            String sql = "select * from trend t join attraction_info a on t.content_id=a.content_id order by female desc limit 0, 1";
 
             pstmt = conn.prepareStatement(sql);
 
