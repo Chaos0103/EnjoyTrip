@@ -91,8 +91,8 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     }
 
     @Override
-    public List<HotPlaceListDto> doFavorite(Long memberId) {
-        return hotPlaceQueryRepository.doFavorite(memberId);
+    public int doFavorite(Long memberId, Long hotPlaceId) {
+        return hotPlaceQueryRepository.doFavorite(memberId, hotPlaceId);
     }
 
 
