@@ -56,6 +56,13 @@ create table if not exists `NOTION`
     foreign key (`last_modified_by`) references MEMBER (`member_id`)
 );
 
+create table if not exists `FAVORITE`
+(
+    `favorite_id` bigint not null primary key auto_increment,
+    `member_id` bigint not null,
+    `hotplace_id` bigint not null
+);
+
 create table if not exists `HOT_PLACE`
 (
     `hot_place_id` bigint not null primary key auto_increment,
