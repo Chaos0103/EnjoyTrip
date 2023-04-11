@@ -2,6 +2,7 @@ package trend.repository;
 
 import attraction.AttractionInfo;
 import trend.Trend;
+import trend.dto.TrendViewDto;
 import util.DBConnectionUtil;
 
 import java.sql.Connection;
@@ -74,6 +75,151 @@ public class TrendJdbcRepository implements TrendRepository {
             dbConnectionUtil.close(rs, pstmt, conn);
         }
         return Optional.ofNullable(trend);
+    }
+
+    @Override
+    public TrendViewDto findPopularByTeenage() {
+        TrendViewDto trend = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from trend t join attraction_info a on t.content_id=a.content_id order by teenage desc limit 1, 1";
+
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                trend = TrendViewDto.builder()
+                        .title(rs.getString("title"))
+                        .firstImage(rs.getString("first_image"))
+                        .addr1(rs.getString("addr1"))
+                        .zipcode(rs.getString("zipcode"))
+                        .build();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return trend;
+    }
+
+    @Override
+    public TrendViewDto findPopularByTwenty() {
+        TrendViewDto trend = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from trend t join attraction_info a on t.content_id=a.content_id order by twenty desc limit 1, 1";
+
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                trend = TrendViewDto.builder()
+                        .title(rs.getString("title"))
+                        .firstImage(rs.getString("first_image"))
+                        .addr1(rs.getString("addr1"))
+                        .zipcode(rs.getString("zipcode"))
+                        .build();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return trend;
+    }
+
+    @Override
+    public TrendViewDto findPopularByThirty() {
+        TrendViewDto trend = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from trend t join attraction_info a on t.content_id=a.content_id order by thirty desc limit 1, 1";
+
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                trend = TrendViewDto.builder()
+                        .title(rs.getString("title"))
+                        .firstImage(rs.getString("first_image"))
+                        .addr1(rs.getString("addr1"))
+                        .zipcode(rs.getString("zipcode"))
+                        .build();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return trend;
+    }
+
+    @Override
+    public TrendViewDto findPopularByMale() {
+        TrendViewDto trend = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from trend t join attraction_info a on t.content_id=a.content_id order by male desc limit 1, 1";
+
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                trend = TrendViewDto.builder()
+                        .title(rs.getString("title"))
+                        .firstImage(rs.getString("first_image"))
+                        .addr1(rs.getString("addr1"))
+                        .zipcode(rs.getString("zipcode"))
+                        .build();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return trend;
+    }
+
+    @Override
+    public TrendViewDto findPopularByFemale() {
+        TrendViewDto trend = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from trend t join attraction_info a on t.content_id=a.content_id order by female desc limit 1, 1";
+
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                trend = TrendViewDto.builder()
+                        .title(rs.getString("title"))
+                        .firstImage(rs.getString("first_image"))
+                        .addr1(rs.getString("addr1"))
+                        .zipcode(rs.getString("zipcode"))
+                        .build();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return trend;
     }
 
     @Override
