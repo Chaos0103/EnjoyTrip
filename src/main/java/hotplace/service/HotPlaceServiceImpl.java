@@ -6,6 +6,7 @@ import attraction.repository.AttractionRepository;
 import common.exception.HotPlaceException;
 import hotplace.HotPlace;
 import hotplace.UploadFile;
+import hotplace.dto.HotPlaceDetailDto;
 import hotplace.dto.HotPlaceDto;
 import hotplace.dto.HotPlaceListDto;
 import hotplace.dto.HotPlaceSearch;
@@ -72,22 +73,12 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     }
 
     @Override
-    public HotPlaceDto searchHotPlace(Long hotPlaceId) {
-        Optional<HotPlace> findHotPlace = hotPlaceRepository.findById(hotPlaceId);
+    public HotPlaceDetailDto searchHotPlace(Long hotPlaceId) {
+        Optional<HotPlaceDetailDto> findHotPlace = hotPlaceQueryRepository.findDetailById(hotPlaceId);
         if (!findHotPlace.isPresent()) {
             throw new HotPlaceException();
         }
-
-        HotPlace hotPlace = findHotPlace.get();
-
-        return HotPlaceDto.builder()
-                .id(hotPlace.getId())
-                .name(hotPlace.getName())
-                .desc(hotPlace.getDesc())
-                .hit(hotPlace.getHit())
-                .uploadFile(UploadFile.builder().storeFileName(hotPlace.getUploadFile().getStoreFileName()).build())
-                .createdDate(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(hotPlace.getCreatedDate()))
-                .build();
+        return findHotPlace.get();
     }
 
     @Override

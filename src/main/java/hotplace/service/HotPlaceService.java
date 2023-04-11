@@ -1,5 +1,6 @@
 package hotplace.service;
 
+import hotplace.dto.HotPlaceDetailDto;
 import hotplace.dto.HotPlaceDto;
 import hotplace.dto.HotPlaceListDto;
 import hotplace.dto.HotPlaceSearch;
@@ -10,7 +11,7 @@ public interface HotPlaceService {
 
     int addHotPlace(Long memberId, int contentId, HotPlaceDto hotPlaceDto);
 
-    HotPlaceDto searchHotPlace(Long hotPlaceId);
+    HotPlaceDetailDto searchHotPlace(Long hotPlaceId);
 
     List<HotPlaceListDto> searchHotPlaces(HotPlaceSearch condition);
 
