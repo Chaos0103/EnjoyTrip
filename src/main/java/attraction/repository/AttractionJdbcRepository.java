@@ -112,16 +112,19 @@ public class AttractionJdbcRepository  implements AttractionRepository {
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from attraction_info where content_id in ?";
-
-            pstmt = conn.prepareStatement(sql);
+            String sql = "select * from attraction_info where content_id in ";
             StringBuilder sb = new StringBuilder();
             sb.append("(");
             for (int contentId : contentIds) {
                 sb.append(contentId).append(",");
             }
             sb.setCharAt(sb.length() - 1, ')');
-            pstmt.setString(1, String.valueOf(sb));
+            sql += sb;
+
+            pstmt = conn.prepareStatement(sql);
+            for (int i = 0; i < contentIds.size(); i++) {
+                pstmt.setInt(i + 1, contentIds.get(i));
+            }
 
             rs = pstmt.executeQuery();
             while (rs.next()) {
