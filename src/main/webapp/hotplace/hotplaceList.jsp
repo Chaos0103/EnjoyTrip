@@ -48,6 +48,8 @@
                   조회수 : ${hotPlace.hit} | 작성자 : ${hotPlace.nickname}
                 </div>
                 <button type="button" class="btn btn-primary" onclick="location.href='/hotPlace?action=detail&hotPlaceId=${hotPlace.hotPlaceId}'">더보기</button>
+                <button type="button" class="btn btn-primary" onclick="location.href='/hotPlace?action=mvedit&hotPlaceId=${hotPlace.hotPlaceId}'">수정</button>
+                <button type="button" class="btn btn-primary" onclick="location.href='/member?action=mvedit&hotPlaceId=${hotPlace.hotPlaceId}'">담기</button>
               </div>
               <div class="card-footer">
                 <small class="text-body-secondary">${hotPlace.createdDate}</small>
