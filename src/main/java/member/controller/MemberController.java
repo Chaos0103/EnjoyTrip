@@ -132,9 +132,8 @@ public class MemberController extends HttpServlet {
         HttpSession session = request.getSession();
         LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
         Long memberId = loginMember.getId();
-        List<HotPlaceListDto> myFavorite = hotPlaceService.doFavorite(memberId);
-
-        request.setAttribute("myFavorite", myFavorite);
+        Long hotPlaceId = (Long) request.getAttribute("hotPlaceId");
+        hotPlaceService.doFavorite(memberId, hotPlaceId);
         return "/member/mypage/myFavorite.jsp";
     }
 
