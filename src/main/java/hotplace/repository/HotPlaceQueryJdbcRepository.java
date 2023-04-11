@@ -45,12 +45,13 @@ public class HotPlaceQueryJdbcRepository implements HotPlaceQueryRepository {
                     " where hp.hot_place_id=?";
 
             pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, hotPlaceId);
 
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 hotPlaceDetailDto = HotPlaceDetailDto.builder()
                         .hotPlaceId(rs.getLong("hot_place_id"))
-                        .visitedDate(rs.getString("visied_date"))
+                        .visitedDate(rs.getString("visited_date"))
                         .name(rs.getString("name"))
                         .desc(rs.getString("desc"))
                         .storeFileName(rs.getString("store_file_name"))
