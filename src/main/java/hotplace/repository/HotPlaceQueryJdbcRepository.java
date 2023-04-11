@@ -1,6 +1,7 @@
 package hotplace.repository;
 
 import hotplace.HotPlace;
+import hotplace.dto.HotPlaceDetailDto;
 import hotplace.dto.HotPlaceListDto;
 import hotplace.dto.HotPlaceSearch;
 import util.DBConnectionUtil;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class HotPlaceQueryJdbcRepository implements HotPlaceQueryRepository {
 
@@ -25,6 +27,50 @@ public class HotPlaceQueryJdbcRepository implements HotPlaceQueryRepository {
 
     public static HotPlaceQueryRepository getHotPlaceQueryRepository() {
         return hotPlaceQueryRepository;
+    }
+
+    @Override
+    public Optional<HotPlaceDetailDto> findDetailById(Long hotPlaceId) {
+        HotPlaceDetailDto hotPlaceDetailDto = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select hp.hot_place_id, hp.visited_date, hp.name, hp.desc, hp.store_file_name," +
+                    " m.member_id, m.nickname, a.title, a.first_image, a.addr1, a.zipcode, a.latitude, a.longitude" +
+                    " from hot_place hp" +
+                    " join member m on hp.member_id=m.member_id" +
+                    " join attraction_info a on hp.content_id=a.content_id" +
+                    " where hp.hot_place_id=?";
+
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                hotPlaceDetailDto = HotPlaceDetailDto.builder()
+                        .hotPlaceId(rs.getLong("hot_place_id"))
+                        .visitedDate(rs.getString("visied_date"))
+                        .name(rs.getString("name"))
+                        .desc(rs.getString("desc"))
+                        .storeFileName(rs.getString("store_file_name"))
+                        .memberId(rs.getLong("member_id"))
+                        .nickname(rs.getString("nickname"))
+                        .title(rs.getString("title"))
+                        .firstImage(rs.getString("first_image"))
+                        .addr1(rs.getString("addr1"))
+                        .zipcode(rs.getString("zipcode"))
+                        .latitude(rs.getDouble("latitude"))
+                        .longitude(rs.getDouble("longitude"))
+                        .build();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+
+        return Optional.ofNullable(hotPlaceDetailDto);
     }
 
     @Override
