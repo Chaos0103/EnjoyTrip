@@ -62,9 +62,13 @@ public class MemberController extends HttpServlet {
         path = mvMyArticle(request, response);
         forward(request, response, path);
         break;
+      case "mvMyFavorite":
+        path = mvMyFavorite(request, response);
+        forward(request, response, path);
+        break;
       case "favorite":
-        path = doFavorite(request, response);
-        include(request, response, path);
+        doFavorite(request, response);
+        break;
       case "myHotplace":
         path = mvMyHotplace(request, response);
         forward(request, response, path);
@@ -128,13 +132,18 @@ public class MemberController extends HttpServlet {
     return "/member/mypage/myHotplace.jsp";
   }
 
-  public String doFavorite(HttpServletRequest request, HttpServletResponse response) {
+  public void doFavorite(HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException {
     HttpSession session = request.getSession();
     LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
     Long memberId = loginMember.getId();
     Long hotPlaceId = Long.parseLong(request.getParameter("hotPlaceId"));
-    hotPlaceService.doFavorite(memberId, hotPlaceId);
-    return "/member/mypage/myFavorite.jsp";
+    hotPlaceService.doFavorite(memberId, hotPlaceId); //insert
+
+    String path = "/member?action=mvMyFavorite";
+
+    include(request, response, path);
+
   }
 
   private String mvMyArticle(HttpServletRequest request, HttpServletResponse response) {
@@ -164,6 +173,32 @@ public class MemberController extends HttpServlet {
 
     session.setAttribute("currShow", "myArticle");
     return "/member/mypage/myArticle.jsp";
+  }
+
+
+  private String mvMyFavorite(HttpServletRequest request, HttpServletResponse response) {
+
+    int pageNum = 1;
+    int amount = 10;
+
+    if (request.getParameter("pageNum") != null && request.getParameter("amount") != null) {
+      pageNum = Integer.parseInt(request.getParameter("pageNum"));
+      amount = Integer.parseInt(request.getParameter("amount"));
+    }
+
+    HttpSession session = request.getSession();
+    LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+    Long memberId = loginMember.getId();
+
+    List<HotPlaceListDto> favorites = hotPlaceService.searchFavorites(memberId, pageNum, amount);
+    int totalCount = favorites.size();
+    Page page = new Page(pageNum, amount, totalCount);
+
+    request.setAttribute("page", page);
+    request.setAttribute("favorites", favorites);
+
+    session.setAttribute("currShow", "favorite");
+    return "/member/mypage/myFavorite.jsp";
   }
 
 
@@ -400,7 +435,7 @@ public class MemberController extends HttpServlet {
   private void include(HttpServletRequest request, HttpServletResponse response, String path)
       throws ServletException, IOException {
     RequestDispatcher dispatcher = request.getRequestDispatcher(path);
-    response.setContentType("application/json; charset=UTF-8");
+    response.setContentType("text/html; charset=UTF-8");
     dispatcher.include(request, response);
   }
 }
