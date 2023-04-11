@@ -60,8 +60,10 @@ create table if not exists `FAVORITE`
 (
     `favorite_id` bigint not null primary key auto_increment,
     `member_id` bigint not null,
-    `hotplace_id` bigint not null
-);
+    `hotplace_id` bigint not null,
+    foreign key (`member_id`) references MEMBER (`member_id`),
+    foreign key (`hotplace_id`) references HOT_PLACE (`hot_place_id`)
+    );
 
 create table if not exists `HOT_PLACE`
 (
