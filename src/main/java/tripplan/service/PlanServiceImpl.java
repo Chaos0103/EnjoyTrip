@@ -9,14 +9,13 @@ import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
 import tripplan.DetailPlan;
 import tripplan.TripPlan;
-import tripplan.dto.PlanDto;
+import tripplan.dto.PlanListDto;
 import tripplan.dto.PlanSearch;
 import tripplan.repository.PlanJdbcRepository;
 import tripplan.repository.PlanRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class PlanServiceImpl implements PlanService {
     private static final PlanService planService = new PlanServiceImpl();
@@ -75,16 +74,13 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public List<PlanDto> searchPlans(PlanSearch condition) {
-        List<TripPlan> findTripPlans = planRepository.findByCondition(condition);
-        return findTripPlans.stream()
-                .map(tripPlan -> PlanDto.builder()
-                        .id(tripPlan.getId())
-                        .title(tripPlan.getTitle())
-                        .member(tripPlan.getMember())
-                        .createdDate(tripPlan.getCreatedDate())
-                        .build())
-                .collect(Collectors.toList());
+    public List<PlanListDto> searchPlans(PlanSearch condition, int pageNum, int amount) {
+        return planRepository.findByCondition(condition, pageNum, amount);
+    }
+
+    @Override
+    public int getTotalCount() {
+        return planRepository.findTotalCount();
     }
 
     @Override
