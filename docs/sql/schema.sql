@@ -96,3 +96,10 @@ create table if not exists `detail_plan`
     foreign key (`trip_plan_id`) references TRIP_PLAN (`trip_plan_id`),
     foreign key (`content_id`) references ATTRACTION_INFO (`content_id`)
 );
+
+create table if not exists `LOGIN`
+(
+    `authentication_key` varchar(100) not null primary key,
+    `member_id` bigint not null,
+    foreign key (`member_id`) references MEMBER (`member_id`)
+);
