@@ -84,6 +84,11 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
+    public Long getTripPlanId(Long memberId) {
+        return planRepository.findByMemberId(memberId);
+    }
+
+    @Override
     public int updateTripPlan(Long memberId, Long tripPlanId, String title) {
         Optional<TripPlan> findTripPlan = planRepository.findById(tripPlanId);
         if (!findTripPlan.isPresent()) {

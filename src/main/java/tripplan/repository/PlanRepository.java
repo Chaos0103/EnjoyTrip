@@ -24,6 +24,8 @@ public interface PlanRepository {
 
     List<PlanListDto> findByCondition(PlanSearch condition, int pageNum, int amount);
 
+    Long findByMemberId(Long memberId);
+
     int findTotalCount();
 
     int updateTripPlan(Long tripPlanId, TripPlan tripPlan);
