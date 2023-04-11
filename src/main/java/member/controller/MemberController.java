@@ -1,9 +1,16 @@
 package member.controller;
 
+import article.dto.ArticleListDto;
+import article.service.ArticleService;
+import article.service.ArticleServiceImpl;
+import common.Page;
 import common.exception.SignUpException;
 import common.validation.SignUpValidation;
 import common.validation.dto.InvalidResponse;
 import common.validation.dto.MemberRequest;
+import hotplace.dto.HotPlaceListDto;
+import hotplace.service.HotPlaceService;
+import hotplace.service.HotPlaceServiceImpl;
 import member.dto.LoginMember;
 import member.dto.MemberAddDto;
 import member.dto.MemberDto;
@@ -24,10 +31,16 @@ import java.util.List;
 public class MemberController extends HttpServlet {
 
     private MemberService memberService;
+    private ArticleService articleService;
+
+    private HotPlaceService hotPlaceService;
 
     @Override
     public void init() {
         memberService = MemberServiceImpl.getMemberService();
+        articleService = ArticleServiceImpl.getArticleService();
+        hotPlaceService = HotPlaceServiceImpl.getHotPlaceService();
+
     }
 
     @Override
@@ -46,10 +59,12 @@ public class MemberController extends HttpServlet {
                 forward(request, response, path);
                 break;
             case "myArticle":
-                forward(request, response, "/error/ready.jsp");
+                path = mvMyArticle(request, response);
+                forward(request, response, path);
                 break;
             case "myHotplace":
-                forward(request, response, "/error/ready.jsp");
+                path = mvMyHotplace(request, response);
+                forward(request, response, path);
                 break;
             case "modifyPw":
                 path = modifyPw(request, response);
@@ -99,6 +114,44 @@ public class MemberController extends HttpServlet {
         System.out.println("session.getAttribute(\"currShow\") = " + session.getAttribute("currShow"));
         return "/member/mypage.jsp";
     }
+
+    private String mvMyHotplace(HttpServletRequest request, HttpServletResponse response){
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+        Long memberId = loginMember.getId();
+        List<HotPlaceListDto> hotPlaces = hotPlaceService.searchHotPlaces(memberId);
+
+        request.setAttribute("hotPlaces", hotPlaces);
+        return "/member/mypage/myHotplace.jsp";
+    }
+
+    private String mvMyArticle(HttpServletRequest request, HttpServletResponse response){
+        String condition = request.getParameter("condition") == null ? "" : request.getParameter("condition");
+        int sortCondition = Integer.parseInt(request.getParameter("sortCondition") == null ? "1" : request.getParameter("sortCondition"));
+
+        int pageNum = 1;
+        int amount = 10;
+
+        if (request.getParameter("pageNum") != null && request.getParameter("amount") != null) {
+            pageNum = Integer.parseInt(request.getParameter("pageNum"));
+            amount = Integer.parseInt(request.getParameter("amount"));
+        }
+
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+        Long memberId = loginMember.getId();
+
+        List<ArticleListDto> articles = articleService.searchMyArticles(memberId, pageNum, amount);
+        int totalCount = articleService.getTotalCount();
+        Page page = new Page(pageNum, amount, totalCount);
+
+        request.setAttribute("page", page);
+        request.setAttribute("articles", articles);
+
+        session.setAttribute("currShow", "myArticle");
+        return "/member/mypage/myArticle.jsp";
+    }
+    
 
     private String mvModifyTel(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
