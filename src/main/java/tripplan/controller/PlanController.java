@@ -2,8 +2,10 @@ package tripplan.controller;
 
 import common.Page;
 import member.dto.LoginMember;
+import tripplan.dto.DetailPlanDto;
 import tripplan.dto.PlanListDto;
 import tripplan.dto.PlanSearch;
+import tripplan.dto.TripPlanDto;
 import tripplan.service.PlanService;
 import tripplan.service.PlanServiceImpl;
 
@@ -41,7 +43,7 @@ public class PlanController extends HttpServlet {
                 doList(request, response);
                 break;
             case "detail":
-                doDetail(request,response);
+                doDetail(request, response);
                 break;
 //            case "mvadd":
 //                break;
@@ -54,8 +56,12 @@ public class PlanController extends HttpServlet {
         }
     }
 
-    private void doDetail(HttpServletRequest request, HttpServletResponse response) {
-
+    private void doDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Long tripPlanId = Long.parseLong(request.getParameter("tripPlanId"));
+        TripPlanDto tripPlan = planService.showPlan(tripPlanId);
+        request.setAttribute("tripPlan", tripPlan);
+        //<c:forEach items=${tripPlan.detailPlans} var="detailPlan">
+        forward(request, response, "/tripplan/viewPlan.jsp");
     }
 
     private void doCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -66,14 +72,12 @@ public class PlanController extends HttpServlet {
 
         planService.addTripPlan(loginMember.getId(), title);
         Long tripPlanId = planService.getTripPlanId(loginMember.getId());
-        System.out.println(tripPlanId);
 
-        for (String content : contentList) {
-            planService.addDetailPlan(loginMember.getId(), tripPlanId, Integer.parseInt(content));
+        for (String contentId : contentList) {
+            planService.addDetailPlan(loginMember.getId(), tripPlanId, Integer.parseInt(contentId));
         }
 
-        System.out.println(contentList);
-        redirect(request,response,"/tripplan?action=detail&tripPlanId="+tripPlanId);
+        redirect(request, response, "/tripPlan?action=detail&tripPlanId=" + tripPlanId);
     }
 
     private void doList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

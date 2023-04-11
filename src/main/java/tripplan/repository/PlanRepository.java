@@ -1,9 +1,11 @@
 package tripplan.repository;
 
 import tripplan.DetailPlan;
+import tripplan.dto.DetailPlanDto;
 import tripplan.dto.PlanListDto;
 import tripplan.dto.PlanSearch;
 import tripplan.TripPlan;
+import tripplan.dto.TripPlanDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +22,7 @@ public interface PlanRepository {
 
     List<TripPlan> findAllByMemberId(Long memberId);
 
-    List<DetailPlan> findAllByTripPlanId(Long tripPlanId);
+    TripPlanDto findAllByTripPlanId(Long tripPlanId);
 
     List<PlanListDto> findByCondition(PlanSearch condition, int pageNum, int amount);
 

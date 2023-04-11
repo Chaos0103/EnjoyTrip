@@ -1,8 +1,6 @@
 package tripplan.service;
 
-import tripplan.dto.PlanDto;
-import tripplan.dto.PlanListDto;
-import tripplan.dto.PlanSearch;
+import tripplan.dto.*;
 
 import java.util.List;
 
@@ -14,6 +12,8 @@ public interface PlanService {
 
 
     List<PlanListDto> searchPlans(PlanSearch condition, int pageNum, int amount);
+
+    TripPlanDto showPlan(Long tripPlanId);
 
     int getTotalCount();
 

@@ -3,9 +3,11 @@ package tripplan.repository;
 import attraction.AttractionInfo;
 import member.Member;
 import tripplan.DetailPlan;
+import tripplan.dto.DetailPlanDto;
 import tripplan.dto.PlanListDto;
 import tripplan.dto.PlanSearch;
 import tripplan.TripPlan;
+import tripplan.dto.TripPlanDto;
 import util.DBConnectionUtil;
 
 import java.sql.*;
@@ -143,26 +145,48 @@ public class PlanJdbcRepository implements PlanRepository {
     }
 
     @Override
-    public List<DetailPlan> findAllByTripPlanId(Long tripPlanId) {
+    public TripPlanDto findAllByTripPlanId(Long tripPlanId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        List<DetailPlan> detailPlans = new ArrayList<>();
+        TripPlanDto tripPlanDto = null;
+        List<DetailPlanDto> detailPlans = new ArrayList<>();
+        String title = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from detail_plan where trip_plan_id=?";
+            String sql = "select * " +
+                    "from trip_plan tp " +
+                    "left outer join detail_plan dp on tp.trip_plan_id=dp.trip_plan_id " +
+                    "join attraction_info a on dp.content_id=a.content_id " +
+                    "where tp.trip_plan_id=?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, tripPlanId);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                detailPlans.add(createDetailPlan(rs));
+                if (title == null) {
+                    title = rs.getString("tp.title");
+                }
+                DetailPlanDto detailPlanDto = DetailPlanDto.builder()
+                        .title(rs.getString("a.title"))
+                        .detailPlanId(rs.getLong("detail_plan_id"))
+                        .longitude(rs.getDouble("longitude"))
+                        .latitude(rs.getDouble("latitude"))
+                        .build();
+                detailPlans.add(detailPlanDto);
+            }
+            if (title != null) {
+                tripPlanDto = TripPlanDto.builder()
+                        .tripPlanId(tripPlanId)
+                        .title(title)
+                        .detailPlans(detailPlans)
+                        .build();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             dbConnectionUtil.close(rs, pstmt, conn);
         }
-        return detailPlans;
+        return tripPlanDto;
     }
 
     @Override
@@ -214,7 +238,7 @@ public class PlanJdbcRepository implements PlanRepository {
             String sql = "select trip_plan_id" +
                     " from trip_plan" +
                     " where member_id = ?" +
-                    "order by created_date desc ";
+                    " order by created_date desc";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, memberId);
@@ -227,6 +251,8 @@ public class PlanJdbcRepository implements PlanRepository {
         } finally {
             dbConnectionUtil.close(rs, pstmt, conn);
         }
+        System.out.println("PlanJdbcRepository.findByMemberId");
+        System.out.println("tripPlan = " + tripPlan);
         return tripPlan;
     }
 
