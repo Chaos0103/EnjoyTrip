@@ -142,7 +142,7 @@ public class HotPlaceController extends HttpServlet {
         Long hotPlaceId = Long.parseLong(request.getParameter("hotPlaceId"));
 
         HotPlaceDetailDto hotPlace = hotPlaceService.searchHotPlace(hotPlaceId);
-        System.out.println("hotPlace = " + hotPlace);
+
         request.setAttribute("hotPlace", hotPlace);
 
         forward(request, response, "/hotplace/viewHotplace.jsp");
@@ -159,9 +159,9 @@ public class HotPlaceController extends HttpServlet {
 
         Long hotPlaceId = Long.parseLong(request.getParameter("hotPlaceId"));
 
-//        HotPlaceDto hotPlace = hotPlaceService.searchHotPlace(hotPlaceId);
+        HotPlaceDetailDto hotPlace = hotPlaceService.searchHotPlace(hotPlaceId);
 
-//        request.setAttribute("hotPlace", hotPlace);
+        request.setAttribute("hotPlace", hotPlace);
 
         forward(request, response, "/hotplace/editHotplace.jsp");
     }
