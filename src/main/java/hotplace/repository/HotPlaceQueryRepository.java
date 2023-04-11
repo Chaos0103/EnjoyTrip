@@ -15,6 +15,6 @@ public interface HotPlaceQueryRepository {
 
     List<HotPlaceListDto> findByMemberId(Long memberId);
 
-    List<HotPlaceListDto> doFavorite(Long memberId);
+    int doFavorite(Long memberId, Long hotPlaceId);
 
 }

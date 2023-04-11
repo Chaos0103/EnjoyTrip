@@ -116,45 +116,29 @@ public class HotPlaceQueryJdbcRepository implements HotPlaceQueryRepository {
     }
 
     @Override
-    public List<HotPlaceListDto> doFavorite(Long memberId) {
-        //수정 필요
-        List<HotPlaceListDto> hotPlaces = new ArrayList<>();
+    public int doFavorite(Long memberId, Long hotPlaceId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
+        int result = 0;
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "insert into hp.hot_place_id, hp.name, hp.desc, hp.hit, hp.store_file_name, m.nickname, hp.created_date" +
-                    " from hot_place hp" +
-                    " join member m" +
-                    " on hp.member_id = m.member_id" +
-                    " where m.member_id = ?" +
-                    " order by hp.created_date desc";
+            String sql = "insert into favorite(member_id, hotplace_id)" +
+                    " values ( ?, ? )";
 
 
             //작성자, 제목, 내용
             pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, memberId);
+            pstmt.setLong(2, hotPlaceId);
 
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                HotPlaceListDto hotPlaceListDto = HotPlaceListDto.builder()
-                        .hotPlaceId(rs.getLong("hot_place_id"))
-                        .name(rs.getString("name"))
-                        .desc(rs.getString("desc"))
-                        .hit(rs.getInt("hit"))
-                        .storeFileName(rs.getString("store_file_name"))
-                        .nickname(rs.getString("nickname"))
-                        .createdDate(dateFormat(rs.getTimestamp("created_date").toLocalDateTime()))
-                        .build();
-                hotPlaces.add(hotPlaceListDto);
-            }
+            result = pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             dbConnectionUtil.close(rs, pstmt, conn);
         }
-        return hotPlaces;
+        return result;
     }
 
 
