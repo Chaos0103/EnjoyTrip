@@ -18,7 +18,6 @@ import member.Member;
 import member.repository.MemberJdbcRepository;
 import member.repository.MemberRepository;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
