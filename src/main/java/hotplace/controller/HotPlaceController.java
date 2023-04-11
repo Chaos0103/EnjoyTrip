@@ -2,6 +2,7 @@ package hotplace.controller;
 
 import common.FileStore;
 import hotplace.UploadFile;
+import hotplace.dto.HotPlaceDetailDto;
 import hotplace.dto.HotPlaceDto;
 import hotplace.dto.HotPlaceListDto;
 import hotplace.dto.HotPlaceSearch;
@@ -140,8 +141,8 @@ public class HotPlaceController extends HttpServlet {
 
         Long hotPlaceId = Long.parseLong(request.getParameter("hotPlaceId"));
 
-        HotPlaceDto hotPlace = hotPlaceService.searchHotPlace(hotPlaceId);
-
+        HotPlaceDetailDto hotPlace = hotPlaceService.searchHotPlace(hotPlaceId);
+        System.out.println("hotPlace = " + hotPlace);
         request.setAttribute("hotPlace", hotPlace);
 
         forward(request, response, "/hotplace/viewHotplace.jsp");
@@ -158,9 +159,9 @@ public class HotPlaceController extends HttpServlet {
 
         Long hotPlaceId = Long.parseLong(request.getParameter("hotPlaceId"));
 
-        HotPlaceDto hotPlace = hotPlaceService.searchHotPlace(hotPlaceId);
+//        HotPlaceDto hotPlace = hotPlaceService.searchHotPlace(hotPlaceId);
 
-        request.setAttribute("hotPlace", hotPlace);
+//        request.setAttribute("hotPlace", hotPlace);
 
         forward(request, response, "/hotplace/editHotplace.jsp");
     }
