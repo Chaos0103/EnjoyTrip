@@ -112,3 +112,15 @@ create table if not exists `LOGIN`
     `member_id` bigint not null,
     foreign key (`member_id`) references MEMBER (`member_id`)
 );
+
+create table if not exists `TREND`
+(
+    `trend_id` bigint not null primary key auto_increment,
+    `content_id` int not null,
+    `teenage` int not null,
+    `twenty` int not null,
+    `thirty` int not null,
+    `male` int not null,
+    `female` int not null,
+    foreign key (`content_id`) references ATTRACTION_INFO (`content_id`)
+)
