@@ -11,6 +11,7 @@ import tripplan.DetailPlan;
 import tripplan.TripPlan;
 import tripplan.dto.PlanListDto;
 import tripplan.dto.PlanSearch;
+import tripplan.dto.TripPlanDto;
 import tripplan.repository.PlanJdbcRepository;
 import tripplan.repository.PlanRepository;
 
@@ -76,6 +77,22 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public List<PlanListDto> searchPlans(PlanSearch condition, int pageNum, int amount) {
         return planRepository.findByCondition(condition, pageNum, amount);
+    }
+
+//    @Override
+//    public List<DetailPlanDto> showPlan(Long tripPlanId) {
+//        Optional<TripPlan> findTripPlan = planRepository.findById(tripPlanId);
+//        if (!findTripPlan.isPresent()) {
+//            throw new PlanException();
+//        }
+//
+//        planRepository.findAllByTripPlanId(tripPlanId);
+//        return null;
+//    }
+
+    @Override
+    public TripPlanDto showPlan(Long tripPlanId) {
+        return planRepository.findAllByTripPlanId(tripPlanId);
     }
 
     @Override
