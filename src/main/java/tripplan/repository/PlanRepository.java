@@ -1,6 +1,7 @@
 package tripplan.repository;
 
 import tripplan.DetailPlan;
+import tripplan.dto.PlanListDto;
 import tripplan.dto.PlanSearch;
 import tripplan.TripPlan;
 
@@ -21,7 +22,9 @@ public interface PlanRepository {
 
     List<DetailPlan> findAllByTripPlanId(Long tripPlanId);
 
-    List<TripPlan> findByCondition(PlanSearch condition);
+    List<PlanListDto> findByCondition(PlanSearch condition, int pageNum, int amount);
+
+    int findTotalCount();
 
     int updateTripPlan(Long tripPlanId, TripPlan tripPlan);
 
