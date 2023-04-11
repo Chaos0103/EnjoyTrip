@@ -149,28 +149,4 @@ class PlanRepositoryTest {
         //then
         assertThat(result).isEqualTo(1);
     }
-
-    @Test
-    @DisplayName("여행계획 조회")
-    void selectTripPlan() {
-        //given
-        Optional<Member> findMember = memberRepository.findById(memberId);
-        planRepository.save(TripPlan.builder()
-                .title("trip plan title")
-                .member(findMember.get())
-                .build());
-        List<TripPlan> findTripPlans = planRepository.findByCondition(
-                PlanSearch.builder()
-                        .title("trip")
-                        .member(findMember.get())
-                        //.createdDate()
-                        .build());
-        TripPlan tripPlan = findTripPlans.get(0);
-
-        //when
-        int result = planRepository.removeTripPlan(tripPlan.getId());
-
-        //then
-        assertThat(result).isEqualTo(1);
-    }
 }

@@ -1,6 +1,7 @@
 package tripplan.service;
 
 import tripplan.dto.PlanDto;
+import tripplan.dto.PlanListDto;
 import tripplan.dto.PlanSearch;
 
 import java.util.List;
@@ -11,7 +12,10 @@ public interface PlanService {
 
     int addDetailPlan(Long memberId, Long tripPlanId, int contentId);
 
-    List<PlanDto> searchPlans(PlanSearch condition);
+
+    List<PlanListDto> searchPlans(PlanSearch condition, int pageNum, int amount);
+
+    int getTotalCount();
 
     int updateTripPlan(Long memberId, Long tripPlanId, String title);
 

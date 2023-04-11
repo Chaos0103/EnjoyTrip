@@ -3,11 +3,14 @@ package tripplan.repository;
 import attraction.AttractionInfo;
 import member.Member;
 import tripplan.DetailPlan;
+import tripplan.dto.PlanListDto;
 import tripplan.dto.PlanSearch;
 import tripplan.TripPlan;
 import util.DBConnectionUtil;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -163,30 +166,65 @@ public class PlanJdbcRepository implements PlanRepository {
     }
 
     @Override
-    public List<TripPlan> findByCondition(PlanSearch condition) {
-        List<TripPlan> plans = new ArrayList<>();
+    public List<PlanListDto> findByCondition(PlanSearch condition, int pageNum, int amount) {
+        List<PlanListDto> planListDtos = new ArrayList<>();
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             conn = dbConnectionUtil.getConnection();
-            String sql = "select * from trip_plan tp " +
-                    "join member m on tp.member_id = m.member_id " +
+            String sql = "select * " +
+                    "from trip_plan tp " +
+                    "join member m " +
+                    "on tp.member_id = m.member_id " +
                     "where tp.title like ? or m.nickname like ? " +
-                    "order by tp.created_date desc";
+                    "order by tp.created_date desc limit ?, ?";
+
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, "%" + condition.getTitle() + "%");
-            pstmt.setString(2, "%" + condition.getMember().getNickname() + "%");
+            pstmt.setString(1, "%" + condition.getCondition() + "%");
+            pstmt.setString(2, "%" + condition.getCondition() + "%");
+            pstmt.setInt(3, (pageNum - 1) * amount);
+            pstmt.setInt(4, amount);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                plans.add(createJoinTripPlan(rs));
+                PlanListDto planListDto = PlanListDto.builder()
+                        .tripPlanId(rs.getLong("trip_plan_id"))
+                        .title(rs.getString("title"))
+                        .nickname(rs.getString("nickname"))
+                        .createdDate(dateFormat(rs.getTimestamp("created_date").toLocalDateTime()))
+                        .build();
+                planListDtos.add(planListDto);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             dbConnectionUtil.close(rs, pstmt, conn);
         }
-        return plans;
+        return planListDtos;
+    }
+
+    @Override
+    public int findTotalCount() {
+        int result = 0;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select count(*) as total from trip_plan;";
+
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                result = rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return result;
     }
 
 
@@ -323,5 +361,12 @@ public class PlanJdbcRepository implements PlanRepository {
                 .createdDate(rs.getTimestamp("created_date").toLocalDateTime())
                 .lastModifiedDate(rs.getTimestamp("last_modified_date").toLocalDateTime())
                 .build();
+    }
+
+    private String dateFormat(LocalDateTime dateTime) {
+        if (dateTime == null) {
+            return null;
+        }
+        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 }
