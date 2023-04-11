@@ -104,6 +104,40 @@ public class AttractionJdbcRepository  implements AttractionRepository {
         return attractionInfos;
     }
 
+    @Override
+    public List<AttractionInfo> findByContentIds(List<Integer> contentIds) {
+        List<AttractionInfo> attractionInfos = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = dbConnectionUtil.getConnection();
+            String sql = "select * from attraction_info where content_id in ";
+            StringBuilder sb = new StringBuilder();
+            sb.append("(");
+            for (int contentId : contentIds) {
+                sb.append(contentId).append(",");
+            }
+            sb.setCharAt(sb.length() - 1, ')');
+            sql += sb;
+
+            pstmt = conn.prepareStatement(sql);
+            for (int i = 0; i < contentIds.size(); i++) {
+                pstmt.setInt(i + 1, contentIds.get(i));
+            }
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                attractionInfos.add(createAttractionInfo(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dbConnectionUtil.close(rs, pstmt, conn);
+        }
+        return attractionInfos;
+    }
+
     private AttractionInfo createAttractionInfo(ResultSet rs) throws SQLException {
         return AttractionInfo.builder()
                 .id(rs.getInt("content_id"))
