@@ -1,5 +1,6 @@
 package tripplan.controller;
 
+import algorithm.ShortestPath;
 import attraction.AttractionInfo;
 import attraction.service.AttractionService;
 import attraction.service.AttractionServiceImpl;
@@ -84,10 +85,16 @@ public class PlanController extends HttpServlet {
         Long tripPlanId = planService.getTripPlanId(loginMember.getId());
 
         List<AttractionInfo> attractionInfos = attractionService.searchAttraction(contentIdList);
-        for (AttractionInfo attractionInfo : attractionInfos) {
-            System.out.println("attractionInfo.getId() = " + attractionInfo.getId());
-            planService.addDetailPlan(loginMember.getId(), tripPlanId, attractionInfo.getId());
+        ShortestPath shortestPath = new ShortestPath();
+        List<AttractionInfo> shortestPaths = shortestPath.getShortestPath(attractionInfos);
+        for (AttractionInfo path : shortestPaths) {
+            System.out.println("path.getId() = " + path.getId());
+            planService.addDetailPlan(loginMember.getId(), tripPlanId, path.getId());
         }
+//        for (AttractionInfo attractionInfo : attractionInfos) {
+//            System.out.println("attractionInfo.getId() = " + attractionInfo.getId());
+//            planService.addDetailPlan(loginMember.getId(), tripPlanId, attractionInfo.getId());
+//        }
 
 //        for (String contentId : contentList) {
 ////            planService.addDetailPlan(loginMember.getId(), tripPlanId, Integer.parseInt(contentId));

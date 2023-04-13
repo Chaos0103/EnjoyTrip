@@ -6,102 +6,78 @@ import java.util.*;
 
 public class ShortestPath {
 
-    private static final int INF = (int) 1e9;
-    private static ArrayList<ArrayList<Node>> graph = new ArrayList<>();
-    private static ArrayList<ArrayList<Integer>> visited = new ArrayList<>();
-    private static double[] d = new double[1001];
+    private static int n;
+    private static boolean[] visited;
+    private static double[][] map;
+    private static double resultMin = Double.MAX_VALUE;
+    private static ArrayList<Integer> arr = new ArrayList<>();
+    private static ArrayList<Integer> result = new ArrayList<>();
 
     public List<AttractionInfo> getShortestPath(List<AttractionInfo> attractionInfos) {
-        int n = attractionInfos.size();
+        n = attractionInfos.size();
+        System.out.println("n = " + n);
         Map<Integer, AttractionInfo> store = new HashMap<>();
         for (int i = 0; i < n; i++) {
-            store.put(i + 1, attractionInfos.get(i));
+            store.put(i, attractionInfos.get(i));
         }
-        for (int i = 0; i <= n; i++) {
-            graph.add(new ArrayList<>());
-            visited.add(new ArrayList<>());
-        }
-        Arrays.fill(d, INF);
 
+        map = new double[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (i == j) {
-                    continue;
-                }
-                AttractionInfo start = attractionInfos.get(i);
-                AttractionInfo end = attractionInfos.get(j);
-                double cost = getDistance(start, end);
-                graph.get(i).add(new Node(j, cost));
-                graph.get(j).add(new Node(i, cost));
+                double distance = getDistance(attractionInfos.get(i), attractionInfos.get(j));
+                map[i][j] = distance;
             }
         }
-        int start = 1;
-        int end = n;
 
-        dijkstra(start);
-
-        List<AttractionInfo> result = new ArrayList<>();
-        for (int index : visited.get(end)) {
-            result.add(store.get(index));
+        for (int i = 0; i < n; i++) {
+            visited = new boolean[n];
+            visited[i] = true;
+            dfs(i, i, 0);
         }
-        return result;
+
+        List<AttractionInfo> res = new ArrayList<>();
+        res.add(store.get(0));
+        for (int index : result) {
+            res.add(store.get(index));
+        }
+        return res;
     }
 
-    private void dijkstra(int start) {
-        PriorityQueue<Node> pq = new PriorityQueue<>();
-        pq.offer(new Node(start, 0));
-        d[start] = 0;
-        visited.get(start).add(start);
-        while (!pq.isEmpty()) {
-            Node node = pq.poll();
-            double distance = node.getCost();
-            int now = node.getIndex();
-            if (d[now] < distance) {
-                continue;
-            }
-            for (int i = 0; i < graph.get(now).size(); i++) {
-                double cost = d[now] + graph.get(now).get(i).getCost();
-                if (d[graph.get(now).get(i).getIndex()] >= cost) {
-                    visited.set(graph.get(now).get(i).getIndex(), new ArrayList<>());
-                    for (int index : visited.get(now)) {
-                        visited.get(graph.get(now).get(i).getIndex()).add(index);
-                    }
-                    visited.get(graph.get(now).get(i).getIndex()).add(graph.get(now).get(i).getIndex());
-                    d[graph.get(now).get(i).getIndex()] = cost;
-                    pq.offer(new Node(graph.get(now).get(i).getIndex(), cost));
+    private static void dfs(int start, int now, double cost) {
+        if (allVisited()) {
+            if (map[now][start] != 0.0) {
+                if (resultMin > cost + map[now][0]) {
+                    resultMin = cost + map[now][0];
+                    result = new ArrayList<>();
+                    result.addAll(arr);
                 }
+                System.out.println("result = " + result);
+            }
+            return;
+        }
+        for (int i = 1; i < n; i++) {
+            if (!visited[i] && map[now][i] != 0) {
+                visited[i] = true;
+                arr.add(i);
+                dfs(start, i, cost + map[now][i]);
+                arr.remove(arr.size() - 1);
+                visited[i] = false;
             }
         }
+    }
+
+    public static boolean allVisited() {
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private double getDistance(AttractionInfo start, AttractionInfo end) {
         double x = Math.abs(start.getLatitude() - end.getLatitude());
         double y = Math.abs(start.getLongitude() - end.getLongitude());
         return Math.sqrt(x * x + y * y);
-    }
-}
-class Node implements Comparable<Node> {
-    private int index;
-    private double cost;
-
-    public Node(int index, double cost) {
-        this.index = index;
-        this.cost = cost;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public double getCost() {
-        return cost;
-    }
-
-    @Override
-    public int compareTo(Node o) {
-        if (this.cost < o.cost) {
-            return -1;
-        }
-        return 1;
     }
 }
