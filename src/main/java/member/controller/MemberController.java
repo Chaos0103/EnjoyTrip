@@ -118,7 +118,6 @@ public class MemberController extends HttpServlet {
   private String mvwithdrawal(HttpServletRequest request, HttpServletResponse response) {
     HttpSession session = request.getSession();
     session.setAttribute("currShow", "deleteMember");
-    System.out.println("session.getAttribute(\"currShow\") = " + session.getAttribute("currShow"));
     return "/member/mypage.jsp";
   }
 
@@ -205,7 +204,6 @@ public class MemberController extends HttpServlet {
   private String mvModifyTel(HttpServletRequest request, HttpServletResponse response) {
     HttpSession session = request.getSession();
     session.setAttribute("currShow", "modifyTel");
-    System.out.println("session.getAttribute(\"currShow\") = " + session.getAttribute("currShow"));
     return "/member/mypage.jsp";
   }
 
@@ -256,14 +254,12 @@ public class MemberController extends HttpServlet {
   private String mvModifyEmail(HttpServletRequest request, HttpServletResponse response) {
     HttpSession session = request.getSession();
     session.setAttribute("currShow", "modifyEmail");
-    System.out.println("session.getAttribute(\"currShow\") = " + session.getAttribute("currShow"));
     return "/member/mypage.jsp";
   }
 
   private String mvModifyNickname(HttpServletRequest request, HttpServletResponse response) {
     HttpSession session = request.getSession();
     session.setAttribute("currShow", "modifyNickname");
-    System.out.println("session.getAttribute(\"currShow\") = " + session.getAttribute("currShow"));
     return "/member/mypage.jsp";
   }
 
@@ -275,9 +271,6 @@ public class MemberController extends HttpServlet {
     String currNickname = request.getParameter("currNickname");
     String newNickname = request.getParameter("newNickname");
     String pwCheck = request.getParameter("pwCheck");
-    System.out.println("MemberController.modifyNickname");
-    System.out.println("pwCheck = " + pwCheck);
-    System.out.println("loginMember.getLoginPw() = " + loginMember.getLoginPw());
 
     if (!pwCheck.equals(loginMember.getLoginPw())) {
       request.setAttribute("msg", "비밀번호가 틀렸습니다.");

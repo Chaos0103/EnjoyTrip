@@ -15,7 +15,7 @@ public class ShortestPath {
 
     public List<AttractionInfo> getShortestPath(List<AttractionInfo> attractionInfos) {
         n = attractionInfos.size();
-        System.out.println("n = " + n);
+
         Map<Integer, AttractionInfo> store = new HashMap<>();
         for (int i = 0; i < n; i++) {
             store.put(i, attractionInfos.get(i));
@@ -51,7 +51,6 @@ public class ShortestPath {
                     result = new ArrayList<>();
                     result.addAll(arr);
                 }
-                System.out.println("result = " + result);
             }
             return;
         }

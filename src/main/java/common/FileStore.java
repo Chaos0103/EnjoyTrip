@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class FileStore {
 
-    public String fileDir = "/Users/dong82/java/EnjoyTrip/src/main/webapp/assets/store/";
+    public String fileDir = "C:\\SSAFY\\EnjoyTrip\\src\\main\\webapp\\assets\\store\\";
 
     public String getFullPath(String filename) {
         return fileDir + filename;
@@ -19,7 +19,7 @@ public class FileStore {
 
         if (!originalFileName.isEmpty()) {
             String storeFileName = createStoreFileName(originalFileName);
-            part.write("/Users/dong82/java/EnjoyTrip/src/main/webapp/assets/store/" + storeFileName);
+            part.write(fileDir + storeFileName);
             return new UploadFile(originalFileName, storeFileName);
         }
 

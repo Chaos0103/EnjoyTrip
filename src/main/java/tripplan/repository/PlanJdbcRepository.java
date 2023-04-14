@@ -251,8 +251,6 @@ public class PlanJdbcRepository implements PlanRepository {
         } finally {
             dbConnectionUtil.close(rs, pstmt, conn);
         }
-        System.out.println("PlanJdbcRepository.findByMemberId");
-        System.out.println("tripPlan = " + tripPlan);
         return tripPlan;
     }
 

@@ -120,7 +120,7 @@ public class AttractionJdbcRepository  implements AttractionRepository {
             }
             sb.setCharAt(sb.length() - 1, ')');
             sql += sb;
-            System.out.println("sql = " + sql);
+
             pstmt = conn.prepareStatement(sql);
             for (int i = 0; i < contentIds.size(); i++) {
                 pstmt.setInt(i + 1, contentIds.get(i));

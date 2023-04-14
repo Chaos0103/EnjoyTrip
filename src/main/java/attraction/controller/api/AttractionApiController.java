@@ -53,7 +53,7 @@ public class AttractionApiController extends HttpServlet {
     private void doSearchAttraction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int contentId = Integer.parseInt(request.getParameter("contentId"));
         AttractionDto attraction = attractionService.searchAttraction(contentId);
-        System.out.println("contentId = " + contentId);
+
         JSONObject json = new JSONObject();
         JSONArray array = new JSONArray();
         JSONObject temp = new JSONObject();

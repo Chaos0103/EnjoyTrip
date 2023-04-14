@@ -77,8 +77,6 @@ public class AttractionServiceImpl implements AttractionService {
 
     @Override
     public List<AttractionInfo> searchAttraction(List<Integer> contentIds) {
-        List<AttractionInfo> findAttractionInfos = attractionRepository.findByContentIds(contentIds);
-        System.out.println("findAttractionInfos.toString() = " + findAttractionInfos.toString());
-        return findAttractionInfos;
+        return attractionRepository.findByContentIds(contentIds);
     }
 }
