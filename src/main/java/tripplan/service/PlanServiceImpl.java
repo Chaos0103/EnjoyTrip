@@ -134,7 +134,7 @@ public class PlanServiceImpl implements PlanService {
             throw new PlanException();
         }
 
-        return planRepository.removeDetailPlan(tripPlanId);
+        return planRepository.removeTripPlan(tripPlanId);
     }
 
     @Override

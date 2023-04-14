@@ -33,8 +33,8 @@
                 src="//dapi.kakao.com/v2/maps/sdk.js?appkey=92031818da3bea1d2a0cd22686ab48ea"></script>
       </div>
       <div class="col-4">
-        <form id="planList" method="post" action="${root}/tripPlan?action=create">
-          <input type="hidden" id="contentList" name="contentList" value="">
+        <form id="planDetail" method="post" action="${root}/tripPlan?action=deletePlan&tripPlanId=${tripPlan.tripPlanId}">
+          <input type="hidden" id="planId" name="planId" value="${tripPlan.tripPlanId}">
           <div class="input-group mb-3">
             <span class="input-group-text" >제목</span>
             <input type="text" class="form-control" name="planTitle" value="${tripPlan.title}" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly>
@@ -51,7 +51,7 @@
             </c:forEach>
 
           </table>
-<%--          <button id="createPlan" type='submit' class='btn btn-success' >등록하기</button>--%>
+          <button id="removePlan" type='submit' class='btn btn-danger' >삭제하기</button>
         </form>
       </div>
     </div>
@@ -59,25 +59,6 @@
 
 
     <!-- end album -->
-    <!-- start right bar -->
-
-<%--    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"--%>
-<%--         id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">--%>
-<%--      <div class="offcanvas-header">--%>
-<%--        <h5 class="offcanvas-title" id="offcanvasScrollingLabel">검색 결과</h5>--%>
-<%--        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>--%>
-<%--      </div>--%>
-<%--      <div class="offcanvas-body">--%>
-<%--        <div class="album py-5">--%>
-<%--          <div class="container">--%>
-<%--            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-1 g-3" id="tour-list">--%>
-<%--              <!-- 관광지 정보 비동기 통신 -->--%>
-<%--            </div>--%>
-<%--          </div>--%>
-<%--        </div>--%>
-<%--      </div>--%>
-<%--    </div>--%>
-    <!-- end right bar -->
   </main>
 </div>
 <!-- end section -->
@@ -87,13 +68,6 @@
 <!-- end footer -->
 <script src='/assets/js/travelplan.js'></script>
 <script>
-  // var container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
-  // var options = {
-  //     //지도를 생성할 때 필요한 기본 옵션
-  //     center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
-  //     level: 3, //지도의 레벨(확대, 축소 정도)
-  // };
-
   // var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
   <c:forEach items="${tripPlan.detailPlans}" var="detailPlan">
   var x = ${detailPlan.latitude};

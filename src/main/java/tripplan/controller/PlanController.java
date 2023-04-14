@@ -5,6 +5,7 @@ import attraction.AttractionInfo;
 import attraction.service.AttractionService;
 import attraction.service.AttractionServiceImpl;
 import common.Page;
+import common.exception.PlanException;
 import member.dto.LoginMember;
 import tripplan.dto.DetailPlanDto;
 import tripplan.dto.PlanListDto;
@@ -52,23 +53,31 @@ public class PlanController extends HttpServlet {
             case "detail":
                 doDetail(request, response);
                 break;
-//            case "mvadd":
-//                break;
             case "add":
                 break;
             case "deletePlan":
+                doRemovePlan(request, response);
                 break;
             case "remove":
                 break;
         }
     }
 
-    private void doDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Long tripPlanId = Long.parseLong(request.getParameter("tripPlanId"));
-        TripPlanDto tripPlan = planService.showPlan(tripPlanId);
-        request.setAttribute("tripPlan", tripPlan);
-        //<c:forEach items=${tripPlan.detailPlans} var="detailPlan">
-        forward(request, response, "/tripplan/viewPlan.jsp");
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        doGet(request, response);
+    }
+
+    private void doMvCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+        if (loginMember == null) {
+            request.setAttribute("msg", "로그인 후 이용해주세요.");
+            forward(request, response, "/account/login.jsp");
+            return;
+        }
+        forward(request, response, "/tripplan/createPlan.jsp");
     }
 
     private void doCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -88,18 +97,8 @@ public class PlanController extends HttpServlet {
         ShortestPath shortestPath = new ShortestPath();
         List<AttractionInfo> shortestPaths = shortestPath.getShortestPath(attractionInfos);
         for (AttractionInfo path : shortestPaths) {
-            System.out.println("path.getId() = " + path.getId());
             planService.addDetailPlan(loginMember.getId(), tripPlanId, path.getId());
         }
-//        for (AttractionInfo attractionInfo : attractionInfos) {
-//            System.out.println("attractionInfo.getId() = " + attractionInfo.getId());
-//            planService.addDetailPlan(loginMember.getId(), tripPlanId, attractionInfo.getId());
-//        }
-
-//        for (String contentId : contentList) {
-////            planService.addDetailPlan(loginMember.getId(), tripPlanId, Integer.parseInt(contentId));
-//        }
-
         redirect(request, response, "/tripPlan?action=detail&tripPlanId=" + tripPlanId);
     }
 
@@ -127,21 +126,36 @@ public class PlanController extends HttpServlet {
         forward(request, response, "/tripplan/tripList.jsp");
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("utf-8");
-        doGet(request, response);
+    private void doDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Long tripPlanId = Long.parseLong(request.getParameter("tripPlanId"));
+        TripPlanDto tripPlan = planService.showPlan(tripPlanId);
+        request.setAttribute("tripPlan", tripPlan);
+        forward(request, response, "/tripplan/viewPlan.jsp");
     }
 
-    private void doMvCreate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void doRemovePlan(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         LoginMember loginMember = (LoginMember) session.getAttribute("userinfo");
+        Long tripPlanId = Long.parseLong(request.getParameter("planId"));
+
         if (loginMember == null) {
             request.setAttribute("msg", "로그인 후 이용해주세요.");
             forward(request, response, "/account/login.jsp");
             return;
         }
-        forward(request, response, "/tripplan/createPlan.jsp");
+
+        TripPlanDto tripPlan = planService.showPlan(tripPlanId);
+        try {
+            for (DetailPlanDto detailPlan : tripPlan.getDetailPlans()) {
+                planService.removeDetailPlan(loginMember.getId(), detailPlan.getDetailPlanId());
+            }
+            planService.removeTripPlan(loginMember.getId(), tripPlanId);
+        }catch (PlanException e){
+            request.setAttribute("msg", "자신의 플랜만 삭제 가능합니다.");
+            forward(request, response, "/tripplan/tripList.jsp");
+            return;
+        }
+        redirect(request, response, "/tripPlan?action=list");
     }
 
     private void forward(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException {
