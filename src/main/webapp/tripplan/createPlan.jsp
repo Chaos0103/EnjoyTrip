@@ -100,7 +100,7 @@
 <!-- start footer -->
 <%@include file="/common/footer.jsp" %>
 <!-- end footer -->
-<script src='/assets/js/travelplan.js'></script>
+<script src='${root}/assets/js/travelplan.js?testNm=3'></script>
 <script>
     // var container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
     // var options = {

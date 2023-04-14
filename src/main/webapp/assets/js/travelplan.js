@@ -22,34 +22,32 @@ const serviceKey =
     "Z3xQFEYw9YISK5Pqbjr6sKOnleAU2TDOLpvBL%2B124NPZJTwDGnQK5QlcCFaCnTgksQ1DVZdyyM2l95udJM4xFw%3D%3D";
 
 function getTourList() {
-//   const areaCode = document.getElementById("areaCode").value;
-//   const contentTypeId = document.getElementById("contentTypeId").value;
     const keyword = document.getElementById("keyword").value;
 
-    const url = `https://apis.data.go.kr/B551011/KorService1/searchKeyword1?serviceKey=${serviceKey}&numOfRows=12&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&keyword=${keyword}`;
+    const url = `http://localhost:8080/api/attraction?action=tripPlanList&title=${keyword}`;
     fetch(url)
         .then((response) => response.json())
-        .then((data) => createTour(data));
+        .then((response) => createTour(response));
 }
 
-function createTour(data) {
-    let items = data.response.body.items.item;
+function createTour(response) {
+    let items = response.data;
     let content = "";
     items.forEach(function (item) {
-        if (!item.firstimage) {
-            item.firstimage = "../assets/img/no-img.jpg";
+        if (!item.firstImage) {
+            item.firstImage = "../assets/img/no-img.jpg";
         }
 
         content += `<div class="col">
                         <div class="card shadow-sm">
-                            <img src="${item.firstimage}" alt="" />
+                            <img src="${item.firstImage}" alt="" />
                             <div class="card-body">
                                 <h5 class="card-title">${item.title}</h5>
                                 <h6 class="card-subtitle mb-2 text-muted">${item.addr1}</h6>                                
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn -sm btn-outline-secondary" onclick="setCenter(${item.mapy}, ${item.mapx})">위치보기</button>                                        
-                                        <button type="button" class="btn btn -sm btn-outline-info" onclick="addLoc(${item.mapy}, ${item.mapx}, ${item.contentid})">계획에 추가</button>                                        
+                                        <button type="button" class="btn btn -sm btn-outline-secondary" onclick="setCenter(${item.latitude}, ${item.longitude})">위치보기</button>                                        
+                                        <button type="button" class="btn btn -sm btn-outline-info" onclick="addLoc(${item.latitude}, ${item.longitude}, ${item.id})">계획에 추가</button>                                        
                                     </div>
                                 </div>
                             </div>
