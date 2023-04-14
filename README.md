@@ -33,8 +33,8 @@
 - 홈페이지 메인 화면 입니다. 
 - 메인페이지 하단에서 실시간 트래픽을 백트래킹 알고리즘을 통해 분석하여 나이, 연령대 별 가장 인기있는 여행지를 보여줍니다. 
 ![main.png](display%2Fmain.png)
-![main2.PNG](display%2Fmain2.PNG)
-
+![main2.png](display%2Fmain2.png)
+- 
 ### 회원관리
 #### 로그인
 - 로그인 페이지 입니다.
@@ -115,7 +115,8 @@
 
 #### 여행계획
 ![plan1.PNG](display%2Fplan1.PNG)
-
+![tripPlan1.png](display%2FtripPlan1.png)
+![tripPlan2.png](display%2FtripPlan2.png)
 
 ### 페이지 준비중 화면
 - 아직 구현되지 않은 페이지에 접근할 경우 준비중 화면이 출력됩니다.
@@ -130,6 +131,7 @@
 [SCHEMA](docs%2Fsql%2Fschema.sql)
 
 [ERD](https://www.erdcloud.com/d/rjTmz95cMnPXerZpW)
+![EnjoyTrip.png](display%2FEnjoyTrip.png)
 
 ## ✅ 커밋 컨벤션
 
@@ -275,7 +277,6 @@
 │   │   │       └── HotPlaceServiceImpl.java
 │   │   ├── member
 │   │   │   ├── Authority.java
-│   │   │   ├── Login.java
 │   │   │   ├── Member.java
 │   │   │   ├── controller
 │   │   │   │   ├── AccountController.java
@@ -285,8 +286,6 @@
 │   │   │   │   ├── MemberAddDto.java
 │   │   │   │   └── MemberDto.java
 │   │   │   ├── repository
-│   │   │   │   ├── LoginJdbcRepository.java
-│   │   │   │   ├── LoginRepository.java
 │   │   │   │   ├── MemberJdbcRepository.java
 │   │   │   │   └── MemberRepository.java
 │   │   │   └── service
@@ -362,10 +361,10 @@
 │       │   │   ├── panel_03.png
 │       │   │   ├── ready.jpeg
 │       │   │   └── thumbnail.png
-│       │   ├── js
-│       │   │   ├── requestApi.js
-│       │   │   └── travelplan.js
-│       │   └── store
+│       │   └── js
+│       │       ├── index.js
+│       │       ├── requestApi.js
+│       │       └── travelplan.js
 │       ├── attraction
 │       │   └── attractionList.jsp
 │       ├── common
