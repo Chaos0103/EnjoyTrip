@@ -6,12 +6,12 @@ import java.util.*;
 
 public class ShortestPath {
 
-    private static int n;
-    private static boolean[] visited;
-    private static double[][] map;
-    private static double resultMin = Double.MAX_VALUE;
-    private static ArrayList<Integer> arr = new ArrayList<>();
-    private static ArrayList<Integer> result = new ArrayList<>();
+    private int n;
+    private boolean[] visited;
+    private double[][] map;
+    private double resultMin = Double.MAX_VALUE;
+    private ArrayList<Integer> arr = new ArrayList<>();
+    private ArrayList<Integer> result = new ArrayList<>();
 
     public List<AttractionInfo> getShortestPath(List<AttractionInfo> attractionInfos) {
         n = attractionInfos.size();
@@ -43,7 +43,7 @@ public class ShortestPath {
         return res;
     }
 
-    private static void dfs(int start, int now, double cost) {
+    private void dfs(int start, int now, double cost) {
         if (allVisited()) {
             if (map[now][start] != 0.0) {
                 if (resultMin > cost + map[now][0]) {
@@ -65,7 +65,7 @@ public class ShortestPath {
         }
     }
 
-    public static boolean allVisited() {
+    public boolean allVisited() {
         for (int i = 0; i < n; i++) {
             if (!visited[i]) {
                 return false;
