@@ -57,12 +57,11 @@
                     <input type="hidden" id="contentList" name="contentList" value="">
                     <div class="input-group mb-3">
                         <span class="input-group-text" >제목</span>
-                        <input type="text" class="form-control" name="planTitle" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                        <input type="text" class="form-control" name="planTitle" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
                     </div>
             <table id="plan" class="table table-hover ">
                 <tr>
-                    <th>여행 리스트</th>
-
+                    <th>여행 경로</th>
                 </tr>
             </table>
                     <button id="createPlan" type='submit' class='btn btn-success' >최적의 경로로 등록하기</button>

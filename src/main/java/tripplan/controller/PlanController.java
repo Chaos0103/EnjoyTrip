@@ -86,6 +86,12 @@ public class PlanController extends HttpServlet {
         String title = request.getParameter("planTitle");
         String[] contentList = request.getParameter("contentList").split(",");
         List<Integer> contentIdList = new ArrayList<>();
+
+        if(contentList.length<2){
+            request.setAttribute("msg", "경로를 2개 이상 추가해주세요");
+            forward(request, response, "/tripplan/createPlan.jsp");
+            return;
+        }
         for (String contentId : contentList) {
             contentIdList.add(Integer.parseInt(contentId));
         }
